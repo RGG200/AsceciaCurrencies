@@ -1,5 +1,6 @@
 package me.rgn.asceciacurrencies;
 
+import me.rgn.asceciacurrencies.api.CurrenciesAPI;
 import me.rgn.asceciacurrencies.commands.*;
 import me.rgn.asceciacurrencies.files.CustomConfig;
 import me.rgn.asceciacurrencies.files.PlayersConfig;
@@ -16,8 +17,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Currency;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public final class AsceciaCurrencies extends JavaPlugin {
+    public static int time = 0;
     @Override
     public void onEnable() {
         getConfig().options().copyDefaults();
@@ -31,5 +35,22 @@ public final class AsceciaCurrencies extends JavaPlugin {
         getCommand("Currencies").setExecutor(new Currencies());
         System.out.println("[Ascecia-Currencies]: Plugin Loaded !");
         Bukkit.getServer().broadcastMessage(ChatColor.GOLD + "[ Ascecia-Currencies ]: Version 1.0-Snapshot \n Thanks for using Ascecia-Currencies !!!");
+        int period = 1000;
+        int delay = 2100000000;
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask()
+    {
+            public void run(){
+                time ++;
+                for (String currencies : CustomConfig.get().getKeys(false)){
+                    double cAmount = CustomConfig.get().getDouble(currencies + ".amount");
+                    double cValue = CustomConfig.get().getDouble(currencies + ".total-value");
+                    double cEcoDev = CustomConfig.get().getDouble(currencies + ".economic-development");
+                    double cEcoAct = CustomConfig.get().getDouble(currencies + ".economic-activity");
+                    CustomConfig.get().set(currencies + ".economic-development", cEcoDev+(time*(cAmount/cValue))/5184000);
+                    CustomConfig.get().set(currencies + ".power", ((cValue/cAmount)*cEcoAct)*cEcoDev);
+                }
+            }
+        },delay, period);
     }
 }

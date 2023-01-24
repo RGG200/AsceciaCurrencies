@@ -23,7 +23,7 @@ public class Currencies implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("asceciacurrencies.admin")){
                     if (args.length > 1) {
-                        cAPI.CurrencyForceDelete(args[1]);
+                        CurrenciesAPI.Currencies.ForceDelete(args[1]);
                     }else {
                         p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies forcedelete (currencyname)");
                     }
@@ -32,7 +32,7 @@ public class Currencies implements CommandExecutor {
                     p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies forcedelete (currencyname)");
                 }
             }else {
-                cAPI.CurrencyForceDelete(args[1]);
+                CurrenciesAPI.Currencies.ForceDelete(args[1]);
             }
         }
         if (sender instanceof Player) {
@@ -49,7 +49,7 @@ public class Currencies implements CommandExecutor {
                     if (args.length < 2) {
                         p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies create (currencyname)");
                     } else {
-                        cAPI.CurrencyCreate(p, args[1]);
+                        CurrenciesAPI.Currencies.Create(p, args[1]);
                     }
                     if (args.length > 2){
                         p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies create (currencyname)");
@@ -61,7 +61,7 @@ public class Currencies implements CommandExecutor {
                     if (args.length < 2) {
                         p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies delete (currencyname)");
                     } else {
-                        cAPI.CurrencyDelete(p, args[1]);
+                        CurrenciesAPI.Currencies.Delete(p, args[1]);
                     }
                 }
                 //withdraw
@@ -72,7 +72,7 @@ public class Currencies implements CommandExecutor {
                         if (args.length < 3) {
                             p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies withdraw (currencyname) (amount)");
                         }
-                        cAPI.CurrencyWithdraw(p, args[1], args[2]);
+                        CurrenciesAPI.Currencies.Withdraw(p, args[1], args[2]);
                     }
                      if (args.length > 3) {
                          p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies withdraw (currencyname) (amount)");
@@ -81,7 +81,7 @@ public class Currencies implements CommandExecutor {
                 //info
                 else if (args[0].equals("info")) {
                     if (args.length > 1) {
-                        cAPI.CurrencyInfo(p, args[1]);
+                        CurrenciesAPI.Currencies.Info(p, args[1]);
                     } else {
                         p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies info (currencyname)");
                     }
@@ -92,7 +92,7 @@ public class Currencies implements CommandExecutor {
                 //list
                 else if (args[0].equals("list")) {
                     if (args.length == 1) {
-                        cAPI.CurrencyList(p);
+                        CurrenciesAPI.Currencies.List(p);
                     }else {
                         p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies list");
                     }
@@ -100,7 +100,7 @@ public class Currencies implements CommandExecutor {
                     if (args.length < 2) {
                         p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies mint (amount)");
                     } else {
-                        cAPI.CurrencyMint(p, args[1]);
+                        CurrenciesAPI.Currencies.Mint(p, args[1]);
                     }if (args.length > 2) {
                          p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies mint (amount)");
                      }
@@ -109,7 +109,7 @@ public class Currencies implements CommandExecutor {
                 else if (args[0].equals("deposit")) {
                     if (args.length == 1) {
                         int itemamount = p.getInventory().getItemInMainHand().getAmount();
-                        cAPI.CurrencyDeposit(p, itemamount);
+                        CurrenciesAPI.Currencies.Deposit(p, itemamount);
                     }else {
                         p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies deposit");
                     }
@@ -126,7 +126,7 @@ public class Currencies implements CommandExecutor {
                                 p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies pay (playername) (currencyname) (amount)");
                             } else {
                                 Player target = Bukkit.getServer().getPlayer(args[1]);
-                                cAPI.CurrencyPay(p, target, args[2], args[3]);
+                                CurrenciesAPI.Currencies.Pay(p, target, args[2], args[3]);
                             }
                         }
                     }
@@ -134,7 +134,7 @@ public class Currencies implements CommandExecutor {
                          p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies pay (playername) (currencyname) (amount)");
                      }
                 } else if (args[0].equals("wallet")) {
-                    cAPI.CurrencyWallet(p);
+                    CurrenciesAPI.Currencies.Wallet(p);
                 } else {
                     p.sendMessage(ChatColor.GOLD + "| Ascecia Currencies | Help | \n \n /currencies create (name) - creates a currency  \n \n /currencies delete (name) - deletes your currency \n \n /currencies withdraw (name) (amount) - turn back an amount of your currency into iron \n \n /currencies info (name) - gives you info about a currency \n \n /currencies list - gives you a list of all currencies available \n \n /currencies mint (amount) - makes an amount of currency \n \n /currencies deposit - deposit the amount of ores you're holding in your hand into your currency to increase its power \n \n /currencies pay (playername) (name) (amount) - pays the target with an amount of currency \n \n /currencies wallet - give you details about your wallet");
                 }
