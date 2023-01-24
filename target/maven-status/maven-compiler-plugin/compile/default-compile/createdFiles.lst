@@ -1,0 +1,6 @@
+me\rgn\asceciacurrencies\AsceciaCurrencies.class
+me\rgn\asceciacurrencies\commands\Currencies.class
+me\rgn\asceciacurrencies\files\CustomConfig.class
+me\rgn\asceciacurrencies\Currency.class
+me\rgn\asceciacurrencies\files\PlayersConfig.class
+me\rgn\asceciacurrencies\api\CurrenciesAPI.class
