@@ -5,7 +5,7 @@ Ascecia Currencies is a minecraft plugin that allows players to create theirs ow
 
 ## Wiki
 
-- [Features](https://github.com/RGG200/Ascecia-Currencies/wiki/features.md)
-- [Commands](https://github.com/RGG200/Ascecia-Currencies/wiki/commands.md)
-- [Permissions](https://github.com/RGG200/Ascecia-Currencies/wiki/permissions.md)
-- [Built-in API](https://github.com/RGG200/Ascecia-Currencies/wiki/api.md)
+- [Features](https://github.com/RGG200/Ascecia-Currencies/wiki/Features)
+- [Commands](https://github.com/RGG200/Ascecia-Currencies/wiki/Commands)
+- [Permissions](https://github.com/RGG200/Ascecia-Currencies/wiki/Permissions)
+- [Built-in API](https://github.com/RGG200/Ascecia-Currencies/wiki/API)
