@@ -14,11 +14,10 @@ import java.util.UUID;
 public class CurrenciesAPI{
     public static class Currencies{
         public static Object get(String name, String path){
-            CustomConfig.get().get(path);
-            return CustomConfig.get().get(path);
+            return CustomConfig.get().get(name + "." + path);
         }
         public static void set(String name, String path, Object value){
-            CustomConfig.get().set(path, value);
+            CustomConfig.get().set(name + "." + path, value);
         }
         public static boolean Add(Player p, String name, double amount){
             if(p != null){
