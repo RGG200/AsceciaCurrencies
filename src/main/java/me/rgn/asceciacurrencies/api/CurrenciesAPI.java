@@ -23,7 +23,7 @@ public class CurrenciesAPI{
             if(p != null){
                 if (CustomConfig.get().contains(name)){
                     if (amount > 0) {
-                        String id = p.getUniqueId().toString();
+                        String id = p.getName();
                         double pBalance = PlayersConfig.get().getDouble(id + "." + name + ".balance");
                         double cMarketAmount = CustomConfig.get().getDouble(name + ".amount");
                         double cValue = CustomConfig.get().getDouble(name + ".totalvalue");
@@ -53,7 +53,7 @@ public class CurrenciesAPI{
             //getting player id
             int count = 0;
             boolean isNameValid = false;
-            String id = p.getUniqueId().toString();
+            String id = p.getName();
             //check if player created a currency
             if (!PlayersConfig.get().contains(id + ".hascreated")) {
                 //I don't know what this does
@@ -79,6 +79,7 @@ public class CurrenciesAPI{
                                 CustomConfig.get().set(name + ".totalvalue", 0.0);
                                 CustomConfig.get().set(name + ".economic-activity", 1.0);
                                 CustomConfig.get().set(name + ".economic-development", 1.0);
+                                CustomConfig.get().set(name + ".description", "");
                                 CustomConfig.get().set(name + ".peers", 1);
                                 CustomConfig.get().set(name + ".author", id);
                                 p.sendMessage(ChatColor.GREEN + "[Currencies]: The Currency " + name + " Has been Created");
@@ -107,7 +108,7 @@ public class CurrenciesAPI{
 
         public static boolean Delete(Player p, String name){
             //gets the sender and the author of the currency
-            String id = p.getUniqueId().toString();
+            String id = p.getName();
             String author = CustomConfig.get().getString(name + ".author");
             //check if the currency name has been entered
             if (name == null) {
@@ -142,10 +143,13 @@ public class CurrenciesAPI{
             return true;
         }
 
+        public static boolean Description(Player p, String name{
+            //later
+            return true;
+        }
 
         public static boolean ForceDelete(String name){
             String cname = name;
-            String id = CustomConfig.get().getString(name + ".author");
             ItemStack nuggets = new ItemStack(Material.IRON_NUGGET, 1);
             for (String key : PlayersConfig.get().getKeys(false)) {
                 PlayersConfig.get().set(key + "." + cname + ".", null);
@@ -190,7 +194,7 @@ public class CurrenciesAPI{
 
         public static boolean Mint(Player p, String stramount){
             //check until the currency of the player is found
-            String id = p.getUniqueId().toString();
+            String id = p.getName();
             Boolean hasCreated = PlayersConfig.get().getBoolean(id + ".hascreated");
             if (!hasCreated.equals(null)) {
                 if(CustomConfig.get().getKeys(false).size() > 0) {
@@ -246,7 +250,7 @@ public class CurrenciesAPI{
 
         public static boolean Deposit(Player p, double itemamount){
             //init root variable
-            String id = p.getUniqueId().toString();
+            String id = p.getName();
             Boolean hasCreated = PlayersConfig.get().getBoolean(id + ".hascreated");
             //search for player's currency
             if (!hasCreated.equals(null)){
@@ -418,7 +422,7 @@ public class CurrenciesAPI{
             if(p != null){
                 if (CustomConfig.get().contains(name)) {
                     if (amount > 0) {
-                        String id = p.getUniqueId().toString();
+                        String id = p.getName();
                         double pBalance = PlayersConfig.get().getDouble(id + "." + name + ".balance");
                         double cMarketAmount = CustomConfig.get().getDouble(name + ".amount");
                         double cValue = CustomConfig.get().getDouble(name + ".totalvalue");
@@ -450,7 +454,7 @@ public class CurrenciesAPI{
             double cMarketAmount = CustomConfig.get().getDouble(name + ".amount");
             double cEcoActivity = CustomConfig.get().getDouble(name + ".economic-activity");
             double amount = 0;
-            String id = p.getUniqueId().toString();
+            String id = p.getName();
             String pname = p.getName().toString();
             //if currency not specified
             if (name == null) {
