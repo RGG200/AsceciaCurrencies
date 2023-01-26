@@ -9,13 +9,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import javax.naming.Name;
-import java.lang.reflect.Array;
 import java.util.UUID;
 
 public class CurrenciesAPI{
     public static class Currencies{
+        public static Object get(String name, String path){
+            CustomConfig.get().get(path);
+            return CustomConfig.get().get(path);
+        }
+        public static void set(String name, String path, Object value){
+            CustomConfig.get().set(path, value);
+        }
         public static boolean Add(Player p, String name, double amount){
             if(p != null){
                 if (CustomConfig.get().contains(name)){
