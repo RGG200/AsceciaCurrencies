@@ -9,3 +9,4 @@ commands:
   currencies:
     description: The core command
     usage: /<command> <subcommand>
+    aliases: [c]

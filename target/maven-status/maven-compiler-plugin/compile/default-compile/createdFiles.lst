@@ -1,8 +1,10 @@
 me\rgn\asceciacurrencies\AsceciaCurrencies.class
 me\rgn\asceciacurrencies\commands\Currencies.class
+me\rgn\asceciacurrencies\files\LanguageConfig.class
 me\rgn\asceciacurrencies\AsceciaCurrencies$1.class
 me\rgn\asceciacurrencies\files\CustomConfig.class
 me\rgn\asceciacurrencies\Currency.class
 me\rgn\asceciacurrencies\files\PlayersConfig.class
+me\rgn\asceciacurrencies\messages\Messages.class
 me\rgn\asceciacurrencies\api\CurrenciesAPI$Currencies.class
 me\rgn\asceciacurrencies\api\CurrenciesAPI.class

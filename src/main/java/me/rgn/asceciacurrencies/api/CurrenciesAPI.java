@@ -1,6 +1,7 @@
 package me.rgn.asceciacurrencies.api;
 
 import jdk.tools.jlink.plugin.Plugin;
+import me.rgn.asceciacurrencies.AsceciaCurrencies;
 import me.rgn.asceciacurrencies.Currency;
 import me.rgn.asceciacurrencies.files.CustomConfig;
 import me.rgn.asceciacurrencies.files.PlayersConfig;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.UUID;
 
 public class CurrenciesAPI{
+    public String[] messages = AsceciaCurrencies.messages;
     public static class Currencies{
         public static Object get(String name, String path){
             return CustomConfig.get().get(name + "." + path);
@@ -19,7 +21,7 @@ public class CurrenciesAPI{
         public static void set(String name, String path, Object value){
             CustomConfig.get().set(name + "." + path, value);
         }
-        public static boolean Add(Player p, String name, double amount){
+        public static boolean add(Player p, String name, double amount){
             if(p != null){
                 if (CustomConfig.get().contains(name)){
                     if (amount > 0) {
@@ -40,7 +42,7 @@ public class CurrenciesAPI{
                         System.out.println("The amount specified is too low !");
                     }
                 }else {
-                    System.out.println("The Currency specified is non-existante !");
+                    System.out.println("The Currency specified is non-existant !");
                 }
             }else{
                 System.out.println("The player doesn't exist");
@@ -49,7 +51,7 @@ public class CurrenciesAPI{
         }
 
 
-        public static boolean Create(Player p, String name){
+        public static boolean create(Player p, String name){
             //getting player id
             int count = 0;
             boolean isNameValid = false;
@@ -106,7 +108,7 @@ public class CurrenciesAPI{
             return true;
         }
 
-        public static boolean Delete(Player p, String name){
+        public static boolean delete(Player p, String name){
             //gets the sender and the author of the currency
             String id = p.getName();
             String author = CustomConfig.get().getString(name + ".author");
@@ -143,13 +145,20 @@ public class CurrenciesAPI{
             return true;
         }
 
-        public static boolean Description(Player p, String name{
-            //later
+        public static boolean description(Player p, String description){
+            String id = p.getName();
+            for (String currencies : CustomConfig.get().getKeys(false)){
+                String author = CustomConfig.get().getString(currencies + ".author");
+                if (author.equals(id)){
+                    CustomConfig.get().set(currencies + ".description", description);
+                }
+            }
             return true;
         }
 
-        public static boolean ForceDelete(String name){
+        public static boolean forceDelete(String name){
             String cname = name;
+            String id = CustomConfig.get().getString(name + ".author");
             ItemStack nuggets = new ItemStack(Material.IRON_NUGGET, 1);
             for (String key : PlayersConfig.get().getKeys(false)) {
                 PlayersConfig.get().set(key + "." + cname + ".", null);
@@ -166,10 +175,10 @@ public class CurrenciesAPI{
         }
 
 
-        public static boolean Info(Player p, String name){
+        public static boolean info(Player p, String name){
             if (!name.equals(null)) {
                 if (CustomConfig.get().contains(name)) {
-                    p.sendMessage(ChatColor.GREEN + "| Currency Info -> " + name + " | " + "\n \n" + ChatColor.GOLD + "Amount of Currency available on the market: " + CustomConfig.get().getDouble(name + ".amount") + "\n \n Power of the Currency: " + CustomConfig.get().getDouble(name + ".power") + "\n \n Total Value of the Currency: " + CustomConfig.get().getDouble(name + ".totalvalue") + " iron \n \n " + "author: " + CustomConfig.get().getString(name + ".author") + "\n \n Economic-Activity: " + CustomConfig.get().getDouble(name + ".economic-activity") + "\n \n Number of users: " + CustomConfig.get().getDouble(name + ".peers") + "\n");
+                    p.sendMessage(ChatColor.GREEN + "| Currency Info -> " + name + " | " + "\n \n" + ChatColor.GOLD + "Amount of Currency available on the market: " + CustomConfig.get().getDouble(name + ".amount") + "\n \n Description: " + CustomConfig.get().getString(name + ".description") + "\n \n Power of the Currency: " + CustomConfig.get().getDouble(name + ".power") + "\n \n Total Value of the Currency: " + CustomConfig.get().getDouble(name + ".totalvalue") + " iron \n \n " + "author: " + CustomConfig.get().getString(name + ".author") + "\n \n Economic-Activity: " + CustomConfig.get().getDouble(name + ".economic-activity") + "\n \n Number of users: " + CustomConfig.get().getDouble(name + ".peers") + "\n");
                 } else {
                     p.sendMessage(ChatColor.DARK_RED + "[Currencies]: This Currency Doesn't exist");
                 }
@@ -178,7 +187,7 @@ public class CurrenciesAPI{
             }
             return true;
         }
-        public static boolean List(Player p){
+        public static boolean list(Player p){
             //displays currencies
             if(CustomConfig.get().getKeys(false).size() > 0){
                 p.sendMessage(ChatColor.GREEN + "\n | Ascecia-Currencies | Currency-List | \n \n");
@@ -192,7 +201,7 @@ public class CurrenciesAPI{
         }
 
 
-        public static boolean Mint(Player p, String stramount){
+        public static boolean mint(Player p, String stramount){
             //check until the currency of the player is found
             String id = p.getName();
             Boolean hasCreated = PlayersConfig.get().getBoolean(id + ".hascreated");
@@ -248,7 +257,7 @@ public class CurrenciesAPI{
         }
 
 
-        public static boolean Deposit(Player p, double itemamount){
+        public static boolean deposit(Player p, double itemamount){
             //init root variable
             String id = p.getName();
             Boolean hasCreated = PlayersConfig.get().getBoolean(id + ".hascreated");
@@ -348,7 +357,7 @@ public class CurrenciesAPI{
         }
 
 
-        public static boolean Pay(Player p,Player target, String name, String stramount){
+        public static boolean pay(Player p,Player target, String name, String stramount){
             //init variables for some reason
             UUID targetid = target.getUniqueId();
             String targetidd = targetid.toString();
@@ -418,7 +427,7 @@ public class CurrenciesAPI{
             return true;
         }
 
-        public static boolean Remove(Player p, String name, double amount){
+        public static boolean remove(Player p, String name, double amount){
             if(p != null){
                 if (CustomConfig.get().contains(name)) {
                     if (amount > 0) {
@@ -447,7 +456,7 @@ public class CurrenciesAPI{
             return true;
         }
 
-        public static boolean Withdraw(Player p, String name, String stramount){
+        public static boolean withdraw(Player p, String name, String stramount){
             //init vars and config keys
             double cPower = CustomConfig.get().getDouble(name + ".power");
             double cValue = CustomConfig.get().getDouble(name + ".totalvalue");
@@ -496,7 +505,7 @@ public class CurrenciesAPI{
         }
 
 
-        public static boolean Wallet(Player p){
+        public static boolean wallet(Player p){
             //display currencies in your wallet
             String user = p.getUniqueId().toString();
             if(CustomConfig.get().getKeys(false).size() > 0) {
