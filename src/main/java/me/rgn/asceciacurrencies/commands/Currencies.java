@@ -37,7 +37,7 @@ public class Currencies implements CommandExecutor {
             if (p.hasPermission("asceciacurrencies.players")) {
                 UUID uuid = p.getUniqueId();
                 String id = uuid.toString();
-                 if (args[0].equals("help") || args.length == 0) {
+                 if (args[0].equals("help")) {
                     p.sendMessage(ChatColor.GOLD + "| Ascecia Currencies | Help | \n \n /currencies create (name) - creates a currency  \n \n /currencies delete/del (name) - deletes your currency \n \n /currencies description/desc (description) - sets the description of your currency your currency \n \n /currencies withdraw/wd (name) (amount) - turn back an amount of your currency into iron \n \n /currencies info (name) - gives you info about a currency \n \n /currencies list - gives you a list of all currencies available \n \n /currencies mint (amount) - makes an amount of currency \n \n /currencies deposit/depo - deposits the amount of ores you're holding in your hand into your currency to increase its power \n \n /currencies pay (playername) (name) (amount) - pays the target with an amount of currency \n \n /currencies wallet/wal - give you details about your wallet");
                 }
                 //Create
@@ -109,6 +109,9 @@ public class Currencies implements CommandExecutor {
                     CurrenciesAPI.CurrenciesMethods.wallet(p);
                 } else {
                     p.sendMessage(ChatColor.GOLD + "| Ascecia Currencies | Help | \n \n /currencies create (name) - creates a currency  \n \n /currencies delete (name) - deletes your currency \n \n /currencies withdraw (name) (amount) - turn back an amount of your currency into iron \n \n /currencies info (name) - gives you info about a currency \n \n /currencies list - gives you a list of all currencies available \n \n /currencies mint (amount) - makes an amount of currency \n \n /currencies deposit - deposit the amount of ores you're holding in your hand into your currency to increase its power \n \n /currencies pay (playername) (name) (amount) - pays the target with an amount of currency \n \n /currencies wallet - give you details about your wallet");
+                }
+                if (args[0] == null){
+                    p.sendMessage(ChatColor.GOLD + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-7"));
                 }
 
             }

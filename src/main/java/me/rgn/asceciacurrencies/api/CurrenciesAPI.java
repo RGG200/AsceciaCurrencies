@@ -58,8 +58,6 @@ public class CurrenciesAPI{
             String id = p.getName();
             //check if player created a currency
             if (!PlayersConfig.get().contains(id + ".hascreated")) {
-                //I don't know what this does
-                if (name != null) {
                     //check if currency has the same name
                     if (!CustomConfig.get().contains(name)) {
                         //creates the config keys
@@ -72,7 +70,6 @@ public class CurrenciesAPI{
                             if (name.length() == count) {
                                 isNameValid = true;
                             }
-
                             if (isNameValid == true) {
                                 PlayersConfig.get().set(id + "." + name + "balance", 1.0);
                                 PlayersConfig.get().set(id + ".hascreated", true);
@@ -86,19 +83,16 @@ public class CurrenciesAPI{
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0") + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0_1"));
                                 Currency.isCurrencyCreated = true;
                             } else {
-                                p.sendMessage(ChatColor.DARK_RED + "[Currencies]: your currency need to be 3 caracthers long minimum and 9 max and not use any special characters or numbers or spaces");
+                                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0_1"));
                             }
                         } else {
-                            p.sendMessage(ChatColor.DARK_RED + "[Currencies]: your currency need to be 3 caracthers long minimum and 9 max and not use any special characters or numbers or spaces");
+                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0_1"));
                         }
                     } else {
-                        p.sendMessage(ChatColor.DARK_RED + "[Currencies]: The Currency Already Exists");
+                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0_2"));
                     }
-                } else {
-                    p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies create (currencyname)");
-                }
             }else {
-                p.sendMessage(ChatColor.RED + "[Currencies]: You Have Already Created a currency");
+                p.sendMessage(ChatColor.RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0_3"));
             }
             PlayersConfig.save();
             PlayersConfig.reload();
@@ -111,35 +105,30 @@ public class CurrenciesAPI{
             //gets the sender and the author of the currency
             String id = p.getName();
             String author = CustomConfig.get().getString(name + ".author");
-            //check if the currency name has been entered
-            if (name == null) {
-                p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies delete (currencyname)");
-            } else {
-                //check if sender is the author
-                if (id.equals(author)) {
-                    //gives the money contained in the currency and deletes the config keys
-                    String cname = name;
-                    ItemStack nuggets = new ItemStack(Material.IRON_NUGGET, 1);
-                    for (String key : PlayersConfig.get().getKeys(false)) {
-                        double cMarketValue = CustomConfig.get().getDouble(name + ".totalvalue");
-                        for (int i = 0; i < cMarketValue; i++) {
-                            p.getInventory().addItem(nuggets);
-                        }
-                        PlayersConfig.get().set(key + "." + cname + "balance", null);
-                        PlayersConfig.save();
+            //check if sender is the author
+            if (id.equals(author)) {
+                //gives the money contained in the currency and deletes the config keys
+                String cname = name;
+                ItemStack nuggets = new ItemStack(Material.IRON_NUGGET, 1);
+                for (String key : PlayersConfig.get().getKeys(false)) {
+                    double cMarketValue = CustomConfig.get().getDouble(name + ".totalvalue");
+                    for (int i = 0; i < cMarketValue; i++) {
+                        p.getInventory().addItem(nuggets);
                     }
-                    PlayersConfig.get().set(id + ".hascreated", null);
-                    Currency.isCurrencyCreated = false;
-                    CustomConfig.get().set(cname, null);
-                    CustomConfig.save();
+                    PlayersConfig.get().set(key + "." + cname + "balance", null);
                     PlayersConfig.save();
-                    PlayersConfig.reload();
-                    CustomConfig.reload();
-                    p.sendMessage(ChatColor.GREEN + "[Currencies]: Your Currency Has been deleted");
-
-                } else {
-                    p.sendMessage(ChatColor.DARK_RED + "[Currencies]: You are not the owner of this currency !");
                 }
+                PlayersConfig.get().set(id + ".hascreated", null);
+                Currency.isCurrencyCreated = false;
+                CustomConfig.get().set(cname, null);
+                CustomConfig.save();
+                PlayersConfig.save();
+                PlayersConfig.reload();
+                CustomConfig.reload();
+                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-1"));
+
+            } else {
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-1_1"));
             }
             return true;
         }
@@ -150,7 +139,7 @@ public class CurrenciesAPI{
                 String author = CustomConfig.get().getString(currencies + ".author");
                 if (author.equals(id)){
                     CustomConfig.get().set(currencies + ".description", description);
-                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".message-6"));
+                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-6"));
                 }
             }
             return true;
@@ -163,39 +152,39 @@ public class CurrenciesAPI{
             for (String key : PlayersConfig.get().getKeys(false)) {
                 PlayersConfig.get().set(key + "." + cname + ".", null);
             }
-            PlayersConfig.get().set(id + ".hascreated", null);
-            CustomConfig.get().set(cname + "balance", null);
-            Currency.isCurrencyCreated = false;
-            PlayersConfig.save();
-            PlayersConfig.reload();
-            CustomConfig.save();
-            CustomConfig.reload();
-            Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "[Currencies]: You deleted a Currency and no ores will be given.");
+            if (CustomConfig.get().contains(name)){
+                PlayersConfig.get().set(id + ".hascreated", null);
+                CustomConfig.get().set(cname + "balance", null);
+                Currency.isCurrencyCreated = false;
+                PlayersConfig.save();
+                PlayersConfig.reload();
+                CustomConfig.save();
+                CustomConfig.reload();
+                Bukkit.getServer().broadcastMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-1_1"));
+            }else{
+                Bukkit.getServer().broadcastMessage(ChatColor.RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_2"));
+            }
             return true;
         }
 
 
         public static boolean info(Player p, String name){
-            if (!name.equals(null)) {
-                if (CustomConfig.get().contains(name)) {
-                    p.sendMessage(ChatColor.GREEN + "| Currency Info -> " + name + " | " + "\n \n" + ChatColor.GOLD + "Amount of Currency available on the market: " + CustomConfig.get().getDouble(name + ".amount") + "\n \n Description: " + CustomConfig.get().getString(name + ".description") + "\n \n Power of the Currency: " + CustomConfig.get().getDouble(name + ".power") + "\n \n Total Value of the Currency: " + CustomConfig.get().getDouble(name + ".totalvalue") + " iron \n \n " + "author: " + CustomConfig.get().getString(name + ".author") + "\n \n Economic-Activity: " + CustomConfig.get().getDouble(name + ".economic-activity") + "\n \n Number of users: " + CustomConfig.get().getInt(name + ".peers") + "\n");
-                } else {
-                    p.sendMessage(ChatColor.DARK_RED + "[Currencies]: This Currency Doesn't exist");
-                }
-            }else {
-                p.sendMessage(ChatColor.DARK_RED + "[Currencies]: No currency specified");
+            if (CustomConfig.get().contains(name)) {
+                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-8") + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-8_1") + CustomConfig.get().getDouble(name + ".amount") + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-8_7") + CustomConfig.get().getString(name + ".description") + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-8_2") + CustomConfig.get().getDouble(name + ".power") + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-8_5") + CustomConfig.get().getDouble(name + ".totalvalue") + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-8_6") + CustomConfig.get().getString(name + ".author") + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-8_4") + CustomConfig.get().getDouble(name + ".economic-activity") + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-8_3") + CustomConfig.get().getInt(name + ".peers") + "\n");
+            } else {
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-4_1"));
             }
             return true;
         }
         public static boolean list(Player p){
             //displays currencies
             if(CustomConfig.get().getKeys(false).size() > 0){
-                p.sendMessage(ChatColor.GREEN + "\n | Ascecia-Currencies | Currency-List | \n \n");
+                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-9"));
                 for (String currencies : CustomConfig.get().getKeys(false)) {
-                    p.sendMessage(ChatColor.GOLD + "    " + currencies + ":  \n     Power: " + CustomConfig.get().getDouble(currencies + ".power") + "\n      Economic-Activity: " + CustomConfig.get().getDouble(currencies + ".economic-activity") + "\n");
+                    p.sendMessage(ChatColor.GOLD + "    " + currencies + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-9_1") + CustomConfig.get().getDouble(currencies + ".power") + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-9_2") + CustomConfig.get().getDouble(currencies + ".economic-activity") + "\n");
                 }
             }else {
-                p.sendMessage(ChatColor.DARK_RED + "[Currencies]: No currencies available. create one with /currencies create");
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-5"));
             }
             return true;
         }
@@ -216,11 +205,6 @@ public class CurrenciesAPI{
                         double cPower = CustomConfig.get().getDouble(currencies + ".power");
                         double amount = 0;
                         String author = CustomConfig.get().getString(currencies + ".author");
-                        //check if no amount is entered
-                        if (stramount.equals(null)) {
-                            p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currency make (amount)");
-                        } else {
-                            if (!stramount.equals(null)) {
                                 amount = Double.valueOf(stramount);
                                 if (amount >= 1) {
                                     if (id.equals(author)) {
@@ -228,7 +212,7 @@ public class CurrenciesAPI{
                                         PlayersConfig.get().set(id + "." + currencies + "balance", pbalance + amount);
                                         globalamount += amount;
                                         CustomConfig.get().set(currencies + ".amount", globalamount);
-                                        p.sendMessage(ChatColor.GREEN + "[Currencies]: You Made " + amount + " " + currencies);
+                                        p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-2") + amount + " " + currencies);
                                         if (cEcoActivity > 0.2) {
                                             CustomConfig.get().set(currencies + ".economic-activity", cEcoActivity - (amount / (amount*10*cPower)));
                                         }
@@ -240,18 +224,14 @@ public class CurrenciesAPI{
                                         PlayersConfig.save();
                                     }
                                 } else {
-                                    p.sendMessage(ChatColor.DARK_RED + "[Currencies]: The amount specified is too low !");
+                                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_1"));
                                 }
-                            } else {
-                                p.sendMessage(ChatColor.DARK_RED + "[Currencies]: No Amount Specified");
-                            }
                         }
-                    }
                 }else {
-                    p.sendMessage(ChatColor.DARK_RED + "[Currencies]: you don't have a currency. create one using /currencies create");
+                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-7"));
                 }
             }else {
-                p.sendMessage(ChatColor.DARK_RED + "[Currencies]: you don't have a currency. create one using /currencies create");
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-7"));
             }
             return true;
         }
@@ -263,95 +243,99 @@ public class CurrenciesAPI{
             Boolean hasCreated = PlayersConfig.get().getBoolean(id + ".hascreated");
             //search for player's currency
             if (!hasCreated.equals(null)){
-                for (String currencies : CustomConfig.get().getKeys(false)) {
-                    //init variables
-                    double cValue = CustomConfig.get().getDouble(currencies + ".totalvalue");
-                    double amount = 0;
-                    double cMarketAmount = CustomConfig.get().getDouble(currencies + ".amount");
-                    double cEcoActivity = CustomConfig.get().getDouble(currencies + ".economic-activity");
-                    String author = CustomConfig.get().getString(currencies + ".author");
-                    //check if player has a currency
-                    //check if he's the author of the currency being checked
-                    if (author.equals(id)) {
-                        //check useless to see if there's no currency minted
-                        if (cMarketAmount == 0) {
-                            p.sendMessage(ChatColor.DARK_RED + "\n you need to make at least one of your currency do /currencies make (name) (amount) !");
-                        }/* Deposit the ores */ else {
-                            if (p.getInventory().getItemInMainHand().getType().equals(Material.COAL)) {
-                                amount = 5 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_INGOT)) {
-                                amount = 9 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_NUGGET)) {
-                                amount = 1 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_INGOT)) {
-                                amount = 45 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_NUGGET)) {
-                                amount = 5 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND)) {
-                                amount = 180 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_INGOT)) {
-                                amount = 360 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_SCRAP)) {
-                                amount = 90 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.REDSTONE)) {
-                                amount = 9 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.COPPER_BLOCK)) {
-                                amount = 9 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.EMERALD)) {
-                                amount = 90 * itemamount;
-                                CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
-                                p.getInventory().setItemInMainHand(null);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: " + amount + " iron Worth of ores to your currency");
-                            } else {
-                                p.sendMessage(ChatColor.DARK_RED + "Material not supported");
+                if(CustomConfig.get().getKeys(false).size() > 0) {
+                    for (String currencies : CustomConfig.get().getKeys(false)) {
+                        //init variables
+                        double cValue = CustomConfig.get().getDouble(currencies + ".totalvalue");
+                        double amount = 0;
+                        double cMarketAmount = CustomConfig.get().getDouble(currencies + ".amount");
+                        double cEcoActivity = CustomConfig.get().getDouble(currencies + ".economic-activity");
+                        String author = CustomConfig.get().getString(currencies + ".author");
+                        //check if player has a currency
+                        //check if he's the author of the currency being checked
+                        if (author.equals(id)) {
+                            //check useless to see if there's no currency minted
+                            if (cMarketAmount == 0) {
+                                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-8"));
+                            }/* Deposit the ores */ else {
+                                if (p.getInventory().getItemInMainHand().getType().equals(Material.COAL)) {
+                                    amount = 5 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_INGOT)) {
+                                    amount = 9 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_NUGGET)) {
+                                    amount = 1 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_INGOT)) {
+                                    amount = 45 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_NUGGET)) {
+                                    amount = 5 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else if (p.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND)) {
+                                    amount = 180 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_INGOT)) {
+                                    amount = 360 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_SCRAP)) {
+                                    amount = 90 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else if (p.getInventory().getItemInMainHand().getType().equals(Material.REDSTONE)) {
+                                    amount = 9 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else if (p.getInventory().getItemInMainHand().getType().equals(Material.COPPER_BLOCK)) {
+                                    amount = 9 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else if (p.getInventory().getItemInMainHand().getType().equals(Material.EMERALD)) {
+                                    amount = 90 * itemamount;
+                                    CustomConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                    CustomConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                    p.getInventory().setItemInMainHand(null);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                                } else {
+                                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-8_1"));
+                                }
                             }
                         }
                     }
+                    CustomConfig.save();
+                }else {
+                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-7"));
                 }
-                CustomConfig.save();
             }else {
-                p.sendMessage(ChatColor.DARK_RED + "[Currencies]: You don't have a currency. create one with /currencies create");
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-7"));
             }
             return true;
         }
@@ -368,68 +352,57 @@ public class CurrenciesAPI{
             double cMarketAmount = CustomConfig.get().getDouble(name + ".amount");
             double cEcoActivity = CustomConfig.get().getDouble(name + ".economic-activity");
             int nPeers = CustomConfig.get().getInt(name + ".peers");
-            //if no args
-            if (name == null) {
-                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".error-9"));
-            } else {
-                //if you don't have friends
-                if (target == null) {
-                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".error-9_1"));
-                }
-                //if the currency exists
-                if (!CustomConfig.get().contains(name)) {
-                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".error-9_2"));
-                }
-                //if you're a scammer
-                if (stramount == null) {
-                    p.sendMessage(ChatColor.DARK_RED + "\n No Amount Specified");
-                }
-                if (target != null) {
-                    //if currency exists
-                    if (CustomConfig.get().contains(name)) {
-                        //if you're trying to pay yourself
-                        if (target == p) {
-                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".error-9_4"));
-                        } else {
-                            //if balance key not created
-                            if (!PlayersConfig.get().contains(playeridd + "." + name + "balance")) {
-                                PlayersConfig.get().addDefault(playeridd + "." + name + "balance", 0.0);
-                            }
-                            double pbalance = PlayersConfig.get().getDouble(playeridd + "." + name + "balance");
-                            if (!PlayersConfig.get().contains(targetidd + "." + name + "balance")) {
-                                PlayersConfig.get().addDefault(targetidd + "." + name + "balance", 0.0);
-                                CustomConfig.get().getInt(name + ".peers", nPeers + 1);
-                            }
-                            double tbalance = PlayersConfig.get().getDouble(targetidd + "." + name + "balance");
-                            if (!stramount.equals(null)) {
-                                //if amount not too low
-                                double amount = Double.valueOf(stramount);
-                                if (pbalance >= amount) {
-                                    if (amount >= 0.01) {
-                                        //pay
-                                        nPeers = CustomConfig.get().getInt(name + ".peers");
-                                        PlayersConfig.get().set(targetidd + "." + name + "balance", tbalance + amount);
-                                        PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - amount);
-                                        CustomConfig.get().set(name + ".economic-activity", cEcoActivity + ((0.01) / (amount / nPeers)));
-                                        CustomConfig.get().set(name + ".power", ((cValue - ((cValue / cMarketAmount) * amount)) / (cMarketAmount - amount)) * cEcoActivity);
-                                        p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".message-4") + stramount + " " + name + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".message-4_2") + tName);
-                                        target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".message-4_1")+ stramount + " " + name + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".message-4_3") + pName);
-                                        PlayersConfig.save();
-                                        CustomConfig.save();
-                                    } else {
-                                        p.sendMessage(ChatColor.DARK_RED + "[Currencies]: The amount specified is too low !");
-                                    }
-                                } else {
-                                    p.sendMessage(ChatColor.DARK_RED + "[Currencies]: You do not have enough money");
-                                }
-                            }
+            //if you don't have friends
+            if (target == null) {
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9_1"));
+            }
+            //if the currency exists
+            if (!CustomConfig.get().contains(name)) {
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9_2"));
+            }
+            if (target != null) {
+                //if currency exists
+                if (CustomConfig.get().contains(name)) {
+                    //if you're trying to pay yourself
+                    if (target == p) {
+                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9_4"));
+                    } else {
+                        //if balance key not created
+                        if (!PlayersConfig.get().contains(playeridd + "." + name + "balance")) {
+                            PlayersConfig.get().addDefault(playeridd + "." + name + "balance", 0.0);
                         }
+                        double pbalance = PlayersConfig.get().getDouble(playeridd + "." + name + "balance");
+                        if (!PlayersConfig.get().contains(targetidd + "." + name + "balance")) {
+                            PlayersConfig.get().addDefault(targetidd + "." + name + "balance", 0.0);
+                            CustomConfig.get().getInt(name + ".peers", nPeers + 1);
+                        }
+                        double tbalance = PlayersConfig.get().getDouble(targetidd + "." + name + "balance");
+                            //if amount not too low
+                            double amount = Double.valueOf(stramount);
+                            if (pbalance >= amount) {
+                                if (amount >= 0.01) {
+                                    //pay
+                                    nPeers = CustomConfig.get().getInt(name + ".peers");
+                                    PlayersConfig.get().set(targetidd + "." + name + "balance", tbalance + amount);
+                                    PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - amount);
+                                    CustomConfig.get().set(name + ".economic-activity", cEcoActivity + ((0.01) / (amount / nPeers)));
+                                    CustomConfig.get().set(name + ".power", ((cValue - ((cValue / cMarketAmount) * amount)) / (cMarketAmount - amount)) * cEcoActivity);
+                                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + stramount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + tName);
+                                    target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_1")+ stramount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_3") + pName);
+                                    PlayersConfig.save();
+                                    CustomConfig.save();
+                                } else {
+                                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_1"));
+                                }
+                            } else {
+                                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9_3"));
+                            }
                     }
                 }
             }
             return true;
         }
-
+        // remove ( for developpers to use)
         public static boolean remove(Player p, String name, double amount){
             if(p != null){
                 if (CustomConfig.get().contains(name)) {
@@ -468,41 +441,31 @@ public class CurrenciesAPI{
             double amount = 0;
             String id = p.getName();
             String pname = p.getName().toString();
-            //if currency not specified
-            if (name == null) {
-                p.sendMessage(ChatColor.DARK_RED + "[Currencies]: /currencies withdraw (currencyname) (amount)");
-            } else {
-                //if currency exists
-                if (CustomConfig.get().contains(name)) {
-                    //if no amount specified
-                    if (stramount == null) {
-                        p.sendMessage(ChatColor.DARK_RED + "[Currencies]: No amount specified");
-                    } else {
-                        amount = Double.valueOf(stramount);
-                        double pBalance = PlayersConfig.get().getDouble(id + "." + name + ".balance");
-                        //if you're not a rat
-                        if (pBalance >= amount && amount >= 0.01) {
-                            for (int i = 0; i < cPower * amount; i++) {
-                                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "give " + pname + " iron_nugget 1");
-                            }
-                            CustomConfig.get().set(name + ".amount", cMarketAmount - amount);
-                            CustomConfig.get().set(name + ".totalvalue", cValue - cPower * amount);
-                            //if the eco activity is superior to 0.5
-                            if(cEcoActivity > 0.2) {
-                                CustomConfig.get().set(name + ".economic-activity", cEcoActivity - (amount / (amount*10*cPower)));
-                            }
-                            CustomConfig.get().set(name + ".power", ((cValue - (cPower*amount)) / (cMarketAmount - amount))*cEcoActivity);
-                            PlayersConfig.get().set(id + "." + name + "balance", pBalance - amount);
-                            p.sendMessage(ChatColor.GREEN + "[Currencies]: You Withdrew " + amount + " " + name);
-                        }else{
-                            p.sendMessage(ChatColor.DARK_RED + "[Currencies]: The amount entered is too low !");
-                        }
-                        CustomConfig.save();
-                        PlayersConfig.save();
+            //if currency exists
+            if (CustomConfig.get().contains(name)) {
+                amount = Double.valueOf(stramount);
+                double pBalance = PlayersConfig.get().getDouble(id + "." + name + ".balance");
+                //if you're not a rat
+                if (pBalance >= amount && amount >= 0.01) {
+                    for (int i = 0; i < cPower * amount; i++) {
+                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "give " + pname + " iron_nugget 1");
                     }
-                } else {
-                    p.sendMessage(ChatColor.DARK_RED + "[Currencies]: The Currency doesn't exist");
+                    CustomConfig.get().set(name + ".amount", cMarketAmount - amount);
+                    CustomConfig.get().set(name + ".totalvalue", cValue - cPower * amount);
+                    //if the eco activity is superior to 0.5
+                    if(cEcoActivity > 0.2) {
+                        CustomConfig.get().set(name + ".economic-activity", cEcoActivity - (amount / (amount*10*cPower)));
+                    }
+                    CustomConfig.get().set(name + ".power", ((cValue - (cPower*amount)) / (cMarketAmount - amount))*cEcoActivity);
+                    PlayersConfig.get().set(id + "." + name + "balance", pBalance - amount);
+                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-5") + amount + " " + name);
+                }else{
+                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_1"));
                 }
+                CustomConfig.save();
+                PlayersConfig.save();
+            } else {
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_2"));
             }
             return true;
         }
@@ -517,7 +480,7 @@ public class CurrenciesAPI{
                     p.sendMessage(ChatColor.GOLD + "" + currencies + ":" + " \n      Balance: " + PlayersConfig.get().getDouble(user + "." + currencies + "balance") + "\n");
                 }
             }else {
-                p.sendMessage(ChatColor.DARK_RED + "[Currencies]: No currencies available. create one with /currencies create ");
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-5"));
             }
             return true;
         }
