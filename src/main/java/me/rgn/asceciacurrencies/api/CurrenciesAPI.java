@@ -4,6 +4,7 @@ import jdk.tools.jlink.plugin.Plugin;
 import me.rgn.asceciacurrencies.AsceciaCurrencies;
 import me.rgn.asceciacurrencies.Currency;
 import me.rgn.asceciacurrencies.files.CustomConfig;
+import me.rgn.asceciacurrencies.files.LanguageConfig;
 import me.rgn.asceciacurrencies.files.PlayersConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,8 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.UUID;
 
 public class CurrenciesAPI{
-    public String[] messages = AsceciaCurrencies.messages;
-    public static class Currencies{
+    public static class CurrenciesMethods{
         public static Object get(String name, String path){
             return CustomConfig.get().get(name + "." + path);
         }
@@ -80,11 +80,10 @@ public class CurrenciesAPI{
                                 CustomConfig.get().set(name + ".amount", 1.0);
                                 CustomConfig.get().set(name + ".totalvalue", 0.0);
                                 CustomConfig.get().set(name + ".economic-activity", 1.0);
-                                CustomConfig.get().set(name + ".economic-development", 1.0);
                                 CustomConfig.get().set(name + ".description", "");
                                 CustomConfig.get().set(name + ".peers", 1);
                                 CustomConfig.get().set(name + ".author", id);
-                                p.sendMessage(ChatColor.GREEN + "[Currencies]: The Currency " + name + " Has been Created");
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0") + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0_1"));
                                 Currency.isCurrencyCreated = true;
                             } else {
                                 p.sendMessage(ChatColor.DARK_RED + "[Currencies]: your currency need to be 3 caracthers long minimum and 9 max and not use any special characters or numbers or spaces");
@@ -178,7 +177,7 @@ public class CurrenciesAPI{
         public static boolean info(Player p, String name){
             if (!name.equals(null)) {
                 if (CustomConfig.get().contains(name)) {
-                    p.sendMessage(ChatColor.GREEN + "| Currency Info -> " + name + " | " + "\n \n" + ChatColor.GOLD + "Amount of Currency available on the market: " + CustomConfig.get().getDouble(name + ".amount") + "\n \n Description: " + CustomConfig.get().getString(name + ".description") + "\n \n Power of the Currency: " + CustomConfig.get().getDouble(name + ".power") + "\n \n Total Value of the Currency: " + CustomConfig.get().getDouble(name + ".totalvalue") + " iron \n \n " + "author: " + CustomConfig.get().getString(name + ".author") + "\n \n Economic-Activity: " + CustomConfig.get().getDouble(name + ".economic-activity") + "\n \n Number of users: " + CustomConfig.get().getDouble(name + ".peers") + "\n");
+                    p.sendMessage(ChatColor.GREEN + "| Currency Info -> " + name + " | " + "\n \n" + ChatColor.GOLD + "Amount of Currency available on the market: " + CustomConfig.get().getDouble(name + ".amount") + "\n \n Description: " + CustomConfig.get().getString(name + ".description") + "\n \n Power of the Currency: " + CustomConfig.get().getDouble(name + ".power") + "\n \n Total Value of the Currency: " + CustomConfig.get().getDouble(name + ".totalvalue") + " iron \n \n " + "author: " + CustomConfig.get().getString(name + ".author") + "\n \n Economic-Activity: " + CustomConfig.get().getDouble(name + ".economic-activity") + "\n \n Number of users: " + CustomConfig.get().getInt(name + ".peers") + "\n");
                 } else {
                     p.sendMessage(ChatColor.DARK_RED + "[Currencies]: This Currency Doesn't exist");
                 }
@@ -359,10 +358,8 @@ public class CurrenciesAPI{
 
         public static boolean pay(Player p,Player target, String name, String stramount){
             //init variables for some reason
-            UUID targetid = target.getUniqueId();
-            String targetidd = targetid.toString();
-            UUID playerid = p.getUniqueId();
-            String playeridd = playerid.toString();
+            String targetidd = target.getName();
+            String playeridd = p.getName();
             String pName = p.getName();
             String tName = target.getName();
             double cPower = CustomConfig.get().getDouble(name + ".power");
@@ -389,36 +386,41 @@ public class CurrenciesAPI{
                 if (target != null) {
                     //if currency exists
                     if (CustomConfig.get().contains(name)) {
-                        //if balance key not created
-                        if (!PlayersConfig.get().contains(playeridd + "." + name + "balance")) {
-                            PlayersConfig.get().addDefault(playeridd + "." + name + "balance", 0.0);
-                        }
-                        double pbalance = PlayersConfig.get().getDouble(playeridd + "." + name + "balance");
-                        if (!PlayersConfig.get().contains(targetidd + "." + name + "balance")) {
-                            PlayersConfig.get().addDefault(targetidd + "." + name + "balance", 0.0);
-                            CustomConfig.get().getInt(name + ".peers", nPeers + 1);
-                        }
-                        double tbalance = PlayersConfig.get().getDouble(targetidd + "." + name + "balance");
-                        if (!stramount.equals(null)) {
-                            //if amount not too low
-                            double amount = Double.valueOf(stramount);
-                            if (pbalance >= amount) {
-                                if (amount >= 0.01) {
-                                    //pay
-                                    nPeers = CustomConfig.get().getInt(name + ".peers");
-                                    PlayersConfig.get().set(targetidd + "." + name + "balance", tbalance + amount);
-                                    PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - amount);
-                                    CustomConfig.get().set(name + ".economic-activity", cEcoActivity + ((0.01)/(amount/nPeers)));
-                                    CustomConfig.get().set(name + ".power", ((cValue - ((cValue/cMarketAmount)*amount)) / (cMarketAmount - amount))*cEcoActivity);
-                                    p.sendMessage(ChatColor.GREEN + "[Currencies]: You succesfully payed " + stramount + " " + name + " to " + tName);
-                                    p.sendMessage(ChatColor.GREEN + "[Currencies]: You succesfully received " + stramount + " " + name + " from " + pName);
-                                    PlayersConfig.save();
-                                    CustomConfig.save();
-                                }else{
-                                    p.sendMessage(ChatColor.DARK_RED + "[Currencies]: The amount specified is too low !");
+                        //if you're trying to pay yourself
+                        if (target == p) {
+                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".error-9_4"));
+                        } else {
+                            //if balance key not created
+                            if (!PlayersConfig.get().contains(playeridd + "." + name + "balance")) {
+                                PlayersConfig.get().addDefault(playeridd + "." + name + "balance", 0.0);
+                            }
+                            double pbalance = PlayersConfig.get().getDouble(playeridd + "." + name + "balance");
+                            if (!PlayersConfig.get().contains(targetidd + "." + name + "balance")) {
+                                PlayersConfig.get().addDefault(targetidd + "." + name + "balance", 0.0);
+                                CustomConfig.get().getInt(name + ".peers", nPeers + 1);
+                            }
+                            double tbalance = PlayersConfig.get().getDouble(targetidd + "." + name + "balance");
+                            if (!stramount.equals(null)) {
+                                //if amount not too low
+                                double amount = Double.valueOf(stramount);
+                                if (pbalance >= amount) {
+                                    if (amount >= 0.01) {
+                                        //pay
+                                        nPeers = CustomConfig.get().getInt(name + ".peers");
+                                        PlayersConfig.get().set(targetidd + "." + name + "balance", tbalance + amount);
+                                        PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - amount);
+                                        CustomConfig.get().set(name + ".economic-activity", cEcoActivity + ((0.01) / (amount / nPeers)));
+                                        CustomConfig.get().set(name + ".power", ((cValue - ((cValue / cMarketAmount) * amount)) / (cMarketAmount - amount)) * cEcoActivity);
+                                        p.sendMessage(ChatColor.GREEN + "[Currencies]: You succesfully payed " + stramount + " " + name + " to " + tName);
+                                        p.sendMessage(ChatColor.GREEN + "[Currencies]: You succesfully received " + stramount + " " + name + " from " + pName);
+                                        PlayersConfig.save();
+                                        CustomConfig.save();
+                                    } else {
+                                        p.sendMessage(ChatColor.DARK_RED + "[Currencies]: The amount specified is too low !");
+                                    }
+                                } else {
+                                    p.sendMessage(ChatColor.DARK_RED + "[Currencies]: You do not have enough money");
                                 }
-                            } else {
-                                p.sendMessage(ChatColor.DARK_RED + "[Currencies]: You do not have enough money");
                             }
                         }
                     }
@@ -507,7 +509,7 @@ public class CurrenciesAPI{
 
         public static boolean wallet(Player p){
             //display currencies in your wallet
-            String user = p.getUniqueId().toString();
+            String user = p.getName();
             if(CustomConfig.get().getKeys(false).size() > 0) {
                 p.sendMessage(ChatColor.GREEN + " | Ascecia Curencies | Your Wallet | \n\n ");
                 for (String currencies : CustomConfig.get().getKeys(false)) {
