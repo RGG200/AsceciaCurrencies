@@ -150,6 +150,7 @@ public class CurrenciesAPI{
                 String author = CustomConfig.get().getString(currencies + ".author");
                 if (author.equals(id)){
                     CustomConfig.get().set(currencies + ".description", description);
+                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".message-6"));
                 }
             }
             return true;
@@ -369,15 +370,15 @@ public class CurrenciesAPI{
             int nPeers = CustomConfig.get().getInt(name + ".peers");
             //if no args
             if (name == null) {
-                p.sendMessage(ChatColor.DARK_RED + "\n /currencypay (playername) (currencyname) (amount)");
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".error-9"));
             } else {
                 //if you don't have friends
                 if (target == null) {
-                    p.sendMessage(ChatColor.DARK_RED + "\n The Player Specified isn't Online");
+                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".error-9_1"));
                 }
                 //if the currency exists
                 if (!CustomConfig.get().contains(name)) {
-                    p.sendMessage(ChatColor.DARK_RED + "\n The Currency Specified doesn't exist");
+                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".error-9_2"));
                 }
                 //if you're a scammer
                 if (stramount == null) {
@@ -411,8 +412,8 @@ public class CurrenciesAPI{
                                         PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - amount);
                                         CustomConfig.get().set(name + ".economic-activity", cEcoActivity + ((0.01) / (amount / nPeers)));
                                         CustomConfig.get().set(name + ".power", ((cValue - ((cValue / cMarketAmount) * amount)) / (cMarketAmount - amount)) * cEcoActivity);
-                                        p.sendMessage(ChatColor.GREEN + "[Currencies]: You succesfully payed " + stramount + " " + name + " to " + tName);
-                                        p.sendMessage(ChatColor.GREEN + "[Currencies]: You succesfully received " + stramount + " " + name + " from " + pName);
+                                        p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".message-4") + stramount + " " + name + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".message-4_2") + tName);
+                                        target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".message-4_1")+ stramount + " " + name + LanguageConfig.get().getString(CustomConfig.get().getString("language") + ".message-4_3") + pName);
                                         PlayersConfig.save();
                                         CustomConfig.save();
                                     } else {
