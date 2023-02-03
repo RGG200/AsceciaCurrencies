@@ -42,8 +42,11 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-8_7", "\n Description: ");
 
         LanguageConfig.get().set("en-us.message-9","\n | Ascecia-Currencies | Currency-List | \n \n");
-        LanguageConfig.get().set("en-us.message-9_1",": \n  Power: ");
+        LanguageConfig.get().set("en-us.message-9_1",": \n   Power: ");
         LanguageConfig.get().set("en-us.message-9_2","\n   Economic-Activity: ");
+
+        LanguageConfig.get().set("en-us.message-10","\n | Ascecia-Currencies | Wallet | \n \n");
+        LanguageConfig.get().set("en-us.message-10_1",": \n   Balance: ");
 
         //errors in english
         LanguageConfig.get().set("en-us.error-0", "[Currencies]: /currencies create (currencyname)");
@@ -113,8 +116,11 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-8_7", "\n Description: ");
 
         LanguageConfig.get().set("en-us.message-9","\n | Ascecia-Currencies | Liste des monnaies | \n \n");
-        LanguageConfig.get().set("en-us.message-9_1",": \n  Puissance: ");
-        LanguageConfig.get().set("en-us.message-9_2","\n   Activité Economique: ");
+        LanguageConfig.get().set("en-us.message-9_1",": \n   Puissance: ");
+        LanguageConfig.get().set("en-us.message-9_2","\n    Activité Economique: ");
+
+        LanguageConfig.get().set("en-us.message-10","\n | Ascecia-Currencies | Porte-feuille | \n \n");
+        LanguageConfig.get().set("en-us.message-10_1",": \n   Solde: ");
 
 
         //erreur en français
