@@ -17,7 +17,7 @@ Ascecia Currencies is a minecraft plugin that allows players to create their own
 
 ## Planned extensions
 
-- Ascecia-Subcurrencies : TBA
+- Ascecia-Currencies-SubDivision : TBA
 
 ## Other plugins
 
