@@ -410,7 +410,7 @@ public class Currency {
                     double pbalance = PlayersConfig.get().getDouble(playeridd + "." + name + "balance");
                     if (!PlayersConfig.get().contains(targetidd + "." + name + "balance")) {
                         PlayersConfig.get().addDefault(targetidd + "." + name + "balance", 0.0);
-                        CurrenciesConfig.get().getInt(name + ".peers", nPeers + 1);
+                        CurrenciesConfig.get().set(name + ".peers", nPeers + 1);
                     }
                     double tbalance = PlayersConfig.get().getDouble(targetidd + "." + name + "balance");
                     //if amount not too low
