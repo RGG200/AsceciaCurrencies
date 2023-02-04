@@ -23,8 +23,8 @@ public class Messages {
 
         LanguageConfig.get().set("en-us.message-4", "You succesfully payed ");
         LanguageConfig.get().set("en-us.message-4_1", "You succesfully recieved ");
-        LanguageConfig.get().set("en-us.message-4_2", "to ");
-        LanguageConfig.get().set("en-us.message-4_3", "from ");
+        LanguageConfig.get().set("en-us.message-4_2", " to ");
+        LanguageConfig.get().set("en-us.message-4_3", " from ");
 
         LanguageConfig.get().set("en-us.message-5", "[Currencies]: You Withdrew ");
 
@@ -99,8 +99,8 @@ public class Messages {
 
         LanguageConfig.get().set("fr-FR.message-4", "Vous avez payé(e) ");
         LanguageConfig.get().set("fr-FR.message-4_1", "Vous avez recu(e) ");
-        LanguageConfig.get().set("fr-FR.message-4_2", "à ");
-        LanguageConfig.get().set("fr-FR.message-4_3", "de ");
+        LanguageConfig.get().set("fr-FR.message-4_2", " à ");
+        LanguageConfig.get().set("fr-FR.message-4_3", " de ");
 
         LanguageConfig.get().set("fr-FR.message-5", "[Currencies]: Vous avez repris ");
 

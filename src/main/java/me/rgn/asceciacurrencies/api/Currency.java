@@ -420,7 +420,7 @@ public class Currency {
                             nPeers = CurrenciesConfig.get().getInt(name + ".peers");
                             PlayersConfig.get().set(targetidd + "." + name + "balance", tbalance + amount);
                             PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - amount);
-                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + ((0.01) / (amount / nPeers)));
+                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + ((5e-7) - (amount / nPeers)));
                             CurrenciesConfig.get().set(name + ".power", ((cValue - ((cValue / cMarketAmount) * amount)) / (cMarketAmount - amount)) * cEcoActivity);
                             p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + tName);
                             target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_1")+ amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_3") + pName);
