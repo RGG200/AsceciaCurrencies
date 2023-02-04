@@ -36,7 +36,7 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-8_1", " | \n \n Amount of Currency available on the market: ");
         LanguageConfig.get().set("en-us.message-8_2", "\n Power of the currency: ");
         LanguageConfig.get().set("en-us.message-8_3", "\n Number of users: ");
-        LanguageConfig.get().set("en-us.message-8_4", "\n Economic-activity of the currency: ");
+        LanguageConfig.get().set("en-us.message-8_4", "\n Economic Activity of the currency: ");
         LanguageConfig.get().set("en-us.message-8_5", "\n Total value of the currency: ");
         LanguageConfig.get().set("en-us.message-8_6", "\n Author: ");
         LanguageConfig.get().set("en-us.message-8_7", "\n Description: ");
