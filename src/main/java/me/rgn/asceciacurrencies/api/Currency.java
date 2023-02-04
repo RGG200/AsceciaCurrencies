@@ -11,12 +11,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class Currency {
     public static boolean isCurrencyCreated;
-    public static Object get(String name, String path){
-        return CurrenciesConfig.get().get(name + "." + path);
-    }
-    public static void set(String name, String path, Object value){
-        CurrenciesConfig.get().set(name + "." + path, value);
-    }
     public static boolean add(Player p, String name, double amount){
         if(p != null){
             if (CurrenciesConfig.get().contains(name)){
