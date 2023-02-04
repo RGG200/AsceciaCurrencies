@@ -41,6 +41,9 @@ public final class AsceciaCurrencies extends JavaPlugin {
                     double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
                     double cEcoAct = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
                     CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoAct - 0.00000001);
+                    if (cEcoAct < 0.2){
+                        CurrenciesConfig.get().set(currencies + ".economic-activity", 0.21);
+                    }
                     CurrenciesConfig.get().set(currencies + ".totalvalue", cValue*cEcoAct);
                     CurrenciesConfig.get().set(currencies + ".power", (cValue/cMarketAmount)*cEcoAct);
                     CurrenciesConfig.save();

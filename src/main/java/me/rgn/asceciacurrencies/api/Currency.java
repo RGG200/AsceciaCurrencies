@@ -9,6 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Map;
+
 public class Currency {
     public static boolean isCurrencyCreated;
     public static boolean add(Player p, String name, double amount){
@@ -100,11 +102,14 @@ public class Currency {
         if (id.equals(author)) {
             //gives the money contained in the currency and deletes the config keys
             String cname = name;
-            ItemStack nuggets = new ItemStack(Material.IRON_NUGGET, 1);
+            final ItemStack ingots = new ItemStack(Material.IRON_INGOT, 1);
             for (String key : PlayersConfig.get().getKeys(false)) {
                 double cMarketValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
                 for (int i = 0; i < Math.round(cMarketValue); i++) {
-                    p.getInventory().addItem(nuggets);
+                    final Map<Integer, ItemStack> map = p.getInventory().addItem(ingots);
+                    for (final ItemStack item : map.values()) {
+                        p.getWorld().dropItemNaturally(p.getLocation(), item);
+                    }
                 }
                 PlayersConfig.get().set(key + "." + cname + "balance", null);
                 PlayersConfig.save();
@@ -203,7 +208,7 @@ public class Currency {
                             CurrenciesConfig.get().set(currencies + ".amount", globalamount);
                             p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-2") + amount + " " + currencies);
                             if (cEcoActivity > 0.2) {
-                                CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoActivity - (amount / (amount*10*cPower)));
+                                CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoActivity - (amount / (amount*2592000*cPower)));
                             }
                             if (cEcoActivity <= 0.2){
                                 CurrenciesConfig.get().set(currencies + ".economic-activity", 0.2);
@@ -248,55 +253,91 @@ public class Currency {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-8"));
                         }/* Deposit the ores */ else {
                             if (p.getInventory().getItemInMainHand().getType().equals(Material.COAL)) {
-                                amount = 5 * itemamount;
+                                amount = 0.5 * itemamount;
+                                CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                p.getInventory().setItemInMainHand(null);
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                            }else if (p.getInventory().getItemInMainHand().getType().equals(Material.COAL_BLOCK)) {
+                                amount = 4.5 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_INGOT)) {
+                                amount = itemamount;
+                                CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                p.getInventory().setItemInMainHand(null);
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_BLOCK)) {
                                 amount = 9 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_NUGGET)) {
-                                amount = 1 * itemamount;
+                                amount = 0.11111111111111112 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_INGOT)) {
+                                amount = 5 * itemamount;
+                                CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                p.getInventory().setItemInMainHand(null);
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_BLOCK)) {
                                 amount = 45 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_NUGGET)) {
-                                amount = 5 * itemamount;
+                                amount = 0.55555555555555556 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND)) {
+                                amount = 20 * itemamount;
+                                CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                p.getInventory().setItemInMainHand(null);
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND_BLOCK)) {
                                 amount = 180 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_INGOT)) {
-                                amount = 360 * itemamount;
+                                amount = 40 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_SCRAP)) {
-                                amount = 90 * itemamount;
+                                amount = 10 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.REDSTONE)) {
+                                amount = 1 * itemamount;
+                                CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                p.getInventory().setItemInMainHand(null);
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.REDSTONE_BLOCK)) {
                                 amount = 9 * itemamount;
+                                CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                p.getInventory().setItemInMainHand(null);
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.COPPER_INGOT)) {
+                                amount = 1 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
                                 p.getInventory().setItemInMainHand(null);
@@ -308,12 +349,18 @@ public class Currency {
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.EMERALD)) {
-                                amount = 90 * itemamount;
+                                amount = 9 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
-                            } else {
+                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.EMERALD_BLOCK)) {
+                                amount = 81 * itemamount;
+                                CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                p.getInventory().setItemInMainHand(null);
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                            }else {
                                 p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-8_1"));
                             }
                         }
@@ -434,18 +481,25 @@ public class Currency {
             //if you're not a rat
             if (pBalance >= amount) {
                 if (amount >= 1){
-                    for (int i = 0; i < Math.round(cPower * amount); i++) {
-                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "give " + pname + " iron_nugget 1");
+                    if (amount < cMarketAmount){
+                        final ItemStack ingots = new ItemStack(Material.IRON_INGOT, 1);
+                        for (int i = 0; i < Math.round(cPower * amount); i++) {
+                            final Map<Integer, ItemStack> map = p.getInventory().addItem(ingots);
+                            for (final ItemStack item : map.values()) {
+                                p.getWorld().dropItemNaturally(p.getLocation(), item);
+                            }                        }
+                        CurrenciesConfig.get().set(name + ".amount", cMarketAmount - amount);
+                        CurrenciesConfig.get().set(name + ".totalvalue", cValue - cPower * amount);
+                        //if the eco activity is superior to 0.5
+                        if(cEcoActivity > 0.2) {
+                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity - (amount / (amount*2592000*cPower)));
+                        }
+                        CurrenciesConfig.get().set(name + ".power", ((cValue - (cPower*amount)) / (cMarketAmount - amount))*cEcoActivity);
+                        PlayersConfig.get().set(id + "." + name + "balance", pBalance - amount);
+                        p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-5") + amount + " " + name);
+                    }else{
+                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_4"));
                     }
-                    CurrenciesConfig.get().set(name + ".amount", cMarketAmount - amount);
-                    CurrenciesConfig.get().set(name + ".totalvalue", cValue - cPower * amount);
-                    //if the eco activity is superior to 0.5
-                    if(cEcoActivity > 0.2) {
-                        CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity - (amount / (amount*10*cPower)));
-                    }
-                    CurrenciesConfig.get().set(name + ".power", ((cValue - (cPower*amount)) / (cMarketAmount - amount))*cEcoActivity);
-                    PlayersConfig.get().set(id + "." + name + "balance", pBalance - amount);
-                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-5") + amount + " " + name);
                 }else{
                     p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_1"));
                 }
