@@ -33,7 +33,7 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-7", "| Ascecia Currencies | Help | \n \n /currencies create (name) - creates a currency  \n \n /currencies delete (name) - deletes your currency \n \n /currencies withdraw (name) (amount) - turn back an amount of your currency into iron \n \n /currencies info (name) - gives you info about a currency \n \n /currencies list - gives you a list of all currencies available \n \n /currencies mint (amount) - makes an amount of currency \n \n /currencies deposit - deposit the amount of ores you're holding in your hand into your currency to increase its power \n \n /currencies pay (playername) (name) (amount) - pays the target with an amount of currency \n \n /currencies wallet - give you details about your wallet");
 
         LanguageConfig.get().set("en-us.message-8", "| Currency Info -> | ");
-        LanguageConfig.get().set("en-us.message-8_1", "| \n \n Amount of Currency available on the market: ");
+        LanguageConfig.get().set("en-us.message-8_1", " | \n \n Amount of Currency available on the market: ");
         LanguageConfig.get().set("en-us.message-8_2", "\n Power of the currency: ");
         LanguageConfig.get().set("en-us.message-8_3", "\n Number of users: ");
         LanguageConfig.get().set("en-us.message-8_4", "\n Economic-activity of the currency: ");
@@ -42,11 +42,11 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-8_7", "\n Description: ");
 
         LanguageConfig.get().set("en-us.message-9","\n | Ascecia-Currencies | Currency-List | \n \n");
-        LanguageConfig.get().set("en-us.message-9_1",": \n   Power: ");
-        LanguageConfig.get().set("en-us.message-9_2","\n   Economic-Activity: ");
+        LanguageConfig.get().set("en-us.message-9_1",": \n      Power: ");
+        LanguageConfig.get().set("en-us.message-9_2","\n        Economic-Activity: ");
 
         LanguageConfig.get().set("en-us.message-10","\n | Ascecia-Currencies | Wallet | \n \n");
-        LanguageConfig.get().set("en-us.message-10_1",": \n   Balance: ");
+        LanguageConfig.get().set("en-us.message-10_1",": \n     Balance: ");
 
         //errors in english
         LanguageConfig.get().set("en-us.error-0", "[Currencies]: /currencies create (currencyname)");
@@ -82,6 +82,7 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-10", "[Currencies]: /currencies withdraw (currencyname) (amount)");
         LanguageConfig.get().set("en-us.error-10_1", "[Currencies]: The amount entered is too low !");
         LanguageConfig.get().set("en-us.error-10_2", "[Currencies]: The Currency specified does not exist !");
+        LanguageConfig.get().set("en-us.error-10_3", "[Currencies]: You do not have enough money !");
 
         //messages en français
         LanguageConfig.get().set("fr-FR.message-0", "[Currencies]: La monnaie ");
@@ -107,7 +108,7 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-7", "| Ascecia Currencies | Aide | \n \n /currencies create (nom) - creer une monnaie  \n \n /currencies delete (nom) - supprime une monnaie \n \n /currencies withdraw (nom) (montant) - vous redonne des minerais que vous avez mis en fonction du montant entré \n \n /currencies info (nom) - une liste d'infos sur une monnaie \n \n /currencies list - liste de toutes les monnaies existante \n \n /currencies mint (montant) - frappe un montant de monnaie \n \n /currencies deposit - depose le nombre de minerais que vous tenez dans votre main pour augmenter la valeur et la puissance de votre monnaie \n \n /currencies pay (nom du joueur) (nom de la monnaie) (montant) - paye la personne concernée \n \n /currencies wallet - vous montre votre porte-feuille");
 
         LanguageConfig.get().set("fr-FR.message-8", "| Monnaie Info -> | ");
-        LanguageConfig.get().set("fr-FR.message-8_1", "| \n \n Montant de monnaie disponible sur le marché: ");
+        LanguageConfig.get().set("fr-FR.message-8_1", " | \n \n Montant de monnaie disponible sur le marché: ");
         LanguageConfig.get().set("fr-FR.message-8_2", "\n Puissance de la monnaie: ");
         LanguageConfig.get().set("fr-FR.message-8_3", "\n Nombre d'utilisateurs: ");
         LanguageConfig.get().set("fr-FR.message-8_4", "\n Activité economique de la monnaie: ");
@@ -115,12 +116,12 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-8_6", "\n Auteur: ");
         LanguageConfig.get().set("fr-FR.message-8_7", "\n Description: ");
 
-        LanguageConfig.get().set("en-us.message-9","\n | Ascecia-Currencies | Liste des monnaies | \n \n");
-        LanguageConfig.get().set("en-us.message-9_1",": \n   Puissance: ");
-        LanguageConfig.get().set("en-us.message-9_2","\n    Activité Economique: ");
+        LanguageConfig.get().set("fr-FR.message-9","\n | Ascecia-Currencies | Liste des monnaies | \n \n");
+        LanguageConfig.get().set("fr-FR.message-9_1",": \n      Puissance: ");
+        LanguageConfig.get().set("fr-FR.message-9_2","\n        Activité Economique: ");
 
-        LanguageConfig.get().set("en-us.message-10","\n | Ascecia-Currencies | Porte-feuille | \n \n");
-        LanguageConfig.get().set("en-us.message-10_1",": \n   Solde: ");
+        LanguageConfig.get().set("fr-FR.message-10","\n | Ascecia-Currencies | Porte-feuille | \n \n");
+        LanguageConfig.get().set("fr-FR.message-10_1"," \n    Solde: ");
 
 
         //erreur en français
@@ -157,6 +158,7 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.error-10", "[Currencies]: /currencies withdraw (nom) (montant)");
         LanguageConfig.get().set("fr-FR.error-10_1", "[Currencies]: Le montant entré est trop faible");
         LanguageConfig.get().set("fr-FR.error-10_2", "[Currencies]: La monnaie spécifiée n'éxiste pas");
+        LanguageConfig.get().set("fr-FR.error-10_3", "[Currencies]: Vous ne possèdez pas assez d'argent");
         LanguageConfig.save();
     }
 }

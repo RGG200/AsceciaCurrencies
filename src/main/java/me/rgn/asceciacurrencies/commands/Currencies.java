@@ -54,18 +54,19 @@ public class Currencies implements CommandExecutor {
                 }
                 //description
                  else if (args[0].equals("description") || args[0].equals("desc") ) {
-                     if (args.length < 2  || args.length > 2) {
-                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-2"));
-                     } else {
-                         CurrenciesAPI.currency.description(p, args[1]);
+                     String message = "";
+                     for (int i = 1; i < args.length; i++) {
+                         message += args[i] + " ";
                      }
+                     message = message.trim();
+                     CurrenciesAPI.currency.description(p, message);
                  }
                 //withdraw
                 else if (args[0].equals("withdraw") || args[0].equals("wd") ) {
-                    if (args.length < 3 || args.length > 2) {
+                    if (args.length < 3 || args.length > 3) {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10"));
                     }else  {
-                    CurrenciesAPI.currency.withdraw(p, args[1], args[2]);
+                    CurrenciesAPI.currency.withdraw(p, args[1], Double.valueOf(args[2]));
                     }
                 }
                 //info
@@ -83,7 +84,7 @@ public class Currencies implements CommandExecutor {
                     if (args.length < 2 || args.length > 2) {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-6"));
                     } else {
-                        CurrenciesAPI.currency.mint(p, args[1]);
+                        CurrenciesAPI.currency.mint(p, Double.valueOf(args[1]));
                     }
                 }
                 //mint
@@ -97,7 +98,7 @@ public class Currencies implements CommandExecutor {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9"));
                     } else {
                         Player target = Bukkit.getServer().getPlayer(args[1]);
-                        CurrenciesAPI.currency.pay(p, target, args[2], args[3]);
+                        CurrenciesAPI.currency.pay(p, target, args[2], Double.valueOf(args[3]));
                     }
 
                 } else if (args[0].equals("wallet") || args[0].equals("wal") ) {
