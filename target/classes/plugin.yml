@@ -1,5 +1,5 @@
 name: AsceciaCurrencies
-version: '1.0-SNAPSHOT'
+version: '1.0-RC'
 main: me.rgn.asceciacurrencies.AsceciaCurrencies
 api-version: 1.19
 authors: [ RGn2 ]

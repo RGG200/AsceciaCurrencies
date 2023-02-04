@@ -30,7 +30,7 @@ public final class AsceciaCurrencies extends JavaPlugin {
         getCommand("Currencies").setExecutor(new Currencies());
         //printing success
         System.out.println("[Ascecia-Currencies]: Plugin Loaded !");
-        getServer().broadcastMessage(ChatColor.GOLD + "[ Ascecia-Currencies ]: Version 1.0-RC1 \n Thanks for using Ascecia-Currencies !!!");
+        getServer().broadcastMessage(ChatColor.GOLD + "[ Ascecia-Currencies ]: Version 1.0-RC \n Thanks for using Ascecia-Currencies !!!");
         //does stuff
         BukkitScheduler scheduler = getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
@@ -40,7 +40,7 @@ public final class AsceciaCurrencies extends JavaPlugin {
                     double cMarketAmount = CurrenciesConfig.get().getDouble(currencies + ".amount");
                     double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
                     double cEcoAct = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
-                    CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoAct - 0.00000005);
+                    CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoAct - 0.00000001);
                     CurrenciesConfig.get().set(currencies + ".totalvalue", cValue*cEcoAct);
                     CurrenciesConfig.get().set(currencies + ".power", (cValue/cMarketAmount)*cEcoAct);
                     CurrenciesConfig.save();
