@@ -208,7 +208,7 @@ public class Currency {
                             CurrenciesConfig.get().set(currencies + ".amount", globalamount);
                             p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-2") + amount + " " + currencies);
                             if (cEcoActivity > 0.2) {
-                                CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoActivity - (amount / (amount*2592000*cPower)));
+                                CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoActivity - (5e-7/cPower));
                             }
                             if (cEcoActivity <= 0.2){
                                 CurrenciesConfig.get().set(currencies + ".economic-activity", 0.2);
@@ -420,7 +420,7 @@ public class Currency {
                             nPeers = CurrenciesConfig.get().getInt(name + ".peers");
                             PlayersConfig.get().set(targetidd + "." + name + "balance", tbalance + amount);
                             PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - amount);
-                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + ((5e-7) - (amount / nPeers)));
+                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + ((0.000006) - (amount / nPeers)));
                             CurrenciesConfig.get().set(name + ".power", ((cValue - ((cValue / cMarketAmount) * amount)) / (cMarketAmount - amount)) * cEcoActivity);
                             p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + tName);
                             target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_1")+ amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_3") + pName);
@@ -492,7 +492,7 @@ public class Currency {
                         CurrenciesConfig.get().set(name + ".totalvalue", cValue - cPower * amount);
                         //if the eco activity is superior to 0.5
                         if(cEcoActivity > 0.2) {
-                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity - (amount / (amount*2592000*cPower)));
+                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity - (5e-7/cPower));
                         }
                         CurrenciesConfig.get().set(name + ".power", ((cValue - (cPower*amount)) / (cMarketAmount - amount))*cEcoActivity);
                         PlayersConfig.get().set(id + "." + name + "balance", pBalance - amount);
