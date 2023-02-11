@@ -69,7 +69,7 @@ public class Currency {
                         CurrenciesConfig.get().set(name + ".amount", 1.0);
                         CurrenciesConfig.get().set(name + ".totalvalue", 0.0);
                         CurrenciesConfig.get().set(name + ".economic-activity", 1.0);
-                        CurrenciesConfig.get().set(name + ".description", "");
+                        CurrenciesConfig.get().set(name + ".description", "defaultDescription");
                         CurrenciesConfig.get().set(name + ".peers", 1);
                         CurrenciesConfig.get().set(name + ".author", id);
                         p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0") + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0_1"));
@@ -102,13 +102,77 @@ public class Currency {
         if (id.equals(author)) {
             //gives the money contained in the currency and deletes the config keys
             String cname = name;
-            final ItemStack ingots = new ItemStack(Material.IRON_INGOT, 1);
+            final ItemStack iNugget = new ItemStack(Material.IRON_NUGGET, 1);/*nugget tier*/
+            final ItemStack gNugget = new ItemStack(Material.GOLD_NUGGET, 1);/*gold nugget tier*/
+            final ItemStack iron = new ItemStack(Material.IRON_INGOT, 1);/*iron tier*/
+            final ItemStack gold = new ItemStack(Material.GOLD_INGOT, 1);/*gold tier*/
+            final ItemStack emerald = new ItemStack(Material.EMERALD, 1);/*emerald tier*/
+            final ItemStack diamond = new ItemStack(Material.DIAMOND, 1);/*diamond tier*/
+            final ItemStack gBlock = new ItemStack(Material.GOLD_BLOCK, 1);/*gold Block tier*/
+            final ItemStack eBlock = new ItemStack(Material.EMERALD_BLOCK, 1);/*gold Block tier*/
+            final ItemStack dBlock = new ItemStack(Material.DIAMOND_BLOCK, 1);/*gold Block tier*/
             for (String key : PlayersConfig.get().getKeys(false)) {
                 double cMarketValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
-                for (int i = 0; i < Math.round(cMarketValue); i++) {
-                    final Map<Integer, ItemStack> map = p.getInventory().addItem(ingots);
-                    for (final ItemStack item : map.values()) {
-                        p.getWorld().dropItemNaturally(p.getLocation(), item);
+                for (double i = 0; i < cMarketValue; i++) {
+                    double difference = cMarketValue-i;
+                    if (difference < 0.555 && difference >= 0.111){
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(iNugget);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i -= 0.9;
+                    }else if (difference < 1 && difference >= 0.555){
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(gNugget);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i -= 0.5;
+                    }else if (difference >= 1 && difference < 5) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(iron);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                    } else if (difference >= 5 & difference < 9) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(gold);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i += 4;
+                    }
+                    else if (difference >= 9 & difference < 20) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(emerald);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i += 8;
+                    }
+                    else if (difference >= 20 & difference < 45) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(diamond);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i += 19;
+                    }
+                    else if (difference >= 45 & difference < 81) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(gBlock);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i += 44;
+                    }
+                    else if (difference >= 81 & difference < 180) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(eBlock);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i += 80;
+                    }
+                    else if (difference >= 180) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(dBlock);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i += 179;
                     }
                 }
                 PlayersConfig.get().set(key + "." + cname + "balance", null);
@@ -420,7 +484,7 @@ public class Currency {
                             nPeers = CurrenciesConfig.get().getInt(name + ".peers");
                             PlayersConfig.get().set(targetidd + "." + name + "balance", tbalance + amount);
                             PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - amount);
-                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + ((0.000006) - (amount / nPeers)));
+                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + (1e-5*nPeers));
                             CurrenciesConfig.get().set(name + ".power", ((cValue - ((cValue / cMarketAmount) * amount)) / (cMarketAmount - amount)) * cEcoActivity);
                             p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + tName);
                             target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_1")+ amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_3") + pName);
@@ -482,12 +546,77 @@ public class Currency {
             if (pBalance >= amount) {
                 if (amount >= 1){
                     if (amount < cMarketAmount){
-                        final ItemStack ingots = new ItemStack(Material.IRON_INGOT, 1);
-                        for (int i = 0; i < Math.round(cPower * amount); i++) {
-                            final Map<Integer, ItemStack> map = p.getInventory().addItem(ingots);
-                            for (final ItemStack item : map.values()) {
-                                p.getWorld().dropItemNaturally(p.getLocation(), item);
-                            }                        }
+                        final ItemStack iNugget = new ItemStack(Material.IRON_NUGGET, 1);/*nugget tier*/
+                        final ItemStack gNugget = new ItemStack(Material.GOLD_NUGGET, 1);/*gold nugget tier*/
+                        final ItemStack iron = new ItemStack(Material.IRON_INGOT, 1);/*iron tier*/
+                        final ItemStack gold = new ItemStack(Material.GOLD_INGOT, 1);/*gold tier*/
+                        final ItemStack emerald = new ItemStack(Material.EMERALD, 1);/*emerald tier*/
+                        final ItemStack diamond = new ItemStack(Material.DIAMOND, 1);/*diamond tier*/
+                        final ItemStack gBlock = new ItemStack(Material.GOLD_BLOCK, 1);/*gold Block tier*/
+                        final ItemStack eBlock = new ItemStack(Material.EMERALD_BLOCK, 1);/*gold Block tier*/
+                        final ItemStack dBlock = new ItemStack(Material.DIAMOND_BLOCK, 1);/*gold Block tier*/
+                        for (double i = 0; i < (cPower * amount); i++) {
+                            double difference = (cPower * amount)-i;
+                            if (difference < 0.5 && difference >= 0.1){
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(iNugget);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i -= 0.9;
+                            }else if (difference < 1 && difference >= 0.5){
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(gNugget);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i -= 0.5;
+                            }else if (difference >= 1 && difference < 5) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(iron);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                            } else if (difference >= 5 & difference < 9) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(gold);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i += 4;
+                            }
+                            else if (difference >= 9 & difference < 20) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(emerald);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i += 8;
+                            }
+                            else if (difference >= 20 & difference < 45) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(diamond);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i += 19;
+                            }
+                            else if (difference >= 45 & difference < 81) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(gBlock);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i += 44;
+                            }
+                            else if (difference >= 81 & difference < 180) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(eBlock);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i += 80;
+                            }
+                            else if (difference >= 180) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(dBlock);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i += 179;
+                            }
+                        }
                         CurrenciesConfig.get().set(name + ".amount", cMarketAmount - amount);
                         CurrenciesConfig.get().set(name + ".totalvalue", cValue - cPower * amount);
                         //if the eco activity is superior to 0.5
