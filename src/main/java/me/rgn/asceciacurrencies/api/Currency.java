@@ -264,7 +264,7 @@ public class Currency {
                     double cEcoActivity = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
                     double cPower = CurrenciesConfig.get().getDouble(currencies + ".power");
                     String author = CurrenciesConfig.get().getString(currencies + ".author");
-                    if (amount >= 1) {
+                    if (amount >= 1 && cPower > 0) {
                         if (id.equals(author)) {
                             double pbalance = PlayersConfig.get().getDouble(id + "." + currencies + "balance");
                             PlayersConfig.get().set(id + "." + currencies + "balance", pbalance + amount);
