@@ -264,7 +264,7 @@ public class Currency {
                     double cEcoActivity = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
                     double cPower = CurrenciesConfig.get().getDouble(currencies + ".power");
                     String author = CurrenciesConfig.get().getString(currencies + ".author");
-                    if (amount >= 1 && cPower > 0) {
+                    if (amount >= 1) {
                         if (id.equals(author)) {
                             double pbalance = PlayersConfig.get().getDouble(id + "." + currencies + "balance");
                             PlayersConfig.get().set(id + "." + currencies + "balance", pbalance + amount);
@@ -277,7 +277,12 @@ public class Currency {
                             if (cEcoActivity <= 0.2){
                                 CurrenciesConfig.get().set(currencies + ".economic-activity", 0.2);
                             }
-                            CurrenciesConfig.get().set(currencies + ".power", (cValue / (globalamount+amount)) * cEcoActivity);
+                            if (cValue > 0){
+                                CurrenciesConfig.get().set(currencies + ".power", (cValue / (globalamount+amount)) * cEcoActivity);
+
+                            }else {
+                                CurrenciesConfig.get().set(currencies + ".power", 0.0);
+                            }
                             CurrenciesConfig.save();
                             PlayersConfig.save();
                         }
