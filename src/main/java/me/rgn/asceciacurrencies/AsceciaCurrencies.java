@@ -32,7 +32,7 @@ public final class AsceciaCurrencies extends JavaPlugin {
         System.out.println("[Ascecia-Currencies]: Plugin Loaded !");
         getServer().broadcastMessage(ChatColor.GOLD + "[ Ascecia-Currencies ]: Version 1.0-RC \n Thanks for using Ascecia-Currencies !!!");
         //does stuff
-        BukkitScheduler scheduler = getServer().getScheduler();
+        BukkitScheduler economic_evolution = getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
@@ -40,7 +40,7 @@ public final class AsceciaCurrencies extends JavaPlugin {
                     double cMarketAmount = CurrenciesConfig.get().getDouble(currencies + ".amount");
                     double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
                     double cEcoAct = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
-                    CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoAct - 0.00000001);
+                    CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoAct - 0.01);
                     if (cEcoAct < 0.2){
                         CurrenciesConfig.get().set(currencies + ".economic-activity", 0.21);
                     }
@@ -49,7 +49,7 @@ public final class AsceciaCurrencies extends JavaPlugin {
                     CurrenciesConfig.save();
                 }
             }
-        }, 0L, 20L);
+        }, 0L, 576000L);
     }
 
 }
