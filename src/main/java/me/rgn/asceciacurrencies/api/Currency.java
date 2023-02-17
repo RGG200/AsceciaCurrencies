@@ -25,7 +25,7 @@ public class Currency {
                     double cPower = CurrenciesConfig.get().getDouble(name + ".power");
                     PlayersConfig.get().set(id + name + ".balance", pBalance + amount);
                     CurrenciesConfig.get().set(name + ".amount", cMarketAmount + amount);
-                    CurrenciesConfig.get().set(name + ".power", ((cValue + (cPower * amount)) / (cMarketAmount + amount)) * cEcoActivity);
+                    CurrenciesConfig.get().set(name + ".power",Double.valueOf(Math.round(((cValue + (cPower * amount)) / (cMarketAmount + amount)) * cEcoActivity)));
                     CurrenciesConfig.save();
                     CurrenciesConfig.reload();
                     PlayersConfig.save();
@@ -113,66 +113,66 @@ public class Currency {
             final ItemStack dBlock = new ItemStack(Material.DIAMOND_BLOCK, 1);/*gold Block tier*/
             for (String key : PlayersConfig.get().getKeys(false)) {
                 double cMarketValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
-                for (double i = 0; i < cMarketValue; i++) {
-                    double difference = cMarketValue-i;
-                    if (difference < 0.555 && difference >= 0.111){
+                for (double i = 0; i < cMarketValue*9; i++) {
+                    double difference = (cMarketValue*9)-i;
+                    if (difference < 1 && difference >= 5){
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(iNugget);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i -= 0.9;
-                    }else if (difference < 1 && difference >= 0.555){
+                    }else if (difference < 5 && difference >= 9){
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(gNugget);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i -= 0.5;
-                    }else if (difference >= 1 && difference < 5) {
+                        i += 4;
+                    }else if (difference >= 9 && difference < 45) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(iron);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                    } else if (difference >= 5 & difference < 9) {
-                        final Map<Integer, ItemStack> map = p.getInventory().addItem(gold);
-                        for (final ItemStack item : map.values()) {
-                            p.getWorld().dropItemNaturally(p.getLocation(), item);
-                        }
-                        i += 4;
-                    }
-                    else if (difference >= 9 & difference < 20) {
-                        final Map<Integer, ItemStack> map = p.getInventory().addItem(emerald);
-                        for (final ItemStack item : map.values()) {
-                            p.getWorld().dropItemNaturally(p.getLocation(), item);
-                        }
                         i += 8;
-                    }
-                    else if (difference >= 20 & difference < 45) {
-                        final Map<Integer, ItemStack> map = p.getInventory().addItem(diamond);
-                        for (final ItemStack item : map.values()) {
-                            p.getWorld().dropItemNaturally(p.getLocation(), item);
-                        }
-                        i += 19;
-                    }
-                    else if (difference >= 45 & difference < 81) {
-                        final Map<Integer, ItemStack> map = p.getInventory().addItem(gBlock);
+                    } else if (difference >= 45 & difference < 81) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(gold);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
                         i += 44;
                     }
                     else if (difference >= 81 & difference < 180) {
-                        final Map<Integer, ItemStack> map = p.getInventory().addItem(eBlock);
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(emerald);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
                         i += 80;
                     }
-                    else if (difference >= 180) {
-                        final Map<Integer, ItemStack> map = p.getInventory().addItem(dBlock);
+                    else if (difference >= 180 & difference < 405) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(diamond);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
                         i += 179;
+                    }
+                    else if (difference >= 405 & difference < 729) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(gBlock);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i += 404;
+                    }
+                    else if (difference >= 729 & difference < 1620) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(eBlock);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i += 728;
+                    }
+                    else if (difference >= 1620) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(dBlock);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i += 1619;
                     }
                 }
                 PlayersConfig.get().set(key + "." + cname + "balance", null);
@@ -264,13 +264,13 @@ public class Currency {
                     double cEcoActivity = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
                     double cPower = CurrenciesConfig.get().getDouble(currencies + ".power");
                     String author = CurrenciesConfig.get().getString(currencies + ".author");
-                    if (amount >= 1) {
+                    if (Double.valueOf(Math.round(amount*1000))/1000 >= 1) {
                         if (id.equals(author)) {
                             double pbalance = PlayersConfig.get().getDouble(id + "." + currencies + "balance");
-                            PlayersConfig.get().set(id + "." + currencies + "balance", pbalance + amount);
-                            globalamount += amount;
+                            PlayersConfig.get().set(id + "." + currencies + "balance", pbalance + Double.valueOf(Math.round(amount*1000))/1000);
+                            globalamount += Double.valueOf(Math.round(amount*1000))/1000;
                             CurrenciesConfig.get().set(currencies + ".amount", globalamount);
-                            p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-2") + amount + " " + currencies);
+                            p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-2") + Double.valueOf(Math.round(amount*1000))/1000 + " " + currencies);
                             if (cEcoActivity > 0.2) {
                                 CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoActivity - (5e-7/cPower));
                             }
@@ -278,8 +278,7 @@ public class Currency {
                                 CurrenciesConfig.get().set(currencies + ".economic-activity", 0.2);
                             }
                             if (cValue > 0){
-                                CurrenciesConfig.get().set(currencies + ".power", (cValue / (globalamount+amount)) * cEcoActivity);
-
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round((cValue/globalamount)*1000))/1000);
                             }else {
                                 CurrenciesConfig.get().set(currencies + ".power", 0.0);
                             }
@@ -324,109 +323,109 @@ public class Currency {
                             if (p.getInventory().getItemInMainHand().getType().equals(Material.COAL)) {
                                 amount = 0.5 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             }else if (p.getInventory().getItemInMainHand().getType().equals(Material.COAL_BLOCK)) {
                                 amount = 4.5 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_INGOT)) {
                                 amount = itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_BLOCK)) {
                                 amount = 9 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_NUGGET)) {
                                 amount = 0.11111111111111112 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_INGOT)) {
                                 amount = 5 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_BLOCK)) {
                                 amount = 45 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_NUGGET)) {
                                 amount = 0.55555555555555556 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND)) {
                                 amount = 20 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND_BLOCK)) {
                                 amount = 180 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_INGOT)) {
                                 amount = 40 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_SCRAP)) {
                                 amount = 10 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.REDSTONE)) {
                                 amount = 1 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.REDSTONE_BLOCK)) {
                                 amount = 9 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.COPPER_INGOT)) {
                                 amount = 1 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.COPPER_BLOCK)) {
                                 amount = 9 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.EMERALD)) {
                                 amount = 9 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.EMERALD_BLOCK)) {
                                 amount = 81 * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                                CurrenciesConfig.get().set(currencies + ".power", ((cValue + amount) / cMarketAmount) * cEcoActivity);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             }else {
@@ -483,16 +482,16 @@ public class Currency {
                     }
                     double tbalance = PlayersConfig.get().getDouble(targetidd + "." + name + "balance");
                     //if amount not too low
-                    if (pbalance >= amount) {
-                        if (amount >= 0.01) {
+                    if (pbalance >= Double.valueOf(Math.round(amount*1000))/1000) {
+                        if (Double.valueOf(Math.round(amount*1000))/1000 >= 0.01) {
                             //pay
                             nPeers = CurrenciesConfig.get().getInt(name + ".peers");
-                            PlayersConfig.get().set(targetidd + "." + name + "balance", tbalance + amount);
-                            PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - amount);
+                            PlayersConfig.get().set(targetidd + "." + name + "balance", tbalance + Double.valueOf(Math.round(amount*1000))/1000);
+                            PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - Double.valueOf(Math.round(amount*1000))/1000);
                             CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + (1e-5*nPeers));
-                            CurrenciesConfig.get().set(name + ".power", ((cValue - ((cValue / cMarketAmount) * amount)) / (cMarketAmount - amount)) * cEcoActivity);
-                            p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + tName);
-                            target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_1")+ amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_3") + pName);
+                            CurrenciesConfig.get().set(name + ".power", Double.valueOf(Math.round((cValue/cMarketAmount)*1000))/1000);
+                            p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + Double.valueOf(Math.round(amount*1000))/1000 + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + tName);
+                            target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_1")+ Double.valueOf(Math.round(amount*1000))/1000 + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_3") + pName);
                             PlayersConfig.save();
                             CurrenciesConfig.save();
                         } else {
@@ -519,7 +518,7 @@ public class Currency {
                     double cPower = CurrenciesConfig.get().getDouble(name + ".power");
                     PlayersConfig.get().set(id + name + ".balance", pBalance - amount);
                     CurrenciesConfig.get().set(name + ".amount", cMarketAmount - amount);
-                    CurrenciesConfig.get().set(name + ".power", ((cValue - (cPower * amount)) / (cMarketAmount - amount)) * cEcoActivity);
+                    CurrenciesConfig.get().set(name + ".power", Double.valueOf(Math.round((cValue-(cPower*amount))/(cMarketAmount-amount)*1000))/1000);
                     CurrenciesConfig.save();
                     CurrenciesConfig.reload();
                     PlayersConfig.save();
@@ -548,9 +547,9 @@ public class Currency {
         if (CurrenciesConfig.get().contains(name)) {
             double pBalance = PlayersConfig.get().getDouble(id + "." + name + "balance");
             //if you're not a rat
-            if (pBalance >= amount) {
-                if (amount >= 1){
-                    if (amount < cMarketAmount){
+            if (pBalance >= Double.valueOf(Math.round(amount*1000))/1000) {
+                if (Double.valueOf(Math.round(amount*1000))/1000 >= 1){
+                    if (Double.valueOf(Math.round(amount*1000))/1000 < cMarketAmount){
                         final ItemStack iNugget = new ItemStack(Material.IRON_NUGGET, 1);/*nugget tier*/
                         final ItemStack gNugget = new ItemStack(Material.GOLD_NUGGET, 1);/*gold nugget tier*/
                         final ItemStack iron = new ItemStack(Material.IRON_INGOT, 1);/*iron tier*/
@@ -560,77 +559,77 @@ public class Currency {
                         final ItemStack gBlock = new ItemStack(Material.GOLD_BLOCK, 1);/*gold Block tier*/
                         final ItemStack eBlock = new ItemStack(Material.EMERALD_BLOCK, 1);/*gold Block tier*/
                         final ItemStack dBlock = new ItemStack(Material.DIAMOND_BLOCK, 1);/*gold Block tier*/
-                        for (double i = 0; i < (cPower * amount); i++) {
-                            double difference = (cPower * amount)-i;
-                            if (difference < 0.5 && difference >= 0.1){
+                        for (double i = 0; i < (cPower * Double.valueOf(Math.round(amount*1000))/1000*9); i++) {
+                            double difference = (cPower*Double.valueOf(Math.round(amount*1000))/1000*9)-i;
+                            if (difference < 1 && difference >= 5){
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(iNugget);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i -= 0.9;
-                            }else if (difference < 1 && difference >= 0.5){
+                            }else if (difference < 5 && difference >= 9){
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(gNugget);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i -= 0.5;
-                            }else if (difference >= 1 && difference < 5) {
+                                i += 4;
+                            }else if (difference >= 9 && difference < 45) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(iron);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                            } else if (difference >= 5 & difference < 9) {
-                                final Map<Integer, ItemStack> map = p.getInventory().addItem(gold);
-                                for (final ItemStack item : map.values()) {
-                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
-                                }
-                                i += 4;
-                            }
-                            else if (difference >= 9 & difference < 20) {
-                                final Map<Integer, ItemStack> map = p.getInventory().addItem(emerald);
-                                for (final ItemStack item : map.values()) {
-                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
-                                }
                                 i += 8;
-                            }
-                            else if (difference >= 20 & difference < 45) {
-                                final Map<Integer, ItemStack> map = p.getInventory().addItem(diamond);
-                                for (final ItemStack item : map.values()) {
-                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
-                                }
-                                i += 19;
-                            }
-                            else if (difference >= 45 & difference < 81) {
-                                final Map<Integer, ItemStack> map = p.getInventory().addItem(gBlock);
+                            } else if (difference >= 45 & difference < 81) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(gold);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
                                 i += 44;
                             }
                             else if (difference >= 81 & difference < 180) {
-                                final Map<Integer, ItemStack> map = p.getInventory().addItem(eBlock);
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(emerald);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
                                 i += 80;
                             }
-                            else if (difference >= 180) {
-                                final Map<Integer, ItemStack> map = p.getInventory().addItem(dBlock);
+                            else if (difference >= 180 & difference < 405) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(diamond);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
                                 i += 179;
                             }
+                            else if (difference >= 405 & difference < 729) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(gBlock);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i += 404;
+                            }
+                            else if (difference >= 729 & difference < 1620) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(eBlock);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i += 728;
+                            }
+                            else if (difference >= 1620) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(dBlock);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i += 1619;
+                            }
                         }
-                        CurrenciesConfig.get().set(name + ".amount", cMarketAmount - amount);
-                        CurrenciesConfig.get().set(name + ".totalvalue", cValue - cPower * amount);
+                        CurrenciesConfig.get().set(name + ".amount", cMarketAmount - Double.valueOf(Math.round(amount*1000))/1000);
+                        CurrenciesConfig.get().set(name + ".totalvalue", cValue - cPower * Double.valueOf(Math.round(amount*1000))/1000);
                         //if the eco activity is superior to 0.5
                         if(cEcoActivity > 0.2) {
                             CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity - (5e-7/cPower));
                         }
-                        CurrenciesConfig.get().set(name + ".power", ((cValue - (cPower*amount)) / (cMarketAmount - amount))*cEcoActivity);
-                        PlayersConfig.get().set(id + "." + name + "balance", pBalance - amount);
-                        p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-5") + amount + " " + name);
+                        CurrenciesConfig.get().set(name + ".power", Double.valueOf(Math.round((cValue-(cPower*Double.valueOf(Math.round(amount*1000))/1000))/(cMarketAmount-Double.valueOf(Math.round(amount*1000))/1000)*1000))/1000);
+                        PlayersConfig.get().set(id + "." + name + "balance", pBalance - Double.valueOf(Math.round(amount*1000))/1000);
+                        p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-5") + Double.valueOf(Math.round(amount*1000))/1000 + " " + name);
                     }else{
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_4"));
                     }
