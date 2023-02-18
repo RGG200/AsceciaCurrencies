@@ -48,6 +48,8 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-10","\n | Ascecia-Currencies | Wallet | \n \n");
         LanguageConfig.get().set("en-us.message-10_1",": \n     Balance: ");
 
+        LanguageConfig.get().set("fr-FR.error-11", "[Currencies]: You do not have the permission to do this !");
+
         //errors in english
         LanguageConfig.get().set("en-us.error-0", "[Currencies]: /currencies create (currencyname)");
         LanguageConfig.get().set("en-us.error-0_1", "[Currencies]: Your currency needs to be 3 caracthers long minimum and 9 max and not use any special characters or numbers or spaces");
@@ -161,6 +163,8 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.error-10_2", "[Currencies]: La monnaie spécifiée n'éxiste pas");
         LanguageConfig.get().set("fr-FR.error-10_3", "[Currencies]: Vous ne possèdez pas assez d'argent");
         LanguageConfig.get().set("fr-FR.error-10_4", "[Currencies]: Le montant entré est trop élevé !");
+
+        LanguageConfig.get().set("fr-FR.error-11", "[Currencies]: Vous n'avez pas la permission de faire cela !");
         LanguageConfig.save();
     }
 }

@@ -10,3 +10,13 @@ commands:
     description: The core command
     usage: /<command> <subcommand>
     aliases: [c, cu]
+permissions:
+  ascecia:
+    player:
+      manage:
+      mint:
+      deposit:
+      withdraw:
+      infos:
+    admin:
+      forcemanage:
