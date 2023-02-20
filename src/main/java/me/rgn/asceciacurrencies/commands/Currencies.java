@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import javax.annotation.processing.Completions;
 import java.util.*;
 
 public class Currencies implements CommandExecutor, TabCompleter {
@@ -155,6 +156,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
         return true;
     }
     private static final String[] COMMANDS = {"create", "delete", "mint", "description", "info", "list", "deposit", "withdraw", "wallet", "pay"};
+    private static final String[] CURRENCIES = {};
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String CommandLabel, String[] args){
         if(cmd.getName().equals("currencies")){
