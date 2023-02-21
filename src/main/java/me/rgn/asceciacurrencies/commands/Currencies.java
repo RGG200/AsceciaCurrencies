@@ -139,6 +139,19 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
 
+                }//rename
+                else if (args[0].equals("rename")) {
+                    if (p.hasPermission("asceciacurrencies.player.rename")) {
+                        if (args.length < 2 || args.length > 2) {
+                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-12_1"));
+                        } else {
+                            Player target = Bukkit.getServer().getPlayer(args[1]);
+                            CurrenciesAPI.currency.rename(p, args[1]);
+                        }
+                    } else {
+                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                    }
+
                 } else if (args[0].equals("wallet") || args[0].equals("wal")) {
                     if (p.hasPermission("asceciacurrencies.player.wallet")) {
                         CurrenciesAPI.currency.wallet(p);

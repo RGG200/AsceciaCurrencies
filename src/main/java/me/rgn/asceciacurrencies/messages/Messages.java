@@ -45,10 +45,9 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-9_1",": \n      Power: ");
         LanguageConfig.get().set("en-us.message-9_2","\n        Economic-Activity: ");
 
-        LanguageConfig.get().set("en-us.message-10","\n | Ascecia-Currencies | Wallet | \n \n");
-        LanguageConfig.get().set("en-us.message-10_1",": \n     Balance: ");
+        LanguageConfig.get().set("en-us.message-10","\n | Ascecia-Currencies | Wallet | \n \n Balance: \n \n    ");
 
-        LanguageConfig.get().set("fr-FR.error-11", "[Currencies]: You do not have the permission to do this !");
+        LanguageConfig.get().set("en-us.message-11", " Has been renamed to ");
 
         //errors in english
         LanguageConfig.get().set("en-us.error-0", "[Currencies]: /currencies create (currencyname)");
@@ -86,6 +85,13 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-10_2", "[Currencies]: The Currency specified does not exist !");
         LanguageConfig.get().set("en-us.error-10_3", "[Currencies]: You do not have enough money !");
         LanguageConfig.get().set("en-us.error-10_4", "[Currencies]: The amount entered is too high !");
+
+        LanguageConfig.get().set("en-us.error-11", "[Currencies]: You do not have the permission to do this !");
+
+        LanguageConfig.get().set("en-us.error-12", "[Currencies]: You do not own any currency !");
+        LanguageConfig.get().set("en-us.error-12_1", "[Currencies]: /currencies rename (name)");
+
+
 
         //messages en français
         LanguageConfig.get().set("fr-FR.message-0", "[Currencies]: La monnaie ");
@@ -126,6 +132,7 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-10","\n | Ascecia-Currencies | Porte-feuille | \n \n");
         LanguageConfig.get().set("fr-FR.message-10_1"," \n    Solde: ");
 
+        LanguageConfig.get().set("fr-FR.message-11", " est maintenant nommé ");
 
         //erreur en français
         LanguageConfig.get().set("fr-FR.error-0", "[Currencies]: /currencies create (nom)");
@@ -165,6 +172,10 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.error-10_4", "[Currencies]: Le montant entré est trop élevé !");
 
         LanguageConfig.get().set("fr-FR.error-11", "[Currencies]: Vous n'avez pas la permission de faire cela !");
+
+        LanguageConfig.get().set("fr-FR.error-12", "[Currencies]: Vous n'avez pas de monnaie !");
+        LanguageConfig.get().set("fr-FR.error-12_1", "[Currencies]: /currencies rename (nom)");
+
         LanguageConfig.save();
     }
 }

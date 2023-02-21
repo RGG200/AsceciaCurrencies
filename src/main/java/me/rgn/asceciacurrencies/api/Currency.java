@@ -1,5 +1,6 @@
 package me.rgn.asceciacurrencies.api;
 
+import me.rgn.asceciacurrencies.AsceciaCurrencies;
 import me.rgn.asceciacurrencies.files.CurrenciesConfig;
 import me.rgn.asceciacurrencies.files.LanguageConfig;
 import me.rgn.asceciacurrencies.files.PlayersConfig;
@@ -8,6 +9,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
 
@@ -18,12 +21,12 @@ public class Currency {
             if (CurrenciesConfig.get().contains(name)){
                 if (amount > 0) {
                     String id = p.getName();
-                    double pBalance = PlayersConfig.get().getDouble(id + "." + name + ".balance");
+                    double pBalance = PlayersConfig.get().getDouble(id + ".balance." + name);
                     double cMarketAmount = CurrenciesConfig.get().getDouble(name + ".amount");
                     double cValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
                     double cEcoActivity = CurrenciesConfig.get().getDouble(name + ".economic-activity");
                     double cPower = CurrenciesConfig.get().getDouble(name + ".power");
-                    PlayersConfig.get().set(id + name + ".balance", pBalance + amount);
+                    PlayersConfig.get().set(id + ".balance." + name, pBalance + amount);
                     CurrenciesConfig.get().set(name + ".amount", cMarketAmount + amount);
                     CurrenciesConfig.get().set(name + ".power",Double.valueOf(Math.round(((cValue + (cPower * amount)) / (cMarketAmount + amount)) * cEcoActivity)));
                     CurrenciesConfig.save();
@@ -63,7 +66,7 @@ public class Currency {
                         isNameValid = true;
                     }
                     if (isNameValid == true) {
-                        PlayersConfig.get().set(id + "." + name + "balance", 1.0);
+                        PlayersConfig.get().set(id + ".balance." + name, 1.0);
                         PlayersConfig.get().set(id + ".hascreated", true);
                         CurrenciesConfig.get().set(name + ".power", 0.0);
                         CurrenciesConfig.get().set(name + ".amount", 1.0);
@@ -162,12 +165,18 @@ public class Currency {
                         }
                         i += 404;
                     }
-                    else if (difference >= 729 & difference < 1620) {
+                    else if (difference >= 729 & difference < 900) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(eBlock);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
                         i += 728;
+                    }else if (difference >= 900 & difference < 1620) {
+                        final Map<Integer, ItemStack> map = p.getInventory().addItem(netherite);
+                        for (final ItemStack item : map.values()) {
+                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                        }
+                        i += 899;
                     }
                     else if (difference >= 1620 && difference < 8100) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(dBlock);
@@ -176,12 +185,6 @@ public class Currency {
                         }
                         i += 1619;
                     }else if (difference >= 8100) {
-                        final Map<Integer, ItemStack> map = p.getInventory().addItem(netherite);
-                        for (final ItemStack item : map.values()) {
-                            p.getWorld().dropItemNaturally(p.getLocation(), item);
-                        }
-                        i += 8099;
-                    }else if (difference >= 72900) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(nBlock);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
@@ -189,7 +192,7 @@ public class Currency {
                         i += 8099;
                     }
                 }
-                PlayersConfig.get().set(key + "." + cname + "balance", null);
+                PlayersConfig.get().set(key + ".balance." + name, null);
                 PlayersConfig.save();
             }
             PlayersConfig.get().set(id + ".hascreated", null);
@@ -224,11 +227,10 @@ public class Currency {
         String id = CurrenciesConfig.get().getString(name + ".author");
         ItemStack nuggets = new ItemStack(Material.IRON_NUGGET, 1);
         for (String key : PlayersConfig.get().getKeys(false)) {
-            PlayersConfig.get().set(key + "." + cname + ".", null);
+            PlayersConfig.get().set(key + ".balance." + name, null);
         }
         if (CurrenciesConfig.get().contains(name)){
             PlayersConfig.get().set(id + ".hascreated", null);
-            CurrenciesConfig.get().set(cname + "balance", null);
             isCurrencyCreated = false;
             PlayersConfig.save();
             PlayersConfig.reload();
@@ -280,8 +282,8 @@ public class Currency {
                     String author = CurrenciesConfig.get().getString(currencies + ".author");
                     if (Double.valueOf(Math.round(amount*1000))/1000 >= 1) {
                         if (id.equals(author)) {
-                            double pbalance = PlayersConfig.get().getDouble(id + "." + currencies + "balance");
-                            PlayersConfig.get().set(id + "." + currencies + "balance", pbalance + Double.valueOf(Math.round(amount*1000))/1000);
+                            double pbalance = PlayersConfig.get().getDouble(id + ".balance." + currencies);
+                            PlayersConfig.get().set(id + ".balance." + currencies, pbalance + Double.valueOf(Math.round(amount*1000))/1000);
                             globalamount += Double.valueOf(Math.round(amount*1000))/1000;
                             CurrenciesConfig.get().set(currencies + ".amount", globalamount);
                             p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-2") + Double.valueOf(Math.round(amount*1000))/1000 + " " + currencies);
@@ -335,109 +337,116 @@ public class Currency {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-8"));
                         }/* Deposit the ores */ else {
                             if (p.getInventory().getItemInMainHand().getType().equals(Material.COAL)) {
-                                amount = 0.5 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.coal") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             }else if (p.getInventory().getItemInMainHand().getType().equals(Material.COAL_BLOCK)) {
-                                amount = 4.5 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.coal_block") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_INGOT)) {
-                                amount = itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_BLOCK)) {
-                                amount = 9 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_block") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.IRON_NUGGET)) {
-                                amount = 0.11111111111111112 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_INGOT)) {
-                                amount = 5 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_BLOCK)) {
-                                amount = 45 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_block") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.GOLD_NUGGET)) {
-                                amount = 0.55555555555555556 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND)) {
-                                amount = 20 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND_BLOCK)) {
-                                amount = 180 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond_block") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_INGOT)) {
-                                amount = 40 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_ingot") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
-                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_SCRAP)) {
-                                amount = 10 * itemamount;
+                            } else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_BLOCK)) {
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_block") * itemamount;
+                                CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
+                                CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
+                                p.getInventory().setItemInMainHand(null);
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
+                            }
+                            else if (p.getInventory().getItemInMainHand().getType().equals(Material.NETHERITE_SCRAP)) {
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_scrap") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.REDSTONE)) {
-                                amount = 1 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.redstone") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);;
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.REDSTONE_BLOCK)) {
-                                amount = 9 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.redstone_block") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.COPPER_INGOT)) {
-                                amount = 1 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.cooper_ingot") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.COPPER_BLOCK)) {
-                                amount = 9 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.cooper_block") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.EMERALD)) {
-                                amount = 9 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);
                                 p.getInventory().setItemInMainHand(null);
                                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3")  + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                             } else if (p.getInventory().getItemInMainHand().getType().equals(Material.EMERALD_BLOCK)) {
-                                amount = 81 * itemamount;
+                                amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald_block") * itemamount;
                                 CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
                                 CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000))/1000);
                                 p.getInventory().setItemInMainHand(null);
@@ -486,22 +495,22 @@ public class Currency {
                     p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9_4"));
                 } else {
                     //if balance key not created
-                    if (!PlayersConfig.get().contains(playeridd + "." + name + "balance")) {
-                        PlayersConfig.get().addDefault(playeridd + "." + name + "balance", 0.0);
+                    if (!PlayersConfig.get().contains(playeridd + ".balance." + name)) {
+                        PlayersConfig.get().addDefault(playeridd + ".balance." + name, 0.0);
                     }
-                    double pbalance = PlayersConfig.get().getDouble(playeridd + "." + name + "balance");
-                    if (!PlayersConfig.get().contains(targetidd + "." + name + "balance")) {
-                        PlayersConfig.get().addDefault(targetidd + "." + name + "balance", 0.0);
+                    double pbalance = PlayersConfig.get().getDouble(playeridd + ".balance." + name);
+                    if (!PlayersConfig.get().contains(targetidd + ".balance." + name)) {
+                        PlayersConfig.get().addDefault(targetidd + ".balance." + name, 0.0);
                         CurrenciesConfig.get().set(name + ".peers", nPeers + 1);
                     }
-                    double tbalance = PlayersConfig.get().getDouble(targetidd + "." + name + "balance");
+                    double tbalance = PlayersConfig.get().getDouble(targetidd + ".balance." + name);
                     //if amount not too low
                     if (pbalance >= Double.valueOf(Math.round(amount*1000))/1000) {
                         if (Double.valueOf(Math.round(amount*1000))/1000 >= 0.01) {
                             //pay
                             nPeers = CurrenciesConfig.get().getInt(name + ".peers");
-                            PlayersConfig.get().set(targetidd + "." + name + "balance", tbalance + Double.valueOf(Math.round(amount*1000))/1000);
-                            PlayersConfig.get().set(playeridd + "." + name + "balance", pbalance - Double.valueOf(Math.round(amount*1000))/1000);
+                            PlayersConfig.get().set(targetidd + ".balance." + name, tbalance + Double.valueOf(Math.round(amount*1000))/1000);
+                            PlayersConfig.get().set(playeridd + ".balance." + name, pbalance - Double.valueOf(Math.round(amount*1000))/1000);
                             CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + (1e-5*nPeers));
                             CurrenciesConfig.get().set(name + ".power", Double.valueOf(Math.round((cValue/cMarketAmount)*1000))/1000);
                             p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + Double.valueOf(Math.round(amount*1000))/1000 + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + tName);
@@ -525,12 +534,12 @@ public class Currency {
             if (CurrenciesConfig.get().contains(name)) {
                 if (amount > 0) {
                     String id = p.getName();
-                    double pBalance = PlayersConfig.get().getDouble(id + "." + name + ".balance");
+                    double pBalance = PlayersConfig.get().getDouble(id + ".balance." + name);
                     double cMarketAmount = CurrenciesConfig.get().getDouble(name + ".amount");
                     double cValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
                     double cEcoActivity = CurrenciesConfig.get().getDouble(name + ".economic-activity");
                     double cPower = CurrenciesConfig.get().getDouble(name + ".power");
-                    PlayersConfig.get().set(id + name + ".balance", pBalance - amount);
+                    PlayersConfig.get().set(id + ".balance." + name, pBalance - amount);
                     CurrenciesConfig.get().set(name + ".amount", cMarketAmount - amount);
                     CurrenciesConfig.get().set(name + ".power", Double.valueOf(Math.round((cValue-(cPower*amount))/(cMarketAmount-amount)*1000))/1000);
                     CurrenciesConfig.save();
@@ -546,6 +555,63 @@ public class Currency {
         }else{
             System.out.println("The player doesn't exist");
         }
+        return true;
+    }
+    public static boolean rename (Player p, String newName){
+        // init vars
+        String id = p.getName();
+        int count = 0;
+        boolean isNameValid = false;
+        //checking if sender created a currency
+        if (PlayersConfig.get().contains(id + ".hascreated")){
+            //checking every currency
+            for (String currencies: CurrenciesConfig.get().getKeys(false)){
+                double pBalance = PlayersConfig.get().getDouble(id + "." + currencies + ".balance");
+                double cMarketAmount = CurrenciesConfig.get().getDouble(currencies + ".amount");
+                double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
+                double cEcoActivity = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
+                double cPower = CurrenciesConfig.get().getDouble(currencies + ".power");
+                int nPeers = CurrenciesConfig.get().getInt(currencies + ".peers");
+                String description = CurrenciesConfig.get().getString(currencies + ".description");
+                String author = CurrenciesConfig.get().getString(currencies + ".author");
+                //checking if sender is the author of the currency
+                if (id.equals(author)){
+                    if (newName.length() > 2 && newName.length() <= 9) {
+                        for (int k = 0; k < newName.length(); k++) {
+                            if (Character.isLetter(newName.charAt(k))) {
+                                count++;
+                            }
+                        }
+                        if (newName.length() == count) {
+                            isNameValid = true;
+                        }
+                        if (isNameValid == true) {
+                            //cloning the currency
+                            PlayersConfig.get().set(id + "." + newName + "balance", pBalance);
+                            CurrenciesConfig.get().set(newName + ".power", cPower);
+                            CurrenciesConfig.get().set(newName + ".amount", cMarketAmount);
+                            CurrenciesConfig.get().set(newName + ".totalvalue", cValue);
+                            CurrenciesConfig.get().set(newName + ".economic-activity", cEcoActivity);
+                            CurrenciesConfig.get().set(newName + ".description", description);
+                            CurrenciesConfig.get().set(newName + ".peers", nPeers);
+                            CurrenciesConfig.get().set(newName + ".author", author);
+                            //deleting the original
+                            PlayersConfig.get().set(id + ".balance." + currencies, null);
+                            CurrenciesConfig.get().set(newName, null);
+                            p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0") + newName + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-11"));
+                            isCurrencyCreated = true;
+                        } else {
+                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0_1"));
+                        }
+                    } else {
+                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0_1"));
+                    }
+                }
+            }
+        }else {
+            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-12"));
+        }
+
         return true;
     }
 
@@ -622,12 +688,18 @@ public class Currency {
                                 }
                                 i += 404;
                             }
-                            else if (difference >= 729 & difference < 1620) {
+                            else if (difference >= 729 & difference < 900) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(eBlock);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
                                 i += 728;
+                            }else if (difference >= 900 & difference < 1620) {
+                                final Map<Integer, ItemStack> map = p.getInventory().addItem(netherite);
+                                for (final ItemStack item : map.values()) {
+                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                }
+                                i += 899;
                             }
                             else if (difference >= 1620 && difference < 8100) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(dBlock);
@@ -636,12 +708,6 @@ public class Currency {
                                 }
                                 i += 1619;
                             }else if (difference >= 8100) {
-                                final Map<Integer, ItemStack> map = p.getInventory().addItem(netherite);
-                                for (final ItemStack item : map.values()) {
-                                    p.getWorld().dropItemNaturally(p.getLocation(), item);
-                                }
-                                i += 8099;
-                            }else if (difference >= 72900) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(nBlock);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
@@ -656,7 +722,7 @@ public class Currency {
                             CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity - (5e-7/cPower));
                         }
                         CurrenciesConfig.get().set(name + ".power", Double.valueOf(Math.round((cValue-(cPower*Double.valueOf(Math.round(amount*1000))/1000))/(cMarketAmount-Double.valueOf(Math.round(amount*1000))/1000)*1000))/1000);
-                        PlayersConfig.get().set(id + "." + name + "balance", pBalance - Double.valueOf(Math.round(amount*1000))/1000);
+                        PlayersConfig.get().set(id + ".balance." + name, pBalance - Double.valueOf(Math.round(amount*1000))/1000);
                         p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-5") + Double.valueOf(Math.round(amount*1000))/1000 + " " + name);
                     }else{
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_4"));
@@ -682,7 +748,7 @@ public class Currency {
         if(CurrenciesConfig.get().getKeys(false).size() > 0) {
             p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-10"));
             for (String currencies : CurrenciesConfig.get().getKeys(false)) {
-                p.sendMessage(ChatColor.GOLD + currencies + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-10_1") + PlayersConfig.get().getDouble(user + "." + currencies + "balance") + "\n");
+                p.sendMessage(ChatColor.GOLD + currencies + ":" + PlayersConfig.get().getDouble(user + ".balance." + currencies) + "\n");
             }
         }else {
             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-5"));

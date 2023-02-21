@@ -5,21 +5,18 @@ import me.rgn.asceciacurrencies.files.LanguageConfig;
 import me.rgn.asceciacurrencies.messages.Messages;
 import me.rgn.asceciacurrencies.commands.*;
 import me.rgn.asceciacurrencies.files.PlayersConfig;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.util.StringUtil;
-
-import java.util.*;
 
 
 public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter{
+
+    public static JavaPlugin plugin;
     @Override
     public void onEnable() {
+        plugin = this;
         //init configs
         getConfig().options().copyDefaults();
         saveDefaultConfig();
