@@ -18,5 +18,6 @@ permissions:
       deposit:
       withdraw:
       infos:
+      wallet:
     admin:
       forcemanage:
