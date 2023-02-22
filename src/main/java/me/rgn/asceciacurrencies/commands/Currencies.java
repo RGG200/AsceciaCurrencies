@@ -162,6 +162,10 @@ public class Currencies implements CommandExecutor, TabCompleter {
                     } else {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
+                } else {
+                    if (sender instanceof Player) {
+                        p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
+                    }
                 }
             }
         } else {
