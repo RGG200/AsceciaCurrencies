@@ -120,76 +120,77 @@ public class Currency {
                 double cMarketValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
                 for (double i = 0; i < cMarketValue*9; i++) {
                     double difference = (cMarketValue*9)-i;
-                    if (difference < 1 && difference >= 5){
+                    if (difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9){
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(iNugget);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                    }else if (difference < 5 && difference >= 9){
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9-1;
+                    }else if (difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9){
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(gNugget);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += 4;
-                    }else if (difference >= 9 && difference < 45) {
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9-1;
+                    }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9 && difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(iron);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += 8;
-                    } else if (difference >= 45 & difference < 81) {
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9-1;
+                    } else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(gold);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += 44;
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot")*9-1;
                     }
-                    else if (difference >= 81 & difference < 180) {
+                    else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(emerald);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += 80;
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald")*9-1;
                     }
-                    else if (difference >= 180 & difference < 405) {
+                    else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_block")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(diamond);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += 179;
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond")*9-1;
                     }
-                    else if (difference >= 405 & difference < 729) {
+                    else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_block")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald_block")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(gBlock);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += 404;
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_block")*9-1;
                     }
-                    else if (difference >= 729 & difference < 900) {
+                    else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald_block")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_ingot")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(eBlock);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += 728;
-                    }else if (difference >= 900 & difference < 1620) {
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald_block")*9-1;
+                    }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_ingot")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond_block")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(netherite);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += 899;
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_ingot")*9-1;
                     }
-                    else if (difference >= 1620 && difference < 8100) {
+                    else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond_block")*9 && difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_block")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(dBlock);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += 1619;
-                    }else if (difference >= 8100) {
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond_block")*9-2;
+                    }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_block")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(nBlock);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += 8099;
+                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_block")*9-1;
                     }
                 }
                 PlayersConfig.get().set(key + ".balance." + name, null);
@@ -557,6 +558,16 @@ public class Currency {
         }
         return true;
     }
+    public static boolean reloadConfig(){
+        CurrenciesConfig.reload();
+        AsceciaCurrencies.plugin.reloadConfig();
+        PlayersConfig.reload();
+        LanguageConfig.reload();
+        Bukkit.getServer().broadcastMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-12"));
+        return true;
+    }
+
+
     public static boolean rename (Player p, String newName){
         // init vars
         String id = p.getName();
@@ -576,42 +587,48 @@ public class Currency {
                 String author = CurrenciesConfig.get().getString(currencies + ".author");
                 //checking if sender is the author of the currency
                 if (id.equals(author)){
-                    if (newName.length() > 2 && newName.length() <= 9) {
-                        for (int k = 0; k < newName.length(); k++) {
-                            if (Character.isLetter(newName.charAt(k))) {
-                                count++;
+                    if (!newName.equals(currencies)){
+                        if (newName.length() > 2 && newName.length() <= 9) {
+                            for (int k = 0; k < newName.length(); k++) {
+                                if (Character.isLetter(newName.charAt(k))) {
+                                    count++;
+                                }
                             }
-                        }
-                        if (newName.length() == count) {
-                            isNameValid = true;
-                        }
-                        if (isNameValid == true) {
-                            //cloning the currency
-                            PlayersConfig.get().set(id + "." + newName + "balance", pBalance);
-                            CurrenciesConfig.get().set(newName + ".power", cPower);
-                            CurrenciesConfig.get().set(newName + ".amount", cMarketAmount);
-                            CurrenciesConfig.get().set(newName + ".totalvalue", cValue);
-                            CurrenciesConfig.get().set(newName + ".economic-activity", cEcoActivity);
-                            CurrenciesConfig.get().set(newName + ".description", description);
-                            CurrenciesConfig.get().set(newName + ".peers", nPeers);
-                            CurrenciesConfig.get().set(newName + ".author", author);
-                            //deleting the original
-                            PlayersConfig.get().set(id + ".balance." + currencies, null);
-                            CurrenciesConfig.get().set(newName, null);
-                            p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0") + newName + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-11"));
-                            isCurrencyCreated = true;
+                            if (newName.length() == count) {
+                                isNameValid = true;
+                            }
+                            if (isNameValid == true) {
+                                //cloning the currency
+                                PlayersConfig.get().set(id + ".balance." + newName, pBalance);
+                                CurrenciesConfig.get().set(newName + ".power", cPower);
+                                CurrenciesConfig.get().set(newName + ".amount", cMarketAmount);
+                                CurrenciesConfig.get().set(newName + ".totalvalue", cValue);
+                                CurrenciesConfig.get().set(newName + ".economic-activity", cEcoActivity);
+                                CurrenciesConfig.get().set(newName + ".description", description);
+                                CurrenciesConfig.get().set(newName + ".peers", nPeers);
+                                CurrenciesConfig.get().set(newName + ".author", author);
+                                //deleting the original
+                                PlayersConfig.get().set(id + ".balance." + currencies, null);
+                                CurrenciesConfig.get().set(currencies, null);
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0") + currencies + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-11") + newName);
+                                CurrenciesConfig.save();
+                                PlayersConfig.save();
+                                CurrenciesConfig.reload();
+                                PlayersConfig.reload();
+                            } else {
+                                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0_1"));
+                            }
                         } else {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0_1"));
                         }
-                    } else {
-                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0_1"));
+                    }else {
+                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-12_2"));
                     }
                 }
             }
         }else {
             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-12"));
         }
-
         return true;
     }
 
@@ -643,76 +660,77 @@ public class Currency {
                         final ItemStack nBlock = new ItemStack(Material.NETHERITE_BLOCK, 1);/*Netherite tier*/
                         for (int i = 0; i < cValue*amount*9; i++) {
                             double difference = (cValue*amount*9)-i;
-                            if (difference < 1 && difference >= 5){
+                            if (difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9){
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(iNugget);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                            }else if (difference < 5 && difference >= 9){
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9-1;
+                            }else if (difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9){
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(gNugget);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += 4;
-                            }else if (difference >= 9 && difference < 45) {
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9-1;
+                            }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9 && difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(iron);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += 8;
-                            } else if (difference >= 45 & difference < 81) {
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9-1;
+                            } else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(gold);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += 44;
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot")*9-1;
                             }
-                            else if (difference >= 81 & difference < 180) {
+                            else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(emerald);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += 80;
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald")*9-1;
                             }
-                            else if (difference >= 180 & difference < 405) {
+                            else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_block")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(diamond);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += 179;
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond")*9-1;
                             }
-                            else if (difference >= 405 & difference < 729) {
+                            else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_block")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald_block")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(gBlock);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += 404;
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_block")*9-1;
                             }
-                            else if (difference >= 729 & difference < 900) {
+                            else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald_block")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_ingot")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(eBlock);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += 728;
-                            }else if (difference >= 900 & difference < 1620) {
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.emerald_block")*9-1;
+                            }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_ingot")*9 & difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond_block")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(netherite);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += 899;
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_ingot")*9-1;
                             }
-                            else if (difference >= 1620 && difference < 8100) {
+                            else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond_block")*9 && difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_block")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(dBlock);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += 1619;
-                            }else if (difference >= 8100) {
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.diamond_block")*9-1;
+                            }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_block")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(nBlock);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += 8099;
+                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.netherite_block")*9-1;
                             }
                         }
                         CurrenciesConfig.get().set(name + ".amount", cMarketAmount - Double.valueOf(Math.round(amount*1000))/1000);

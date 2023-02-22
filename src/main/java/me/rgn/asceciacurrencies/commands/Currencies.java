@@ -2,6 +2,7 @@ package me.rgn.asceciacurrencies.commands;
 import me.rgn.asceciacurrencies.api.CurrenciesAPI;
 import me.rgn.asceciacurrencies.files.CurrenciesConfig;
 import me.rgn.asceciacurrencies.files.LanguageConfig;
+import me.rgn.asceciacurrencies.files.PlayersConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -20,16 +21,19 @@ public class Currencies implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         CurrenciesAPI cAPI = new CurrenciesAPI();
         if (args.length > 0) {
-            if (args[0].equals("force") && args[1].equals("delete")) {
-                if (sender instanceof Player) {
-                    Player p = (Player) sender;
-                    if (p.hasPermission("asceciacurrencies.admin.forcemanage")) {
-                        if (args.length > 3) {
-                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-3"));
-                        } else {
-                            CurrenciesAPI.currency.forceDelete(args[1]);
-                        }
+            if (args[0].equals("force-delete")) {
+                Player p = (Player) sender;
+                if (p.hasPermission("asceciacurrencies.admin.forcemanage")) {
+                    if (args.length != 2) {
+                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-3"));
+                    } else {
+                        CurrenciesAPI.currency.forceDelete(args[1]);
                     }
+                }
+            }else if (args[0].equals("reloadConfig")){
+                CommandSender s = sender;
+                if (s.hasPermission("asceciacurrencies.admin.reloadconfig") || s instanceof CommandSender) {
+                    CurrenciesAPI.currency.reloadConfig();
                 }
             }
             if (sender instanceof Player) {
@@ -142,10 +146,9 @@ public class Currencies implements CommandExecutor, TabCompleter {
                 }//rename
                 else if (args[0].equals("rename")) {
                     if (p.hasPermission("asceciacurrencies.player.rename")) {
-                        if (args.length < 2 || args.length > 2) {
+                        if (args.length != 2) {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-12_1"));
                         } else {
-                            Player target = Bukkit.getServer().getPlayer(args[1]);
                             CurrenciesAPI.currency.rename(p, args[1]);
                         }
                     } else {
@@ -168,8 +171,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
         }
         return true;
     }
-    private static final String[] COMMANDS = {"create", "delete", "mint", "description", "info", "list", "deposit", "withdraw", "wallet", "pay"};
-    private static final String[] CURRENCIES = {};
+    private static final String[] COMMANDS = {"create", "delete", "mint", "description", "info", "list", "deposit", "withdraw", "wallet", "pay", "rename"};
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String CommandLabel, String[] args){
         if(cmd.getName().equals("currencies")){
@@ -180,8 +182,37 @@ public class Currencies implements CommandExecutor, TabCompleter {
                 StringUtil.copyPartialMatches(args[0], Arrays.asList(COMMANDS), completions);
                 //SORT THE LIST
                 Collections.sort(completions);
+                return completions;
             }
-            return completions;
+            else if (args.length == 2) {
+                switch (args[0].toLowerCase()){
+                    case "delete", "info", "withdraw":
+                        for (String currencies: CurrenciesConfig.get().getKeys(false)) {
+                            completions.add(currencies);
+                        }
+                        break;
+                    case "pay":
+                        for (Player player: Bukkit.getServer().getOnlinePlayers()){
+                            String pName = player.getName();
+                            completions.add(pName);
+                        }
+                        break;
+                }
+                Collections.sort(completions);
+                return StringUtil.copyPartialMatches(args[1], completions, new ArrayList<>());
+            }
+            else if (args.length == 3) {
+                switch (args[0].toLowerCase()){
+                    case "pay":
+                        for (String currencies: CurrenciesConfig.get().getKeys(false)) {
+                            completions.add(currencies);
+                        }
+                        break;
+                }
+                Collections.sort(completions);
+                return StringUtil.copyPartialMatches(args[2], completions, new ArrayList<>());
+            }
+
         }
         return null;
     }

@@ -22,3 +22,4 @@ permissions:
       rename:
     admin:
       forcemanage:
+      reload-config:
