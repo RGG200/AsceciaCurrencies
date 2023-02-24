@@ -37,7 +37,6 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter{
         getServer().broadcastMessage(ChatColor.GOLD + "[ Ascecia-Currencies ]: Version 1.0-RC \n Thanks for using Ascecia-Currencies !!!");
         //does stuff
         BukkitScheduler economic_evolution = getServer().getScheduler();
-        BukkitScheduler value_evolution = getServer().getScheduler();
         economic_evolution.scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
@@ -50,22 +49,10 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter{
                         CurrenciesConfig.get().set(currencies + ".economic-activity", 0.21);
                     }
                     CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round((cValue/cMarketAmount)*1000))/1000);
-                    CurrenciesConfig.save();
-                }
-            }
-        }, 0L, 576000L);
-        value_evolution.scheduleSyncRepeatingTask(this, new Runnable() {
-            @Override
-            public void run() {
-                for (String currencies : CurrenciesConfig.get().getKeys(false)){
-                    double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
-                    double cEcoAct = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
                     CurrenciesConfig.get().set(currencies + ".totalvalue", cValue*cEcoAct);
                     CurrenciesConfig.save();
                 }
             }
-        }, 0L, 20L);
-
-    }
+        }, 0L, 576000L);
 
 }
