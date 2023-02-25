@@ -35,7 +35,6 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         getCommand("Currencies").setTabCompleter(new Currencies());
         //printing success
         System.out.println("[Ascecia-Currencies]: Plugin Loaded !");
-        getServer().broadcastMessage(ChatColor.GOLD + "[ Ascecia-Currencies ]: Version 1.0-RC \n Thanks for using Ascecia-Currencies !!!");
         //does stuff
         BukkitScheduler economic_evolution = getServer().getScheduler();
         economic_evolution.scheduleSyncRepeatingTask(this, new Runnable() {
