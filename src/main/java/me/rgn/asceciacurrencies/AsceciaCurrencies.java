@@ -11,9 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 
-public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter{
+public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter {
 
     public static JavaPlugin plugin;
+
     @Override
     public void onEnable() {
         plugin = this;
@@ -40,19 +41,20 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter{
         economic_evolution.scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
-                for (String currencies : CurrenciesConfig.get().getKeys(false)){
+                for (String currencies : CurrenciesConfig.get().getKeys(false)) {
                     double cMarketAmount = CurrenciesConfig.get().getDouble(currencies + ".amount");
                     double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
                     double cEcoAct = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
                     CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoAct - 0.01);
-                    if (cEcoAct < 0.2){
+                    if (cEcoAct < 0.2) {
                         CurrenciesConfig.get().set(currencies + ".economic-activity", 0.21);
                     }
-                    CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round((cValue/cMarketAmount)*1000))/1000);
-                    CurrenciesConfig.get().set(currencies + ".totalvalue", cValue*cEcoAct);
+                    CurrenciesConfig.get().set(currencies + ".totalvalue", cValue * cEcoAct);
+                    CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round((cValue / cMarketAmount) * 1000)) / 1000);
                     CurrenciesConfig.save();
                 }
             }
         }, 0L, 576000L);
 
+    }
 }
