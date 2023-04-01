@@ -642,7 +642,7 @@ public class Currency {
         String pname = p.getName().toString();
         //if currency exists
         if (CurrenciesConfig.get().contains(name)) {
-            double pBalance = PlayersConfig.get().getDouble(id + "." + name + "balance");
+            double pBalance = PlayersConfig.get().getDouble(id + ".balance" + name);
             //if you're not a rat
             if (pBalance >= Double.valueOf(Math.round(amount*1000))/1000) {
                 if (Double.valueOf(Math.round(amount*1000))/1000 >= 1){
