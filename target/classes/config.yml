@@ -1,7 +1,7 @@
 ores_prices:
-  iron_nugget: 0.11111111111111
+  iron_nugget: 0.11
   coal: 0.5
-  gold_nugget: 0.55555555555555
+  gold_nugget: 0.5
   iron_ingot: 1
   coal_block: 4.5
   gold_ingot: 5

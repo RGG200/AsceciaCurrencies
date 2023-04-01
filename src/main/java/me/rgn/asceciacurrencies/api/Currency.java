@@ -125,13 +125,13 @@ public class Currency {
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9-1;
+                        i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9;
                     }else if (difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9){
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(gNugget);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9-1;
+                        i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9;
                     }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9 && difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(iron);
                         for (final ItemStack item : map.values()) {
@@ -638,11 +638,11 @@ public class Currency {
         double cValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
         double cMarketAmount = CurrenciesConfig.get().getDouble(name + ".amount");
         double cEcoActivity = CurrenciesConfig.get().getDouble(name + ".economic-activity");
-        String id = p.getName();
+        String id = p.getName().toString();
         String pname = p.getName().toString();
         //if currency exists
         if (CurrenciesConfig.get().contains(name)) {
-            double pBalance = PlayersConfig.get().getDouble(id + ".balance" + name);
+            double pBalance = PlayersConfig.get().getDouble(id + ".balance." + name);
             //if you're not a rat
             if (pBalance >= Double.valueOf(Math.round(amount*1000))/1000) {
                 if (Double.valueOf(Math.round(amount*1000))/1000 >= 1){
@@ -658,20 +658,20 @@ public class Currency {
                         final ItemStack dBlock = new ItemStack(Material.DIAMOND_BLOCK, 1);/*Diamond Block tier*/
                         final ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT, 1);/*Netherite tier*/
                         final ItemStack nBlock = new ItemStack(Material.NETHERITE_BLOCK, 1);/*Netherite tier*/
-                        for (int i = 0; i < cValue*amount*9; i++) {
-                            double difference = (cValue*amount*9)-i;
+                        for (int i = 0; i < (cValue/cMarketAmount*amount)*9; i++) {
+                            double difference = (cValue/cMarketAmount*amount)*9-i;
                             if (difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9){
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(iNugget);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9-1;
+                                i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9;
                             }else if (difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9){
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(gNugget);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9-1;
+                                i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9;
                             }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9 && difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(iron);
                                 for (final ItemStack item : map.values()) {
@@ -735,7 +735,7 @@ public class Currency {
                         }
                         CurrenciesConfig.get().set(name + ".amount", cMarketAmount - Double.valueOf(Math.round(amount*1000))/1000);
                         CurrenciesConfig.get().set(name + ".totalvalue", cValue - (cPower * (Double.valueOf(Math.round(amount*1000))/1000)));
-                        //if the eco activity is superior to 0.5
+                        //if the eco activity is superior to 0.2
                         if(cEcoActivity > 0.2) {
                             CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity - (5e-7/cPower));
                         }

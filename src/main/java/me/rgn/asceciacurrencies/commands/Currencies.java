@@ -161,7 +161,13 @@ public class Currencies implements CommandExecutor, TabCompleter {
                     } else {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
-                } else {
+                }
+                else if (args[0].equals("reloadConfig")){
+                    CommandSender s = sender;
+                    if (s.hasPermission("asceciacurrencies.admin.reloadconfig") || s instanceof CommandSender) {
+                        CurrenciesAPI.currency.reloadConfig();
+                    }
+                }else {
                     if (sender instanceof Player) {
                         p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
                     }
