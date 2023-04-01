@@ -158,7 +158,6 @@ public class Currencies implements CommandExecutor, TabCompleter {
                 } else if (args[0].equals("wallet") || args[0].equals("wal")) {
                     if (p.hasPermission("asceciacurrencies.player.wallet")) {
                         CurrenciesAPI.currency.wallet(p);
-                        p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
                     } else {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }

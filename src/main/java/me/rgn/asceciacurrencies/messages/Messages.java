@@ -45,7 +45,8 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-9_1",": \n      Power: ");
         LanguageConfig.get().set("en-us.message-9_2","\n        Economic-Activity: ");
 
-        LanguageConfig.get().set("en-us.message-10","\n | Ascecia-Currencies | Wallet | \n \n Balance: \n \n    ");
+        LanguageConfig.get().set("en-us.message-10","\n | Ascecia-Currencies | Wallet | \n \n");
+        LanguageConfig.get().set("en-us.message-10_1","\n       Balance: ");
 
         LanguageConfig.get().set("en-us.message-11", " Has been renamed to ");
 
@@ -132,7 +133,7 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-9_2","\n        Activité Economique: ");
 
         LanguageConfig.get().set("fr-FR.message-10","\n | Ascecia-Currencies | Porte-feuille | \n \n");
-        LanguageConfig.get().set("fr-FR.message-10_1"," \n    Solde: ");
+        LanguageConfig.get().set("fr-FR.message-10_1"," \n      Solde: ");
 
         LanguageConfig.get().set("fr-FR.message-11", " est maintenant nommé ");
 

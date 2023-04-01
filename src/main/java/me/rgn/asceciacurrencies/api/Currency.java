@@ -766,7 +766,7 @@ public class Currency {
         if(CurrenciesConfig.get().getKeys(false).size() > 0) {
             p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-10"));
             for (String currencies : CurrenciesConfig.get().getKeys(false)) {
-                p.sendMessage(ChatColor.GOLD + currencies + ":" + PlayersConfig.get().getDouble(user + ".balance." + currencies) + "\n");
+                p.sendMessage(ChatColor.GOLD + "    " + currencies + ": " + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-10_1") + PlayersConfig.get().getDouble(user + ".balance." + currencies) + "\n");
             }
         }else {
             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-5"));
