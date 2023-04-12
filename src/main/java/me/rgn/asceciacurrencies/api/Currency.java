@@ -632,6 +632,23 @@ public class Currency {
         return true;
     }
 
+    public static Boolean top(Boolean all, String name, Player p){
+        if(all){
+            p.sendMessage(ChatColor.GOLD + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-13"));
+            for(String currencies: CurrenciesConfig.getKeys(false)){
+                p.sendMessage(ChatColor.GOLD + currencies + ": \n");
+                for(String player: PlayersConfig.getKeys(false)){
+                    p.sendMessage(ChatColor.RED + "\n   " +  player + ": " + ChatColor.GREEN + PlayersConfig.get().getDouble(player + ".balance." + currencies));
+                }
+            }
+        }else{
+            p.sendMessage(ChatColor.GOLD + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-13") + "| " + name + " |");
+            for(String player: PlayersConfig.getKeys(false)){
+                p.sendMessage(ChatColor.RED + "\n   " + player + ": " + ChatColor.GREEN + PlayersConfig.get().getDouble(player + ".balance." + name));
+            }
+        }
+    }
+
     public static boolean withdraw(Player p, String name, double amount){
         //init vars and config keys
         double cPower = CurrenciesConfig.get().getDouble(name + ".power");

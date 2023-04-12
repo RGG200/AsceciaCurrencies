@@ -166,6 +166,16 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             CurrenciesAPI.currency.forceDelete(args[1]);
                         }
                     }
+                }else if(args[0].equals("top")){
+                    if(args[1].equals("all")){
+                        cAPI.currency.top(true, args[2]);
+                    }else if(args[1].equals("one")){
+                        if(cAPI.currenciesConfig.get().contains(args[2])){
+                            cAPI.currency.top(false, args[2], p);
+                        }
+                    }else{
+                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13"));
+                    }
                 }
         } else {
             if (sender instanceof Player p) {

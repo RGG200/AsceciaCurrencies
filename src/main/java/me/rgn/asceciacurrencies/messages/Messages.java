@@ -52,6 +52,9 @@ public class Messages {
 
         LanguageConfig.get().set("en-us.message-12", "[Currencies]: Configuration Reloaded !");
 
+        LanguageConfig.get().set("en-us.message-13", "| Ascecia Currencies | Top |");
+
+
         //errors in english
         LanguageConfig.get().set("en-us.error-0", "[Currencies]: /currencies create (currencyname)");
         LanguageConfig.get().set("en-us.error-0_1", "[Currencies]: Your currency needs to be 3 caracthers long minimum and 9 max and not use any special characters or numbers or spaces");
@@ -94,6 +97,9 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-12", "[Currencies]: You do not own any currency !");
         LanguageConfig.get().set("en-us.error-12_1", "[Currencies]: /currencies rename (name)");
         LanguageConfig.get().set("en-us.error-12_2", "[Currencies]: The new Name can't be the same as the old one !");
+
+        LanguageConfig.get().set("en-us.error-13", "[Currencies]: /currencies top (all/one)");
+        LanguageConfig.get().set("en-us.error-13_1", "[Currencies]: This currency doesn't exist");
 
 
         //messages en français
@@ -139,6 +145,8 @@ public class Messages {
 
         LanguageConfig.get().set("fr-FR.message-12", "[Currencies]: Configuration rechargée !");
 
+        LanguageConfig.get().set("fr-FR.message-13", "| Ascecia Currencies | Top |");
+
         //erreur en français
         LanguageConfig.get().set("fr-FR.error-0", "[Currencies]: /currencies create (nom)");
         LanguageConfig.get().set("fr-FR.error-0_1", "[Currencies]: le nom de votre monnaie doit faire minimum 3 caractères et max 9 et il ne doit contenir ni nombre ni caractères spéciaux.");
@@ -181,6 +189,9 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.error-12", "[Currencies]: Vous n'avez pas de monnaie !");
         LanguageConfig.get().set("fr-FR.error-12_1", "[Currencies]: /currencies rename (nom)");
         LanguageConfig.get().set("fr-FR.error-12_2", "[Currencies]: Le nouveau nom ne peut pas être le même que l'ancien");
+
+        LanguageConfig.get().set("fr-FR.error-13", "[Currencies]: /currencies top (all/one)");
+        LanguageConfig.get().set("fr-FR.error-13_1", "[Currencies]: Cette Monnaie n'existe pas");
 
         LanguageConfig.save();
     }
