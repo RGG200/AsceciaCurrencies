@@ -21,18 +21,9 @@ public class Currencies implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         CurrenciesAPI cAPI = new CurrenciesAPI();
         if (args.length > 0) {
-            if (args[0].equals("force-delete")) {
-                Player p = (Player) sender;
-                if (p.hasPermission("asceciacurrencies.admin.forcemanage")) {
-                    if (args.length != 2) {
-                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-3"));
-                    } else {
-                        CurrenciesAPI.currency.forceDelete(args[1]);
-                    }
-                }
-            }else if (args[0].equals("reloadConfig")){
+            if (args[0].equals("reloadConfig")){
                 CommandSender s = sender;
-                if (s.hasPermission("asceciacurrencies.admin.reloadconfig") || s instanceof CommandSender) {
+                if (s instanceof CommandSender) {
                     CurrenciesAPI.currency.reloadConfig();
                 }
             }
@@ -162,17 +153,20 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
                 }
-                else if (args[0].equals("reloadConfig")){
-                    CommandSender s = sender;
-                    if (s.hasPermission("asceciacurrencies.admin.reloadconfig") || s instanceof CommandSender) {
+                else if (args[0].equals("reload-config")){
+                    if (p.hasPermission("asceciacurrencies.admin.reloadconfig"){
                         CurrenciesAPI.currency.reloadConfig();
                     }
-                }else {
-                    if (sender instanceof Player) {
-                        p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
+                }
+                else if (args[0].equals("force-delete")) {
+                    if (p.hasPermission("asceciacurrencies.admin.forcemanage")) {
+                        if (args.length != 2) {
+                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-3"));
+                        } else {
+                            CurrenciesAPI.currency.forceDelete(args[1]);
+                        }
                     }
                 }
-            }
         } else {
             if (sender instanceof Player p) {
                 p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
