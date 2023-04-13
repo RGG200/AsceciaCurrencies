@@ -54,6 +54,7 @@ public class Messages {
 
         LanguageConfig.get().set("en-us.message-13", "| Ascecia Currencies | Top |");
 
+        LanguageConfig.get().set("en-us.message-14", "Language set !");
 
         //errors in english
         LanguageConfig.get().set("en-us.error-0", "[Currencies]: /currencies create (currencyname)");
@@ -101,6 +102,8 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-13", "[Currencies]: /currencies top (all/one)");
         LanguageConfig.get().set("en-us.error-13_1", "[Currencies]: This currency doesn't exist");
 
+        LanguageConfig.get().set("en-us.error-14", "[Currencies]: /currencies language (language)");
+        LanguageConfig.get().set("en-us.error-14_1", "[Currencies]: this language isn't in the configuration");
 
         //messages en français
         LanguageConfig.get().set("fr-FR.message-0", "[Currencies]: La monnaie ");
@@ -147,6 +150,8 @@ public class Messages {
 
         LanguageConfig.get().set("fr-FR.message-13", "| Ascecia Currencies | Top |");
 
+        LanguageConfig.get().set("fr-FR.message-14", "Langue Définie !");
+
         //erreur en français
         LanguageConfig.get().set("fr-FR.error-0", "[Currencies]: /currencies create (nom)");
         LanguageConfig.get().set("fr-FR.error-0_1", "[Currencies]: le nom de votre monnaie doit faire minimum 3 caractères et max 9 et il ne doit contenir ni nombre ni caractères spéciaux.");
@@ -192,6 +197,9 @@ public class Messages {
 
         LanguageConfig.get().set("fr-FR.error-13", "[Currencies]: /currencies top (all/one)");
         LanguageConfig.get().set("fr-FR.error-13_1", "[Currencies]: Cette Monnaie n'existe pas");
+
+        LanguageConfig.get().set("fr-FR.error-14", "[Currencies]: /currencies language (langue)");
+        LanguageConfig.get().set("fr-FR.error-14_1", "[Currencies]: Cette langue n'est pas référencé dans la configuration");
 
         LanguageConfig.save();
     }

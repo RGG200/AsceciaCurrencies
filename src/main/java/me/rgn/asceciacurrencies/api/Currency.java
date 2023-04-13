@@ -12,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class Currency {
@@ -125,13 +128,21 @@ public class Currency {
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9;
-                    }else if (difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9){
+                        if(AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget") <= 1){
+                            i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9;
+                        }else{
+                            i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9-1;
+                        }
+                    }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9){
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(gNugget);
                         for (final ItemStack item : map.values()) {
                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                         }
-                        i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9;
+                        if(AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget") <= 1){
+                            i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9;
+                        }else{
+                            i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9-1;
+                        }
                     }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9 && difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot")*9) {
                         final Map<Integer, ItemStack> map = p.getInventory().addItem(iron);
                         for (final ItemStack item : map.values()) {
@@ -262,6 +273,15 @@ public class Currency {
             }
         }else {
             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-5"));
+        }
+        return true;
+    }
+    public static boolean language(String language, Player p){
+        if(LanguageConfig.get().contains(language)){
+            LanguageConfig.get().set("language", language);
+            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-14"));
+        }else{
+            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-14_1"));
         }
         return true;
     }
@@ -631,22 +651,44 @@ public class Currency {
         }
         return true;
     }
-
     public static Boolean top(Boolean all, String name, Player p){
+        final List<String> scoreboard = new ArrayList<>();
+        int i = 0;
         if(all){
-            p.sendMessage(ChatColor.GOLD + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-13"));
-            for(String currencies: CurrenciesConfig.getKeys(false)){
-                p.sendMessage(ChatColor.GOLD + currencies + ": \n");
-                for(String player: PlayersConfig.getKeys(false)){
-                    p.sendMessage(ChatColor.RED + "\n   " +  player + ": " + ChatColor.GREEN + PlayersConfig.get().getDouble(player + ".balance." + currencies));
+            p.sendMessage(ChatColor.GOLD + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-13") + "\n ");
+            for(String currencies: CurrenciesConfig.get().getKeys(false)){
+                p.sendMessage(ChatColor.GOLD + " " + currencies + ": \n");
+                for (String player: PlayersConfig.get().getKeys(false)) {
+                    scoreboard.add(String.valueOf(PlayersConfig.get().getDouble(player + ".balance." + currencies)));
+                }
+                Collections.sort(scoreboard);
+                Collections.reverse(scoreboard);
+                for(String playerBalance: scoreboard){
+                    for(String player: PlayersConfig.get().getKeys(false)){
+                        if(playerBalance.equals(String.valueOf(PlayersConfig.get().getDouble(player + ".balance." + currencies)))){
+                            i++;
+                            p.sendMessage(ChatColor.RED + "     " + i + ". " +  player + ": " + ChatColor.GREEN + PlayersConfig.get().getDouble(player + ".balance." + currencies) + "\n ");
+                        }
+                    }
                 }
             }
         }else{
-            p.sendMessage(ChatColor.GOLD + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-13") + "| " + name + " |");
-            for(String player: PlayersConfig.getKeys(false)){
-                p.sendMessage(ChatColor.RED + "\n   " + player + ": " + ChatColor.GREEN + PlayersConfig.get().getDouble(player + ".balance." + name));
+            p.sendMessage(ChatColor.GOLD + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-13") + " " + name + " |"  + "\n ");
+            for (String player: PlayersConfig.get().getKeys(false)) {
+                scoreboard.add(String.valueOf(PlayersConfig.get().getDouble(player + ".balance." + name)));
+            }
+            Collections.sort(scoreboard);
+            Collections.reverse(scoreboard);
+            for(String playerBalance: scoreboard){
+                for(String player: PlayersConfig.get().getKeys(false)){
+                    if(playerBalance.equals(String.valueOf(PlayersConfig.get().getDouble(player + ".balance." + name)))){
+                        i++;
+                        p.sendMessage(ChatColor.RED + "     " + i + ". " +  player + ": " + ChatColor.GREEN + PlayersConfig.get().getDouble(player + ".balance." + name) + "\n ");
+                    }
+                }
             }
         }
+        return true;
     }
 
     public static boolean withdraw(Player p, String name, double amount){
@@ -682,13 +724,21 @@ public class Currency {
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9;
-                            }else if (difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9){
+                                if(AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget") <= 1){
+                                    i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9;
+                                }else{
+                                    i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_nugget")*9-1;
+                                }
+                            }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9 && difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9){
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(gNugget);
                                 for (final ItemStack item : map.values()) {
                                     p.getWorld().dropItemNaturally(p.getLocation(), item);
                                 }
-                                i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9;
+                                if(AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget") <= 1){
+                                    i -= 1-AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9;
+                                }else{
+                                    i += AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_nugget")*9-1;
+                                }
                             }else if (difference >= AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.iron_ingot")*9 && difference < AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices.gold_ingot")*9) {
                                 final Map<Integer, ItemStack> map = p.getInventory().addItem(iron);
                                 for (final ItemStack item : map.values()) {
