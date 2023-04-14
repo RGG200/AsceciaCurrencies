@@ -81,7 +81,7 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-8", "you need to make at least one of your currency do /currencies make (name) (amount) !");
         LanguageConfig.get().set("en-us.error-8_1", "The chosen material is not an ore and thus can't be deposited in your currency !");
 
-        LanguageConfig.get().set("en-us.error-9", "/currencypay (playername) (currencyname) (amount)");
+        LanguageConfig.get().set("en-us.error-9", "[Currencies]: /currencies pay (playername) (currencyname) (amount)");
         LanguageConfig.get().set("en-us.error-9_1", "[Currencies]: The Player Specified isn't Online");
         LanguageConfig.get().set("en-us.error-9_2", "[Currencies]: The Currency Specified doesn't exist");
         LanguageConfig.get().set("en-us.error-9_3", "[Currencies]: You do not have enough money");
