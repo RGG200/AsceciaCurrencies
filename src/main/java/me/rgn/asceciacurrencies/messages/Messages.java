@@ -19,10 +19,10 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-2", "[Currencies]: You minted ");
 
         LanguageConfig.get().set("en-us.message-3", "[Currencies]: You deposited");
-        LanguageConfig.get().set("en-us.message-3_1", " iron Worth of ores to your currency");
+        LanguageConfig.get().set("en-us.message-3_1", " units' worth of ores to your currency");
 
-        LanguageConfig.get().set("en-us.message-4", "You succesfully payed ");
-        LanguageConfig.get().set("en-us.message-4_1", "You succesfully recieved ");
+        LanguageConfig.get().set("en-us.message-4", "[Currencies]: You succesfully payed ");
+        LanguageConfig.get().set("en-us.message-4_1", "[Currencies]: You succesfully recieved ");
         LanguageConfig.get().set("en-us.message-4_2", " to ");
         LanguageConfig.get().set("en-us.message-4_3", " from ");
 
@@ -115,10 +115,10 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-2", "[Currencies]: Vous avez frappé(e) ");
 
         LanguageConfig.get().set("fr-FR.message-3", "[Currencies]: Vous avez déposé(e) l'équivalent de");
-        LanguageConfig.get().set("fr-FR.message-3_1", " en fer");
+        LanguageConfig.get().set("fr-FR.message-3_1", " en unitées de minerais");
 
-        LanguageConfig.get().set("fr-FR.message-4", "Vous avez payé(e) ");
-        LanguageConfig.get().set("fr-FR.message-4_1", "Vous avez recu(e) ");
+        LanguageConfig.get().set("fr-FR.message-4", "[Currencies]: Vous avez payé(e) ");
+        LanguageConfig.get().set("fr-FR.message-4_1", "[Currencies]: Vous avez recu(e) ");
         LanguageConfig.get().set("fr-FR.message-4_2", " à ");
         LanguageConfig.get().set("fr-FR.message-4_3", " de ");
 
@@ -126,7 +126,7 @@ public class Messages {
 
         LanguageConfig.get().set("fr-FR.message-6", "[Currencies]: Description définie ! ");
 
-        LanguageConfig.get().set("fr-FR.message-7", "| Ascecia Currencies | Aide | \n \n /currencies create (nom) - creer une monnaie  \n \n /currencies delete (nom) - supprime une monnaie \n \n /currencies withdraw (nom) (montant) - vous redonne des minerais que vous avez mis en fonction du montant entré \n \n /currencies info (nom) - une liste d'infos sur une monnaie \n \n /currencies list - liste de toutes les monnaies existante \n \n /currencies mint (montant) - frappe un montant de monnaie \n \n /currencies deposit - depose le nombre de minerais que vous tenez dans votre main pour augmenter la valeur et la puissance de votre monnaie \n \n /currencies pay (nom du joueur) (nom de la monnaie) (montant) - paye la personne concernée \n \n /currencies wallet - vous montre votre porte-feuille");
+        LanguageConfig.get().set("fr-FR.message-7", "| Ascecia Currencies | Aide | \n \n /currencies create (nom) - creer une monnaie \n /currencies delete (nom) - supprime une monnaie \n /currencies withdraw (nom) (montant) - vous redonne des minerais que vous avez mis en fonction du montant entré \n /currencies info (nom) - une liste d'infos sur une monnaie \n /currencies list - liste de toutes les monnaies existante \n \n /currencies mint (montant) - frappe un montant de monnaie \n /currencies deposit - depose le nombre de minerais que vous tenez dans votre main pour augmenter la valeur et la puissance de votre monnaie \n /currencies pay (nom du joueur) (nom de la monnaie) (montant) - paye la personne concernée \n /currencies wallet - vous montre votre porte-feuille \n /currencies top (all/one) (si one: nom) - Montre le classement des plus riches");
 
         LanguageConfig.get().set("fr-FR.message-8", "| Monnaie Info -> | ");
         LanguageConfig.get().set("fr-FR.message-8_1", " | \n \n Montant de monnaie disponible sur le marché: ");
