@@ -20,6 +20,10 @@ permissions:
       infos:
       wallet:
       rename:
+      top:
+      team:
     admin:
       forcemanage:
       reload-config:
+      language:
+      ore:

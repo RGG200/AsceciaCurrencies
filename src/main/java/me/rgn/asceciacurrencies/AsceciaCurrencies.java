@@ -2,9 +2,9 @@ package me.rgn.asceciacurrencies;
 
 import me.rgn.asceciacurrencies.files.CurrenciesConfig;
 import me.rgn.asceciacurrencies.files.LanguageConfig;
-import me.rgn.asceciacurrencies.messages.Messages;
 import me.rgn.asceciacurrencies.commands.*;
 import me.rgn.asceciacurrencies.files.PlayersConfig;
+import me.rgn.asceciacurrencies.message.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,11 +24,11 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         CurrenciesConfig.get().options().copyDefaults(true);
         CurrenciesConfig.save();
         LanguageConfig.setup();
+        Messages.mlist();
         LanguageConfig.get().options().copyDefaults(true);
         PlayersConfig.setup();
         PlayersConfig.get().options().copyDefaults(true);
         PlayersConfig.save();
-        Messages.mlist();
         //getting command
         getCommand("Currencies").setExecutor(new Currencies());
         getCommand("Currencies").setTabCompleter(new Currencies());
@@ -44,6 +44,7 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                     double cMarketAmount = CurrenciesConfig.get().getDouble(currencies + ".amount");
                     double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
                     double cEcoAct = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
+                    CurrenciesConfig.get().set(currencies + ".power", (Double.valueOf(Math.round((cValue / cMarketAmount) * 1000)) / 1000)*cEcoAct);
                     if (cEcoAct < 0.2) {
                         CurrenciesConfig.get().set(currencies + ".economic-activity", 0.21);
                     }
@@ -62,8 +63,8 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                     if (cEcoAct < 0.2) {
                         CurrenciesConfig.get().set(currencies + ".economic-activity", 0.21);
                     }
-                    CurrenciesConfig.get().set(currencies + ".totalvalue", cValue * cEcoAct);
-                    CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round((cValue / cMarketAmount) * 1000)) / 1000);
+                    CurrenciesConfig.get().set(currencies + ".totalvalue", cValue);
+                    CurrenciesConfig.get().set(currencies + ".power", (Double.valueOf(Math.round((cValue / cMarketAmount) * 1000)) / 1000)*cEcoAct);
                     CurrenciesConfig.save();
                 }
             }
