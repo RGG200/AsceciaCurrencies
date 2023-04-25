@@ -1,0 +1,30 @@
+name: AsceciaCurrencies
+version: '1.2-RC'
+main: me.rgn.asceciacurrencies.AsceciaCurrencies
+api-version: 1.19
+authors: [ RGn2 ]
+description: Ascecia Currencies is a plugin that allow new currencies to be made
+website: https://panascecia.duckdns.org
+commands:
+  currencies:
+    description: The core command
+    usage: /<command> <subcommand>
+    aliases: [c, cu]
+permissions:
+  ascecia:
+    player:
+      manage:
+      mint:
+      deposit:
+      withdraw:
+      infos:
+      wallet:
+      rename:
+      top:
+      team:
+      pay:
+    admin:
+      forcemanage:
+      reload-config:
+      language:
+      ore:
