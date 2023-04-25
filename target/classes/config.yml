@@ -3,10 +3,12 @@ ores_prices:
   coal: 0.5
   gold_nugget: 0.5
   iron_ingot: 1
+  copper_ingot: 1
   coal_block: 4.5
   gold_ingot: 5
   emerald: 9
   iron_block: 9
+  copper_block: 9
   diamond: 20
   netherite_scrap: 20
   gold_block: 45

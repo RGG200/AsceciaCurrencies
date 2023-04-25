@@ -198,19 +198,23 @@ public class Currencies implements CommandExecutor, TabCompleter {
                     }
                 }else if(args[0].equals("top")){
                     if(args.length == 3 || args.length == 4){
-                        if(args[1].equals("all")){
-                            cAPI.currency.top(true, "args[2]", p, args[2]);
-                        }else if(args[1].equals("one")){
-                            if(cAPI.currenciesConfig.get().contains(args[2])){
-                                cAPI.currency.top(false, args[2], p, args[3]);
+                        if(p.hasPermission("asceciacurrencies.player.top")){
+                            if(args[1].equals("all")){
+                                cAPI.currency.top(true, "args[2]", p, args[2]);
+                            }else if(args[1].equals("one")){
+                                if(cAPI.currenciesConfig.get().contains(args[2])){
+                                    cAPI.currency.top(false, args[2], p, args[3]);
+                                }else{
+                                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13_1"));
+                                }
                             }else{
-                                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13_1"));
+                                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13"));
                             }
                         }else{
-                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13"));
+                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                         }
                     }else{
-                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13"));
+                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13"));
                     }
                 }else if (args[0].equals("team")){
                     CommandSender s = sender;

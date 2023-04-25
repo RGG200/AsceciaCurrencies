@@ -142,8 +142,8 @@ public class Currency {
                     for(String[] material: material_prices) {
                         System.out.println(material[0]);
                         String[] next_material = {"100000000", "ores_prices.dummy"};
-                        if(material_prices.size() > material_prices.indexOf(material)+1){
-                            next_material = material_prices.get(material_prices.indexOf(material)+1);
+                        if(0 <= material_prices.indexOf(material)-1){
+                            next_material = material_prices.get(material_prices.indexOf(material)-1);
                         }
                         if (difference >= Double.valueOf(material[0])*9 && difference < Double.valueOf(next_material[0])*9) {
                             String item_string = material[1].substring(12);
@@ -533,7 +533,7 @@ public class Currency {
     }
     public static boolean teamList(CommandSender s, String name){
         if(CurrenciesConfig.get().contains(name)){
-            s.sendMessage(ChatColor.AQUA + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message_16"));
+            s.sendMessage(ChatColor.AQUA + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16"));
             for (String player: PlayersConfig.get().getKeys(false)){
                 if (CurrenciesConfig.get().contains(name + ".team." + player)){
                     s.sendMessage("     " + ChatColor.GREEN + player + ", ");
@@ -660,8 +660,8 @@ public class Currency {
                             Collections.reverse(material_prices);
                             for(String[] material: material_prices) {
                                 String[] next_material = {"100000000", "ores_prices.dummy"};
-                                if(material_prices.size() > material_prices.indexOf(material)+1){
-                                    next_material = material_prices.get(material_prices.indexOf(material)+1);
+                                if(0 < material_prices.indexOf(material)-1){
+                                    next_material = material_prices.get(material_prices.indexOf(material)-1);
                                 }
                                 if (difference >= Double.valueOf(material[0])*9 && difference < Double.valueOf(next_material[0])*9) {
                                     String item_string = material[1].substring(12);

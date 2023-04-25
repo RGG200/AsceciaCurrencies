@@ -22,6 +22,7 @@ permissions:
       rename:
       top:
       team:
+      pay:
     admin:
       forcemanage:
       reload-config:
