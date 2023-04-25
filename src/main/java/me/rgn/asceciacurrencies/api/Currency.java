@@ -77,6 +77,7 @@ public class Currency {
                         CurrenciesConfig.get().set(name + ".economic-activity", 1.0);
                         CurrenciesConfig.get().set(name + ".description", "defaultDescription");
                         CurrenciesConfig.get().set(name + ".peers", 1);
+                        CurrenciesConfig.get().set(name + ".author", id);
                         CurrenciesConfig.get().set(name + ".team." + id + ".mint", true);
                         CurrenciesConfig.get().set(name + ".team." + id + ".deposit", true);
                         CurrenciesConfig.get().set(name + ".team." + id + ".rename", true);
@@ -110,42 +111,34 @@ public class Currency {
         if (id.equals(author) || CurrenciesConfig.get().getList(name + ".team").contains(id)) {
             //gives the money contained in the currency and deletes the config keys
             String cname = name;
-//            final ItemStack iNugget = new ItemStack(Material.IRON_NUGGET, 1);/*nugget tier*/
-//            final ItemStack gNugget = new ItemStack(Material.GOLD_NUGGET, 1);/*gold nugget tier*/
-//            final ItemStack iron = new ItemStack(Material.IRON_INGOT, 1);/*iron tier*/
-//            final ItemStack gold = new ItemStack(Material.GOLD_INGOT, 1);/*gold tier*/
-//            final ItemStack emerald = new ItemStack(Material.EMERALD, 1);/*emerald tier*/
-//            final ItemStack diamond = new ItemStack(Material.DIAMOND, 1);/*diamond tier*/
-//            final ItemStack gBlock = new ItemStack(Material.GOLD_BLOCK, 1);/*gold Block tier*/
-//            final ItemStack eBlock = new ItemStack(Material.EMERALD_BLOCK, 1);/*gold Block tier*/
-//            final ItemStack dBlock = new ItemStack(Material.DIAMOND_BLOCK, 1);/*Diamond Block tier*/
-//            final ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT, 1);/*Netherite tier*/
-//            final ItemStack nBlock = new ItemStack(Material.NETHERITE_BLOCK, 1);/*Netherite tier*/
-            for (String key : PlayersConfig.get().getKeys(false)) {
-                double cMarketValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
-                for (double i = 0; i < cMarketValue*9*cEcoActivity; i++) {
-                    double difference = (cMarketValue*9*cEcoActivity)-i;
-                    final List<String[]> material_prices = new ArrayList<>();
-                    for(String price: AsceciaCurrencies.plugin.getConfig().getKeys(true)){
-                        if(!price.equals("ores_prices")){
-                            final String[] material_price = {String.valueOf(AsceciaCurrencies.plugin.getConfig().getDouble(price)), price};
-                            material_prices.add(material_price);
-                        }
+            double cMarketValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
+            for (double i = 0; i < cMarketValue*cEcoActivity; i+=0.01) {
+                double difference = (cMarketValue*cEcoActivity)-i;
+                final List<String[]> material_prices = new ArrayList<>();
+                for(String price: AsceciaCurrencies.plugin.getConfig().getKeys(true)){
+                    if(!price.equals("ores_prices")){
+                        final String[] material_price = {String.valueOf(AsceciaCurrencies.plugin.getConfig().getDouble(price)), price};
+                        material_prices.add(material_price);
                     }
-                    Collections.sort(material_prices, new Comparator<String[]>() {
-                        @Override
-                        public int compare(String[] o1, String[] o2) {
-                            return o1[0].compareTo(o2[0]);
-                        }
-                    });
-                    Collections.reverse(material_prices);
-                    for(String[] material: material_prices) {
-                        System.out.println(material[0]);
-                        String[] next_material = {"100000000", "ores_prices.dummy"};
-                        if(0 <= material_prices.indexOf(material)-1){
-                            next_material = material_prices.get(material_prices.indexOf(material)-1);
-                        }
-                        if (difference >= Double.valueOf(material[0])*9 && difference < Double.valueOf(next_material[0])*9) {
+                }
+                Collections.sort(material_prices, new Comparator<String[]>() {
+                    @Override
+                    public int compare(String[] o1, String[] o2) {
+                        double d1 = Double.valueOf(o1[0]);
+                        double d2 = Double.valueOf(o2[0]);
+                        return Double.compare(d1, d2);
+                    }
+                });
+                Collections.reverse(material_prices);
+                for(String[] material: material_prices) {
+                    String[] next_material = {"100000000", "ores_prices.dummy"};
+                    if(0 <= material_prices.indexOf(material)-1){
+                        next_material = material_prices.get(material_prices.indexOf(material)-1);
+                    }
+                    if (difference >= Double.valueOf(material[0]) && difference < Double.valueOf(next_material[0])) {
+                        if(i+Double.valueOf(material[0])-0.01 > cMarketValue*cEcoActivity){
+                            continue;
+                        }else{
                             String item_string = material[1].substring(12);
                             Material itemMaterial = Material.valueOf(item_string.toUpperCase());
                             final ItemStack itemGiven = new ItemStack(itemMaterial, 1);
@@ -153,18 +146,17 @@ public class Currency {
                             for (final ItemStack item : map.values()) {
                                 p.getWorld().dropItemNaturally(p.getLocation(), item);
                             }
-                            if(Double.valueOf(material[0])*9 <= 1){
-                                i -= 1-Double.valueOf(material[0])*18;
-                            }else{
-                                i += Double.valueOf(material[0])*18-1;
-                            }
-                            if(cMarketValue*9*cEcoActivity <= i){
+                            i += Double.valueOf(material[0]);
+                            System.out.println(item_string + " i is equal to:" + i + " / " + (cMarketValue*cEcoActivity));
+                            if(cMarketValue*cEcoActivity <= i){
                                 break;
                             }
                         }
                     }
                 }
-                PlayersConfig.get().set(key + ".balance." + name, null);
+                for(String key: PlayersConfig.get().getKeys(false)){
+                    PlayersConfig.get().set(key + ".balance." + name, null);
+                }
                 PlayersConfig.save();
             }
             PlayersConfig.get().set(id + ".hascreated", null);
@@ -631,19 +623,8 @@ public class Currency {
             if (pBalance >= Double.valueOf(Math.round(amount*1000))/1000) {
                 if (Double.valueOf(Math.round(amount*1000))/1000 >= 1){
                     if (Double.valueOf(Math.round(amount*1000))/1000 < cMarketAmount){
-                        final ItemStack iNugget = new ItemStack(Material.IRON_NUGGET, 1);/*nugget tier*/
-                        final ItemStack gNugget = new ItemStack(Material.GOLD_NUGGET, 1);/*gold nugget tier*/
-                        final ItemStack iron = new ItemStack(Material.IRON_INGOT, 1);/*iron tier*/
-                        final ItemStack gold = new ItemStack(Material.GOLD_INGOT, 1);/*gold tier*/
-                        final ItemStack emerald = new ItemStack(Material.EMERALD, 1);/*emerald tier*/
-                        final ItemStack diamond = new ItemStack(Material.DIAMOND, 1);/*diamond tier*/
-                        final ItemStack gBlock = new ItemStack(Material.GOLD_BLOCK, 1);/*gold Block tier*/
-                        final ItemStack eBlock = new ItemStack(Material.EMERALD_BLOCK, 1);/*gold Block tier*/
-                        final ItemStack dBlock = new ItemStack(Material.DIAMOND_BLOCK, 1);/*Diamond Block tier*/
-                        final ItemStack netherite = new ItemStack(Material.NETHERITE_INGOT, 1);/*Netherite tier*/
-                        final ItemStack nBlock = new ItemStack(Material.NETHERITE_BLOCK, 1);/*Netherite tier*/
-                        for (int i = 0; i < (cPower*amount)*9; i++) {
-                            double difference = (cMarketValue/cMarketAmount*amount)*9-i;
+                        for (double i = 0; i < (cPower*amount); i+=0.01) {
+                            double difference = (cPower*amount)-i;
                             final List<String[]> material_prices = new ArrayList<>();
                             for(String price: AsceciaCurrencies.plugin.getConfig().getKeys(true)){
                                 if(!price.equals("ores_prices")){
@@ -654,30 +635,33 @@ public class Currency {
                             Collections.sort(material_prices, new Comparator<String[]>() {
                                 @Override
                                 public int compare(String[] o1, String[] o2) {
-                                    return o1[0].compareTo(o2[0]);
+                                    double d1 = Double.valueOf(o1[0]);
+                                    double d2 = Double.valueOf(o2[0]);
+                                    return Double.compare(d1, d2);
                                 }
                             });
                             Collections.reverse(material_prices);
                             for(String[] material: material_prices) {
                                 String[] next_material = {"100000000", "ores_prices.dummy"};
-                                if(0 < material_prices.indexOf(material)-1){
+                                if(0 <= material_prices.indexOf(material)-1){
                                     next_material = material_prices.get(material_prices.indexOf(material)-1);
                                 }
-                                if (difference >= Double.valueOf(material[0])*9 && difference < Double.valueOf(next_material[0])*9) {
-                                    String item_string = material[1].substring(12);
-                                    Material itemMaterial = Material.valueOf(item_string.toUpperCase());
-                                    final ItemStack itemGiven = new ItemStack(itemMaterial, 1);
-                                    final Map<Integer, ItemStack> map = p.getInventory().addItem(itemGiven);
-                                    for (final ItemStack item : map.values()) {
-                                        p.getWorld().dropItemNaturally(p.getLocation(), item);
-                                    }
-                                    if(Double.valueOf(material[0])*9 <= 1){
-                                        i -= 1-Double.valueOf(material[0])*18;
+                                if (difference >= Double.valueOf(material[0]) && difference < Double.valueOf(next_material[0])) {
+                                    if(Double.valueOf(material[0])+i > cPower*amount){
+                                        continue;
                                     }else{
-                                        i += Double.valueOf(material[0])*18-1;
-                                    }
-                                    if(cPower*amount*9 <= i){
-                                        break;
+                                        String item_string = material[1].substring(12);
+                                        Material itemMaterial = Material.valueOf(item_string.toUpperCase());
+                                        final ItemStack itemGiven = new ItemStack(itemMaterial, 1);
+                                        final Map<Integer, ItemStack> map = p.getInventory().addItem(itemGiven);
+                                        for (final ItemStack item : map.values()) {
+                                            p.getWorld().dropItemNaturally(p.getLocation(), item);
+                                        }
+                                        i += Double.valueOf(material[0]);
+                                        System.out.println(item_string + " i is equal to:" + i);
+                                        if(cPower*amount <= i){
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -686,7 +670,7 @@ public class Currency {
                         CurrenciesConfig.get().set(name + ".totalvalue", cMarketValue - (cPower * (Double.valueOf(Math.round(amount*1000))/1000)));
                         //if the eco activity is superior to 0.2
                         if(cEcoActivity > 0.2) {
-                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity - (5e-7/cPower));
+                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity - (5e-5/cPower));
                         }
                         CurrenciesConfig.get().set(name + ".power", Double.valueOf(Math.round((cMarketValue-(cPower*Double.valueOf(Math.round(amount*1000))/1000))/(cMarketAmount-Double.valueOf(Math.round(amount*1000))/1000)*1000))/1000);
                         PlayersConfig.get().set(id + ".balance." + name, pBalance - Double.valueOf(Math.round(amount*1000))/1000);
