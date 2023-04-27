@@ -5,6 +5,8 @@ import me.rgn.asceciacurrencies.files.LanguageConfig;
 import me.rgn.asceciacurrencies.commands.*;
 import me.rgn.asceciacurrencies.files.PlayersConfig;
 import me.rgn.asceciacurrencies.message.Messages;
+import me.rgn.asceciacurrencies.web.AsceciaWebServerController;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,6 +39,9 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         //does stuff
         BukkitScheduler economic_evolution = getServer().getScheduler();
         BukkitScheduler economy_check = getServer().getScheduler();
+        BukkitScheduler invites = getServer().getScheduler();
+        AsceciaWebServerController socketController = new AsceciaWebServerController(29007);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, socketController::transferData, 20, 20 * 5);
         economy_check.scheduleSyncRepeatingTask(this, new Runnable(){
             @Override
             public void run() {
@@ -69,6 +74,17 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                 }
             }
         }, 0L, 576000L);
+        invites.scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                for (String player : PlayersConfig.get().getKeys(false)){
+                    PlayersConfig.get().set(player + ".invite", null);
+                }
+                PlayersConfig.save();
+                PlayersConfig.reload();
+                Bukkit.getServer().broadcastMessage(ChatColor.AQUA + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".info-0"));
+            }
+        },0L, 200 * 20);
 
     }
 }

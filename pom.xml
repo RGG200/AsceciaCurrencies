@@ -6,7 +6,7 @@
 
     <groupId>me.rgn</groupId>
     <artifactId>AsceciaCurrencies</artifactId>
-    <version>1.2-RC</version>
+    <version>1.2-Release</version>
     <packaging>jar</packaging>
 
     <name>AsceciaCurrencies</name>
@@ -71,6 +71,11 @@
             <artifactId>spigot-api</artifactId>
             <version>1.19.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.5.3</version>
         </dependency>
     </dependencies>
 </project>

@@ -1,13 +1,16 @@
 package me.rgn.asceciacurrencies.message;
 import me.rgn.asceciacurrencies.files.LanguageConfig;
 
+import java.util.ArrayList;
+
 public class Messages {
     public static void mlist() {
         //default language
         if (!LanguageConfig.get().contains("language")){
             LanguageConfig.get().set("language", "en-us");
         }
-
+        String[] locales = {"fr-FR", "en-us", "es-ES"};
+        LanguageConfig.get().set("locales", locales);
         //messages in english
         LanguageConfig.get().set("en-us.message-0", "[Currencies]: The Currency ");
         LanguageConfig.get().set("en-us.message-0_1", " Has been Created ");
@@ -29,7 +32,7 @@ public class Messages {
 
         LanguageConfig.get().set("en-us.message-6", "[Currencies]: Description set ! ");
 
-        LanguageConfig.get().set("en-us.message-7", "| Ascecia Currencies | Help | \n \n /currencies create (name) - creates a currency  \n /currencies delete (name) - deletes your currency \n /currencies withdraw (name) (amount) - turn back an amount of your currency into iron \n /currencies info (name) - gives you info about a currency \n /currencies list - gives you a list of all currencies available \n /currencies mint (name) (amount) - makes an amount of currency \n /currencies deposit (nombre) - deposit the amount of ores you're holding in your hand into your currency to increase its power \n /currencies pay (playername) (name) (amount) - pays the target with an amount of currency \n /currencies wallet - give you details about your wallet \n /currencies top (all/one) (page/monnaie) (page) - Leaderboard of the richest /currencies team (set/add/remove/list) - Manage a currency's team");
+        LanguageConfig.get().set("en-us.message-7", "| Ascecia Currencies | Help | \n \n /currencies create (name) - creates a currency  \n /currencies delete (name) - deletes your currency \n /currencies withdraw (name) (amount) - turn back an amount of your currency into iron \n /currencies info (name) - gives you info about a currency \n /currencies list - gives you a list of all currencies available \n /currencies mint (name) (amount) - makes an amount of currency \n /currencies deposit (nombre) - deposit the amount of ores you're holding in your hand into your currency to increase its power \n /currencies pay (playername) (name) (amount) - pays the target with an amount of currency \n /currencies wallet - give you details about your wallet \n /currencies top (all/one) (page/monnaie) (page) - Leaderboard of the richest \n /currencies team (set/invite/kick/list/permissions/join) - Manage a currency's team");
 
         LanguageConfig.get().set("en-us.message-8", "| Currency Info -> | ");
         LanguageConfig.get().set("en-us.message-8_1", " | \n \n Amount of Currency available on the market: ");
@@ -58,6 +61,17 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-15", "[Currencies]: Value set !");
 
         LanguageConfig.get().set("en-us.message-16", "[Ascecia Currencies]: Teams: \n \n");
+        LanguageConfig.get().set("en-us.message-16_1", " has been invited to the team of ");
+        LanguageConfig.get().set("en-us.message-16_2", "[Ascecia Currencies]: Player Kicked !");
+        LanguageConfig.get().set("en-us.message-16_3", "[Ascecia Currencies]: Player Permissions: ");
+        LanguageConfig.get().set("en-us.message-16_4", "\n      Minting: ");
+        LanguageConfig.get().set("en-us.message-16_5", "\n      Depositing: ");
+        LanguageConfig.get().set("en-us.message-16_6", "\n      Renaming: ");
+        LanguageConfig.get().set("en-us.message-16_7", "\n      Description: ");
+        LanguageConfig.get().set("en-us.message-16_8", " Joined");
+
+        //info in english
+        LanguageConfig.get().set("en-us.info-0", "[Currencies]: Invitations to currency teams have expired");
 
         //errors in english
         LanguageConfig.get().set("en-us.error-0", "[Currencies]: /currencies create (currencyname)");
@@ -106,15 +120,20 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-13", "[Currencies]: /currencies top (all/one) (currency/page) (page)");
         LanguageConfig.get().set("en-us.error-13_1", "[Currencies]: This currency doesn't exist");
 
-        LanguageConfig.get().set("en-us.error-14", "[Currencies]: /currencies language (language)");
+        LanguageConfig.get().set("en-us.error-14", "[Currencies]: /currencies config language (language)");
         LanguageConfig.get().set("en-us.error-14_1", "[Currencies]: this language isn't in the configuration");
+        LanguageConfig.get().set("en-us.error-14_2", "[Currencies]: /currencies config (language/reload)");
 
         LanguageConfig.get().set("en-us.error-15", "[Currencies]: this ore value isn't in the configuration");
         LanguageConfig.get().set("en-us.error-15_1", "[Currencies]: /currencies ore (ore) (value)");
 
-        LanguageConfig.get().set("en-us.error-16", "[Currencies]: /currencies team (add/remove) (playername) \n /currencies team set (playername) (permission) (true/false) \n /currencies team list (currencyname)");
+        LanguageConfig.get().set("en-us.error-16", "[Currencies]: /currencies team (invite/kick/permissions) (playername) \n /currencies team set (playername) (permission) (true/false) \n /currencies team (list/join) (currencyname)");
         LanguageConfig.get().set("en-us.error-16_1", "[Currencies]: This Permission doesn't exist !");
         LanguageConfig.get().set("en-us.error-16_2", "[Currencies]: This Player isn't in the team !");
+        LanguageConfig.get().set("en-us.error-16_3", "[Currencies]: This Player is already in the team !");
+        LanguageConfig.get().set("en-us.error-16_4", "[Currencies]: You haven't been invited to this team !");
+        LanguageConfig.get().set("en-us.error-16_5", "[Currencies]: The player is already in a team !");
+        LanguageConfig.get().set("en-us.error-16_6", "[Currencies]: You already invited this player to your team !");
 
         //messages en français
         LanguageConfig.get().set("fr-FR.message-0", "[Currencies]: La monnaie ");
@@ -126,7 +145,7 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-2", "[Currencies]: Vous avez frappé(e) ");
 
         LanguageConfig.get().set("fr-FR.message-3", "[Currencies]: Vous avez déposé(e) l'équivalent de");
-        LanguageConfig.get().set("fr-FR.message-3_1", " en fer");
+        LanguageConfig.get().set("fr-FR.message-3_1", " en minerais");
 
         LanguageConfig.get().set("fr-FR.message-4", "Vous avez payé(e) ");
         LanguageConfig.get().set("fr-FR.message-4_1", "Vous avez recu(e) ");
@@ -137,7 +156,7 @@ public class Messages {
 
         LanguageConfig.get().set("fr-FR.message-6", "[Currencies]: Description définie ! ");
 
-        LanguageConfig.get().set("fr-FR.message-7", "| Ascecia Currencies | Aide | \n /currencies create (nom) - creer une monnaie  \n /currencies delete (nom) - supprime une monnaie \n /currencies withdraw (nom) (montant) - vous redonne des minerais que vous avez mis en fonction du montant entré \n /currencies info (nom) - une liste d'infos sur une monnaie \n /currencies list - liste de toutes les monnaies existante \n /currencies mint (nom) (montant) - frappe un montant de monnaie \n /currencies deposit (nom) - depose le nombre de minerais que vous tenez dans votre main pour augmenter la valeur et la puissance de votre monnaie \n /currencies pay (nom du joueur) (nom de la monnaie) (montant) - paye la personne concernée \n /currencies wallet - vous montre votre porte-feuille \n /currencies top (all/one) (page/monnaie) (page) - classement des joueurs les plus riches \n /currencies team (set/add/remove/list) - Gérer l'équipe du monnaie");
+        LanguageConfig.get().set("fr-FR.message-7", "| Ascecia Currencies | Aide | \n /currencies create (nom) - creer une monnaie  \n /currencies delete (nom) - supprime une monnaie \n /currencies withdraw (nom) (montant) - vous redonne des minerais que vous avez mis en fonction du montant entré \n /currencies info (nom) - une liste d'infos sur une monnaie \n /currencies list - liste de toutes les monnaies existante \n /currencies mint (nom) (montant) - frappe un montant de monnaie \n /currencies deposit (nom) - depose le nombre de minerais que vous tenez dans votre main pour augmenter la valeur et la puissance de votre monnaie \n /currencies pay (nom du joueur) (nom de la monnaie) (montant) - paye la personne concernée \n /currencies wallet - vous montre votre porte-feuille \n /currencies top (all/one) (page/monnaie) (page) - classement des joueurs les plus riches \n /currencies team (set/invite/kick/list/permissions/join) - Gérer l'équipe du monnaie");
 
         LanguageConfig.get().set("fr-FR.message-8", "| Monnaie Info -> | ");
         LanguageConfig.get().set("fr-FR.message-8_1", " | \n \n Montant de monnaie disponible sur le marché: ");
@@ -166,6 +185,18 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-15", "Valeur Définie !");
 
         LanguageConfig.get().set("fr-FR.message-16", "[Ascecia Currencies]: Teams: \n \n");
+        LanguageConfig.get().set("fr-FR.message-16_1", " a été Invité dans l'équipe de ");
+        LanguageConfig.get().set("fr-FR.message-16_2", "[Ascecia Currencies]: Joueur Expulsé !");
+        LanguageConfig.get().set("fr-FR.message-16_3", "[Ascecia Currencies]: Permissions du Joueur: ");
+        LanguageConfig.get().set("fr-FR.message-16_4", "\n      Frapper: ");
+        LanguageConfig.get().set("fr-FR.message-16_5", "\n      Deposer: ");
+        LanguageConfig.get().set("fr-FR.message-16_6", "\n      Renommer: ");
+        LanguageConfig.get().set("fr-FR.message-16_7", "\n      Description: ");
+        LanguageConfig.get().set("fr-FR.message-16_8", " a rejoint l'equipe de ");
+
+        //info in french
+        LanguageConfig.get().set("fr-FR.info-0", "[Currencies]: Les invitations pour les equipes des monnaies ont expirées");
+
         //erreur en français
         LanguageConfig.get().set("fr-FR.error-0", "[Currencies]: /currencies create (nom)");
         LanguageConfig.get().set("fr-FR.error-0_1", "[Currencies]: le nom de votre monnaie doit faire minimum 3 caractères et max 9 et il ne doit contenir ni nombre ni caractères spéciaux.");
@@ -213,21 +244,26 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.error-13", "[Currencies]: /currencies top (all/one) (monnaie/page) (page)");
         LanguageConfig.get().set("fr-FR.error-13_1", "[Currencies]: Cette Monnaie n'existe pas");
 
-        LanguageConfig.get().set("fr-FR.error-14", "[Currencies]: /currencies language (langue)");
+        LanguageConfig.get().set("fr-FR.error-14", "[Currencies]: /currencies config language (langue)");
         LanguageConfig.get().set("fr-FR.error-14_1", "[Currencies]: Cette langue n'est pas référencé dans la configuration");
+        LanguageConfig.get().set("fr-FR.error-14_2", "[Currencies]: /currencies config (language/reload)");
 
         LanguageConfig.get().set("fr-FR.error-15", "[Currencies]: Cette valeur n'est pas référencé dans la configuration");
         LanguageConfig.get().set("fr-FR.error-15_1", "[Currencies]: /currencies ore (minerais) (valeur)");
 
-        LanguageConfig.get().set("fr-FR.error-16", "[Currencies]: /currencies team (add/remove) (nom du joueur) \n /currencies team set (nom du joueur) (permission) (true/false) \n /currencies team list (nom de la monnaie)");
+        LanguageConfig.get().set("fr-FR.error-16", "[Currencies]: /currencies team (invite/kick/permissions/invite) (nom du joueur) \n /currencies team set (nom du joueur) (permission) (true/false) \n /currencies team (list/join) (nom de la monnaie)");
         LanguageConfig.get().set("fr-FR.error-16_1", "[Currencies]: La permission n'existe pas !");
         LanguageConfig.get().set("fr-FR.error-16_2", "[Currencies]: Le joueur n'est pas dans la team !");
+        LanguageConfig.get().set("fr-FR.error-16_3", "[Currencies]: Le joueur est déja dans la team !");
+        LanguageConfig.get().set("fr-FR.error-16_4", "[Currencies]: Tu n'a pas été invité par cette equipe !");
+        LanguageConfig.get().set("fr-FR.error-16_5", "[Currencies]: Le joueur est déja dans une team !");
+        LanguageConfig.get().set("fr-FR.error-16_6", "[Currencies]: Vous avez deja invité ce joueur !");
 
         LanguageConfig.save();
 
-        //espanol
+        //español
 
-        //messages en espanol
+        //messages en español
         LanguageConfig.get().set("es-ES.message-0", "[Currencies]: La moneda");
         LanguageConfig.get().set("es-ES.message-0_1", " se ha creado");
 
@@ -248,7 +284,7 @@ public class Messages {
 
         LanguageConfig.get().set("es-ES.message-6", "[Currencies]: Descripción definida !");
 
-        LanguageConfig.get().set("es-ES.message-7", "| Ascecia Currencies | Ayuda | \n \n /currencies create (nombre) - crear una moneda \n /currencies delete (nombre) - supprimir una moneda \n /currencies witdraw (nombre) (cantidad) - Retirar alguna cantidad de moneda \n /currencies info (nombre) - Información sobre una moneda \n /currencies list - Lista de las monedas \n /currencies mint (nombre) (cantidad) - acuñar alguna cantidad de moneda \n /currencies deposit (nombre) - Depositar las minerales que son en tú mano \n /currencies pay (nombre del jugador) (nombre de la moneda) (cantidad) - Pagar una cantidad de moneda a una otra persona \n /currencies wallet - muestra tú cartera \n /currencies top (all/one) (pagina/nombre) (pagina) - El clasificación de los que son más ricos \n /currencies team (set/add/remove/list) - equipo para currencies");
+        LanguageConfig.get().set("es-ES.message-7", "| Ascecia Currencies | Ayuda | \n \n /currencies create (nombre) - crear una moneda \n /currencies delete (nombre) - supprimir una moneda \n /currencies witdraw (nombre) (cantidad) - Retirar alguna cantidad de moneda \n /currencies info (nombre) - Información sobre una moneda \n /currencies list - Lista de las monedas \n /currencies mint (nombre) (cantidad) - acuñar alguna cantidad de moneda \n /currencies deposit (nombre) - Depositar las minerales que son en tú mano \n /currencies pay (nombre del jugador) (nombre de la moneda) (cantidad) - Pagar una cantidad de moneda a una otra persona \n /currencies wallet - muestra tú cartera \n /currencies top (all/one) (pagina/nombre) (pagina) - El clasificación de los que son más ricos \n /currencies team (set/invite/kick/list/permissions/join) - equipo para currencies");
 
         LanguageConfig.get().set("es-ES.message-8", "\n | Ascecia-Currencies | Moneda info -> | ");
         LanguageConfig.get().set("es-ES.message-8_1", " | \n \n Cantidad de moneda en circulación: ");
@@ -277,8 +313,19 @@ public class Messages {
         LanguageConfig.get().set("es-ES.message-15", "[Currencies]: Numeró definido !");
 
         LanguageConfig.get().set("es-ES.message-16", "[Ascecia Currencies]: Teams: \n \n");
+        LanguageConfig.get().set("es-ES.message-16_1", " se ha Invitado al equipo ");
+        LanguageConfig.get().set("es-ES.message-16_2", "[Ascecia Currencies]: Jugador Expulsado !");
+        LanguageConfig.get().set("es-ES.message-16_3", "[Ascecia Currencies]: Permissiones del Jugador: ");
+        LanguageConfig.get().set("es-ES.message-16_4", "\n      Acuñar: ");
+        LanguageConfig.get().set("es-ES.message-16_5", "\n      Deposar: ");
+        LanguageConfig.get().set("es-ES.message-16_6", "\n      Renombrar: ");
+        LanguageConfig.get().set("es-ES.message-16_7", "\n      Describir: ");
+        LanguageConfig.get().set("es-ES.message-16_8", " Se unió a el equipo ");
 
-        //erreur en français
+        //info in spanish
+        LanguageConfig.get().set("es-ES.info-0", "[Currencies]: Las invitacíones son expirada");
+
+        //erreur en español
         LanguageConfig.get().set("es-ES.error-0", "[Currencies]: /currencies create (nombre)");
         LanguageConfig.get().set("es-ES.error-0_1", "[Currencies]: el nombre de su divisa debe tener un mínimo de 3 caracteres y un máximo de 9 y no debe contener números ni caracteres especiales.");
         LanguageConfig.get().set("es-ES.error-0_2", "[Currencies]: Ya existe una moneda con el mismo nombre");
@@ -302,7 +349,7 @@ public class Messages {
 
         LanguageConfig.get().set("es-ES.error-8", " Necesita de acuñar al menos un unidad de moneda ! /currencies mint (cantidad)");
         LanguageConfig.get().set("es-ES.error-8_1", "El material que tiene no es specificado");
-        LanguageConfig.get().set("fr-FR.error-8_2", "/c deposit (nombre)");
+        LanguageConfig.get().set("es-ES.error-8_2", "/c deposit (nombre)");
 
         LanguageConfig.get().set("es-ES.error-9", "[Currencies]: /currencies pay (nombre del jugador) (nombre de la moneda) (cantidad)");
         LanguageConfig.get().set("es-ES.error-9_1", "[Currencies]: El jugador no está conectado");
@@ -325,15 +372,20 @@ public class Messages {
         LanguageConfig.get().set("es-ES.error-13", "[Currencies]: /currencies top (all/one) (moneda/pagina) (pagina)");
         LanguageConfig.get().set("es-ES.error-13_1", "[Currencies]: Este moneda no existe");
 
-        LanguageConfig.get().set("es-ES.error-14", "[Currencies]: /currencies language (idioma)");
+        LanguageConfig.get().set("es-ES.error-14", "[Currencies]: /currencies config language (idioma)");
         LanguageConfig.get().set("es-ES.error-14_1", "[Currencies]: Este Idioma no está en la configuración !");
+        LanguageConfig.get().set("en-us.error-14_2", "[Currencies]: /currencies config (language/reload)");
 
         LanguageConfig.get().set("es-ES.error-15", "[Currencies]: Este minerales no está en la configuración !");
-        LanguageConfig.get().set("en-ES.error-15_1", "[Currencies]: /currencies ore (minerale) (numeró)");
+        LanguageConfig.get().set("es-ES.error-15_1", "[Currencies]: /currencies ore (minerale) (numeró)");
 
-        LanguageConfig.get().set("es-ES.error-16", "[Currencies]: /currencies team (add/remove) (nombre del jugador) \n /currencies team set (nombre del jugador) (permission) (true/false) \n /currencies team list (nombre de la moneda)");
+        LanguageConfig.get().set("es-ES.error-16", "[Currencies]: /currencies team (invite/kick/permissions) (nombre del jugador) \n /currencies team set (nombre del jugador) (permission) (true/false) \n /currencies team (list/join) (nombre de la moneda)");
         LanguageConfig.get().set("es-ES.error-16_1", "[Currencies]: La Permission no existe !");
         LanguageConfig.get().set("es-ES.error-16_2", "[Currencies]: El Jugador no es en el equipo !");
+        LanguageConfig.get().set("es-ES.error-16_3", "[Currencies]: El judador ya en el equipo !");
+        LanguageConfig.get().set("es-ES.error-16_4", "[Currencies]: No está invitado en este equipo !");
+        LanguageConfig.get().set("es-ES.error-16_6", "[Currencies]: El jugador ya está invitado en su equipo !");
+        LanguageConfig.get().set("es-ES.error-16_5", "[Currencies]: El judador ya en un equipo !");
 
         LanguageConfig.save();
     }

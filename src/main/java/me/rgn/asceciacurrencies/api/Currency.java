@@ -81,6 +81,8 @@ public class Currency {
                         CurrenciesConfig.get().set(name + ".team." + id + ".mint", true);
                         CurrenciesConfig.get().set(name + ".team." + id + ".deposit", true);
                         CurrenciesConfig.get().set(name + ".team." + id + ".rename", true);
+                        CurrenciesConfig.get().set(name + ".team." + id + ".description", true);
+                        PlayersConfig.get().set(id + ".team", name);
                         p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0") + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0_1"));
                         isCurrencyCreated = true;
                     } else {
@@ -178,7 +180,7 @@ public class Currency {
         String id = p.getName();
         for (String currencies : CurrenciesConfig.get().getKeys(false)){
             String author = CurrenciesConfig.get().getString(currencies + ".author");
-            if (author.equals(id)){
+            if (author.equals(id) || CurrenciesConfig.get().getBoolean(currencies + ".team." + id + ".description") == true){
                 CurrenciesConfig.get().set(currencies + ".description", description);
                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-6"));
             }
@@ -489,66 +491,6 @@ public class Currency {
         }else {
             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-12"));
         }
-        return true;
-    }
-    public static boolean addTeamMember(CommandSender s, String name){
-        for(String currencies: CurrenciesConfig.get().getKeys(false)){
-            if (CurrenciesConfig.get().getString(currencies + ".author").equals(s.getName().toString())){
-                CurrenciesConfig.get().set(currencies + ".team." + name + ".rename", false);
-                CurrenciesConfig.get().set(currencies + ".team." + name + ".mint", true);
-                CurrenciesConfig.get().set(currencies + ".team." + name + ".deposit", true);
-                s.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-15"));
-            }
-        }
-        CurrenciesConfig.save();
-        CurrenciesConfig.reload();
-        return true;
-    }
-    public static boolean setTeamMemberPermission(CommandSender s, String name, String Permission, Boolean allowordeny){
-        for(String currencies: CurrenciesConfig.get().getKeys(false)){
-            if (CurrenciesConfig.get().getString(currencies + ".author").equals(s.getName().toString())){
-                if(CurrenciesConfig.get().contains(currencies + ".team." + name)){
-                    if(CurrenciesConfig.get().contains(currencies + ".team." + name + "." + Permission)){
-                        CurrenciesConfig.get().set(currencies + ".team." + name + "." + Permission, allowordeny);
-                        s.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-15"));
-                    }else{
-                        s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_1"));
-                    }
-                }else{
-                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_2"));
-                }
-            }
-            CurrenciesConfig.save();
-            CurrenciesConfig.reload();
-        }
-        return true;
-    }
-    public static boolean teamList(CommandSender s, String name){
-        if(CurrenciesConfig.get().contains(name)){
-            s.sendMessage(ChatColor.AQUA + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16"));
-            for (String player: PlayersConfig.get().getKeys(false)){
-                if (CurrenciesConfig.get().contains(name + ".team." + player)){
-                    s.sendMessage("     " + ChatColor.GREEN + player + ", ");
-                }
-            }
-        }
-        CurrenciesConfig.save();
-        CurrenciesConfig.reload();
-        return true;
-    }
-    public static boolean removeTeamMember(CommandSender s, String name){
-        final List<?> team = new ArrayList<>();
-        for(String currencies: CurrenciesConfig.get().getKeys(false)){
-            if (CurrenciesConfig.get().getString(currencies + ".author").equals(s.getName().toString())){
-                team.equals(CurrenciesConfig.get().getList(currencies + ".team"));
-                if(team.contains(name)){
-                    CurrenciesConfig.get().set(currencies + ".team." + name, null);
-                    s.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-15"));
-                }
-            }
-        }
-        CurrenciesConfig.save();
-        CurrenciesConfig.reload();
         return true;
     }
     public static Boolean top(Boolean all, String name, Player p, String paginate){

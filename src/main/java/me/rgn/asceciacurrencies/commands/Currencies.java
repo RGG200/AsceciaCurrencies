@@ -1,4 +1,5 @@
 package me.rgn.asceciacurrencies.commands;
+import me.rgn.asceciacurrencies.AsceciaCurrencies;
 import me.rgn.asceciacurrencies.api.CurrenciesAPI;
 import me.rgn.asceciacurrencies.files.CurrenciesConfig;
 import me.rgn.asceciacurrencies.files.LanguageConfig;
@@ -20,7 +21,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         CurrenciesAPI cAPI = new CurrenciesAPI();
-        if (args.length > 0) {
+        if (args.length != 0) {
             if (args[0].equals("force-delete")) {
                 CommandSender s = sender;
                 if (s.hasPermission("asceciacurrencies.admin.forcemanage")) {
@@ -30,22 +31,29 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         CurrenciesAPI.currency.forceDelete(args[1], s);
                     }
                 }
-            }else if (args[0].equals("language")) {
+            }else if (args[0].equals("config")){
                 CommandSender s = sender;
-                if (s.hasPermission("asceciacurrencies.admin.language")) {
-                    if(args.length == 2 && CurrenciesAPI.languageConfig.get().contains(args[1])){
-                        CurrenciesAPI.currency.language(args[1], s);
-                    }else{
-                        s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-14"));
-                    }
-                } else {
-                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                switch (args[1]){
+                    case "language":
+                        if (s.hasPermission("asceciacurrencies.admin.language")) {
+                            if(args.length == 3 && CurrenciesAPI.languageConfig.get().contains(args[1])){
+                                CurrenciesAPI.currency.language(args[2], s);
+                            }else{
+                                s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-14"));
+                            }
+                        } else {
+                            s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                        }
+                        break;
+                    case "reload":
+                        if (s.hasPermission("asceciacurrencies.admin.reloadconfig")) {
+                            CurrenciesAPI.currency.reloadConfig(s);
+                        }else{
+                            s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                        }
+                        break;
                 }
-            }else if (args[0].equals("config") && args[1].equals("reload")){
-                CommandSender s = sender;
-                if (s.hasPermission("asceciacurrencies.admin.reloadconfig")) {
-                    CurrenciesAPI.currency.reloadConfig(s);
-                }
+
             }else if (args[0].equals("ore")){
                 CommandSender s = sender;
                 if(args.length == 3){
@@ -130,17 +138,33 @@ public class Currencies implements CommandExecutor, TabCompleter {
                     } else {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
-                }else if (args[0].equals("language")) {
+                }else if (args[0].equals("config")){
                     CommandSender s = sender;
-                    if (s.hasPermission("asceciacurrencies.admin.language")) {
-                        if(args.length == 2 && CurrenciesAPI.languageConfig.get().contains(args[1])){
-                            CurrenciesAPI.currency.language(args[1], s);
-                        }else{
-                            s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-14"));
+                    if(args.length >= 2) {
+                        switch (args[1]) {
+                            case "language":
+                                if (s.hasPermission("asceciacurrencies.admin.language")) {
+                                    if (args.length == 3 && CurrenciesAPI.languageConfig.get().contains(args[1])) {
+                                        CurrenciesAPI.currency.language(args[2], s);
+                                    } else {
+                                        s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-14"));
+                                    }
+                                } else {
+                                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                                }
+                                break;
+                            case "reload":
+                                if (s.hasPermission("asceciacurrencies.admin.reloadconfig")) {
+                                    CurrenciesAPI.currency.reloadConfig(s);
+                                } else {
+                                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                                }
+                                break;
                         }
-                    } else {
-                        s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                    }else{
+
                     }
+
                 } else if (args[0].equals("mint")) {
                     if (p.hasPermission("asceciacurrencies.player.mint")) {
                         if (args.length < 3 || args.length > 3) {
@@ -221,17 +245,23 @@ public class Currencies implements CommandExecutor, TabCompleter {
                     if(args.length == 3 || args.length == 5){
                         if (s.hasPermission("asceciacurrencies.player.team")) {
                             switch (args[1]){
-                                case "add":
-                                    CurrenciesAPI.currency.addTeamMember(s, args[2]);
+                                case "join":
+                                    CurrenciesAPI.team.addTeamMember(s, s.getName());
                                     break;
-                                case "remove":
-                                    CurrenciesAPI.currency.removeTeamMember(s, args[2]);
+                                case "kick":
+                                    CurrenciesAPI.team.kickTeamMember(s, args[2]);
                                     break;
                                 case "set":
-                                    CurrenciesAPI.currency.setTeamMemberPermission(s, args[2], args[3], Boolean.valueOf(args[4]));
+                                    CurrenciesAPI.team.setTeamMemberPermission(s, args[2], args[3], Boolean.valueOf(args[4]));
                                     break;
                                 case "list":
-                                    CurrenciesAPI.currency.teamList(s, args[2]);
+                                    CurrenciesAPI.team.teamList(s, args[2]);
+                                    break;
+                                case "permissions", "perms":
+                                    CurrenciesAPI.team.getTeamMemberPermissions(s, args[2]);
+                                    break;
+                                case "invite":
+                                    CurrenciesAPI.team.inviteMember(s, args[2]);
                                     break;
                             }
                         }else{
@@ -241,19 +271,20 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16"));
                     }
                 }else {
-                    if (sender instanceof Player) {
+                    if (sender instanceof Player && !args[0].equals("ore") && !args[0].equals("force-delete")) {
                         p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
                     }
                 }
             }
         } else {
-            if (sender instanceof Player p && !args[0].equals("config")) {
+            if (sender instanceof Player p) {
                 p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
             }
         }
         return true;
     }
-    private static final String[] COMMANDS = {"create", "delete", "mint", "description", "info", "list", "deposit", "withdraw", "wallet", "pay", "rename", "top", "team"};
+    private static final String[] COMMANDS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team"};
+    private static final String[] COMMANDSPlUS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "force-delete", "ore", "config"};
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String CommandLabel, String[] args){
         if(cmd.getName().equals("currencies")){
@@ -261,14 +292,36 @@ public class Currencies implements CommandExecutor, TabCompleter {
             final List<String> completions = new ArrayList<>();
             if (args.length == 1) {
                 //if first character is matching the subcommand
-                StringUtil.copyPartialMatches(args[0], Arrays.asList(COMMANDS), completions);
+                if(sender.hasPermission("asceciacurrencies.admin")){
+                    StringUtil.copyPartialMatches(args[0], Arrays.asList(COMMANDSPlUS), completions);
+                }else{
+                    StringUtil.copyPartialMatches(args[0], Arrays.asList(COMMANDS), completions);
+                }
                 //SORT THE LIST
                 Collections.sort(completions);
                 return completions;
             }
             else if (args.length == 2) {
                 switch (args[0].toLowerCase()){
-                    case "delete", "info", "withdraw", "mint", "deposit":
+                    case "delete","del", "info", "withdraw","wd", "mint", "depo", "deposit":
+                        for (String currencies: CurrenciesConfig.get().getKeys(false)) {
+                            completions.add(currencies);
+                        }
+                        break;
+                    case "config":
+                        if(sender.hasPermission("asceciacurrencies.admin")){
+                            completions.add("reload");
+                            completions.add("language");
+                        }
+                        break;
+                    case "ore":
+                        for (String oreprices: AsceciaCurrencies.plugin.getConfig().getKeys(true)) {
+                            if (!oreprices.equals("ores_prices")){
+                                completions.add(oreprices.substring(12));
+                            }
+                        }
+                        break;
+                    case "force-delete":
                         for (String currencies: CurrenciesConfig.get().getKeys(false)) {
                             completions.add(currencies);
                         }
@@ -285,9 +338,12 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         break;
                     case "team":
                         completions.add("set");
-                        completions.add("add");
-                        completions.add("remove");
+                        completions.add("invite");
+                        completions.add("join");
+                        completions.add("kick");
                         completions.add("list");
+                        completions.add("perms");
+                        completions.add("permissions");
                         break;
                 }
                 Collections.sort(completions);
@@ -300,11 +356,23 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             completions.add(currencies);
                         }
                         break;
-                    case "team":
-                        for (String player: PlayersConfig.get().getKeys(false)){
-                            completions.add(player);
+                    case "config":
+                        if(args[1].equals("language")){
+                            List<String> locales = LanguageConfig.get().getStringList("locales");
+                            completions.addAll(locales);
                         }
-                        break;
+                    case "team":
+                        if(!args[1].equals("list") && !args[1].equals("join")){
+                            for (String player: PlayersConfig.get().getKeys(false)){
+                                completions.add(player);
+                            }
+                            break;
+                        }else{
+                            for (String currencies: CurrenciesConfig.get().getKeys(false)) {
+                                completions.add(currencies);
+                            }
+                            break;
+                        }
                 }
                 Collections.sort(completions);
                 return StringUtil.copyPartialMatches(args[2], completions, new ArrayList<>());
@@ -314,6 +382,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         completions.add("mint");
                         completions.add("deposit");
                         completions.add("rename");
+                        completions.add("description");
                         break;
                 }
             }else if(args.length == 5){
