@@ -13,7 +13,7 @@ import java.util.List;
 public class Team {
     public static boolean addTeamMember(CommandSender s, String playername){
         for(String currencies: CurrenciesConfig.get().getKeys(false)){
-            if(PlayersConfig.get().get(playername + ".team") == null){
+            if(PlayersConfig.get().get(playername + ".team") == null && s.getName().equals(CurrenciesConfig.get().getString(PlayersConfig.get().getString(s.getName() + ".team") + ".author"))){
                 if(PlayersConfig.get().getString(playername + ".invite") == null){
                     s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_4"));
                 }
@@ -24,7 +24,7 @@ public class Team {
                     CurrenciesConfig.get().set(currencies + ".team." + playername + ".description", false);
                     PlayersConfig.get().set(playername + ".invite", null);
                     PlayersConfig.get().set(playername + ".team", currencies);
-                    Bukkit.getServer().broadcastMessage(ChatColor.GREEN + playername + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16_8") + currencies);
+                    Bukkit.getServer().broadcastMessage(ChatColor.GREEN + playername + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16_8") + " " + currencies);
                 }else{
                     s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_3"));
                 }
@@ -42,12 +42,14 @@ public class Team {
         if(PlayersConfig.get().getString(playername + ".team") == null){
             for(String currencies: CurrenciesConfig.get().getKeys(false)){
                 if(CurrenciesConfig.get().getString(currencies + ".author").equals(s.getName())){
-                    if(PlayersConfig.get().getString(playername + ".invite") != currencies){
-                        PlayersConfig.get().set(playername + ".invite", currencies);
-                    }else{
-                        s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_6"));
+                    if(PlayersConfig.get().getString(playername + ".invite") != null){
+                        if(!PlayersConfig.get().getString(playername + ".invite").equals(currencies)){
+                            PlayersConfig.get().set(playername + ".invite", currencies);
+                        }else{
+                            s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_6"));
+                        }
                     }
-                    Bukkit.getServer().broadcastMessage(ChatColor.GREEN + playername + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16_1") + currencies);
+                    Bukkit.getServer().broadcastMessage(ChatColor.GREEN + playername + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16_1")  + currencies);
                 }
             }
         }else{
@@ -100,15 +102,27 @@ public class Team {
     public static boolean kickTeamMember(CommandSender s, String playername){
         final List<?> team = new ArrayList<>();
         if(PlayersConfig.get().get(playername + ".team") != null){
-            for(String currencies: CurrenciesConfig.get().getKeys(false)){
-                if (CurrenciesConfig.get().getString(currencies + ".author").equals(s.getName().toString())){
-                    CurrenciesConfig.get().set(currencies + ".team." + playername, null);
-                    PlayersConfig.get().set(playername + ".team", null);
-                    s.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16_2"));
-                }
+            if (CurrenciesConfig.get().getString(PlayersConfig.get().getString(playername + ".team") + ".author").equals(s.getName().toString())){
+                CurrenciesConfig.get().set(PlayersConfig.get().getString(playername + ".team") + ".team." + playername, null);
+                PlayersConfig.get().set(playername + ".team", null);
+                s.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16_2"));
             }
         }else{
             s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_2"));
+        }
+        PlayersConfig.save();
+        PlayersConfig.reload();
+        CurrenciesConfig.save();
+        CurrenciesConfig.reload();
+        return true;
+    }
+    public static boolean leaveTeam(CommandSender s){
+        if(PlayersConfig.get().get(s.getName() + ".team") != null && !s.getName().equals(CurrenciesConfig.get().getString(PlayersConfig.get().getString(s.getName() + ".team") + ".author"))) {
+            CurrenciesConfig.get().set(PlayersConfig.get().getString(s.getName() + ".team") + ".team." + s.getName(), null);
+            PlayersConfig.get().set(s.getName() + ".team", null);
+            s.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16_9"));
+        }else{
+            s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_7"));
         }
         PlayersConfig.save();
         PlayersConfig.reload();

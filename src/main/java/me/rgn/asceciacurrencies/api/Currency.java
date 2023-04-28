@@ -110,7 +110,7 @@ public class Currency {
         double cEcoActivity = CurrenciesConfig.get().getDouble(name + ".economic-activity");
         String author = CurrenciesConfig.get().getString(name + ".author");
         //check if sender is the author
-        if (id.equals(author) || CurrenciesConfig.get().getList(name + ".team").contains(id)) {
+        if (id.equals(author)) {
             //gives the money contained in the currency and deletes the config keys
             String cname = name;
             double cMarketValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
@@ -196,6 +196,7 @@ public class Currency {
             PlayersConfig.get().set(key + ".balance." + name, null);
         }
         if (CurrenciesConfig.get().contains(name)){
+            CurrenciesConfig.get().set(name, null);
             PlayersConfig.get().set(id + ".hascreated", null);
             isCurrencyCreated = false;
             PlayersConfig.save();
@@ -260,7 +261,7 @@ public class Currency {
                         globalamount += Double.valueOf(Math.round(amount*1000))/1000;
                         CurrenciesConfig.get().set(currencies + ".amount", globalamount);
                         p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-2") + Double.valueOf(Math.round(amount*1000))/1000 + " " + currencies);
-                        if (cEcoActivity > 0.2) {
+                        if (cEcoActivity > 0.2 && cPower > 0) {
                             CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoActivity - (5e-5/cPower));
                         }
                         if (cEcoActivity <= 0.2){
@@ -461,13 +462,7 @@ public class Currency {
                             if (isNameValid == true) {
                                 //cloning the currency
                                 PlayersConfig.get().set(id + ".balance." + newName, pBalance);
-                                CurrenciesConfig.get().set(newName + ".power", cPower);
-                                CurrenciesConfig.get().set(newName + ".amount", cMarketAmount);
-                                CurrenciesConfig.get().set(newName + ".totalvalue", cValue);
-                                CurrenciesConfig.get().set(newName + ".economic-activity", cEcoActivity);
-                                CurrenciesConfig.get().set(newName + ".description", description);
-                                CurrenciesConfig.get().set(newName + ".peers", nPeers);
-                                CurrenciesConfig.get().set(newName + ".author", author);
+                                CurrenciesConfig.get().set(newName, CurrenciesConfig.get().get(currencies));
                                 //deleting the original
                                 PlayersConfig.get().set(id + ".balance." + currencies, null);
                                 CurrenciesConfig.get().set(currencies, null);
@@ -493,11 +488,12 @@ public class Currency {
         }
         return true;
     }
-    public static Boolean top(Boolean all, String name, Player p, String paginate){
+    public static Boolean top(Boolean all, String name, Player p){
         final List<String> scoreboard = new ArrayList<>();
         int i = 0;
         int j = 0;
         int page = 0;
+        String paginate = "1";
         if(paginate.isEmpty() || paginate.equals("0")){
             paginate = "1";
         }
@@ -519,7 +515,9 @@ public class Currency {
                         System.out.println(scoreboard);
                         if(playerBalance.equals(String.valueOf(PlayersConfig.get().getDouble(player + ".balance." + currencies)))){
                             i++;
-                            p.sendMessage(ChatColor.RED + "     " + i + ". " +  player + ": " + ChatColor.GREEN + playerBalance + "\n ");
+                            if(i <= 5){
+                                p.sendMessage(ChatColor.RED + "     " + i + ". " +  player + ": " + ChatColor.GREEN + playerBalance + "\n ");
+                            }
                         }
                     }
                 }

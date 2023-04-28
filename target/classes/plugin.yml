@@ -1,5 +1,5 @@
 name: AsceciaCurrencies
-version: '1.2-Release'
+version: '1.2.2-Release'
 main: me.rgn.asceciacurrencies.AsceciaCurrencies
 api-version: 1.19
 authors: [ RGn2 ]
@@ -10,6 +10,8 @@ commands:
     description: The core command
     usage: /<command> <subcommand>
     aliases: [c, cu]
+softdepend:
+  - Medieval-factions
 permissions:
   ascecia:
     player:
