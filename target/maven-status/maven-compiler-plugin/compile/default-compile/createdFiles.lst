@@ -5,4 +5,4 @@ me\rgn\asceciacurrencies\api\Currency$2.class
 me\rgn\asceciacurrencies\api\Team.class
 me\rgn\asceciacurrencies\api\Currency$1.class
 me\rgn\asceciacurrencies\AsceciaCurrencies$2.class
-me\rgn\asceciacurrencies\AsceciaCurrencies$3.class
+me\rgn\asceciacurrencies\Listeners\JoinListener.class

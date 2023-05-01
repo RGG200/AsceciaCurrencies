@@ -101,7 +101,7 @@ public class Team {
     }
     public static boolean kickTeamMember(CommandSender s, String playername){
         final List<?> team = new ArrayList<>();
-        if(PlayersConfig.get().get(playername + ".team") != null){
+        if(PlayersConfig.get().get(playername + ".team") != null && !s.getName().equals(CurrenciesConfig.get().getString(PlayersConfig.get().getString(s.getName() + ".team") + ".author"))){
             if (CurrenciesConfig.get().getString(PlayersConfig.get().getString(playername + ".team") + ".author").equals(s.getName().toString())){
                 CurrenciesConfig.get().set(PlayersConfig.get().getString(playername + ".team") + ".team." + playername, null);
                 PlayersConfig.get().set(playername + ".team", null);

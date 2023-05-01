@@ -230,7 +230,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
                 }else if(args[0].equals("top")){
-                    if(args.length == 3 || args.length == 4){
+                    if(args.length == 2 || args.length == 3){
                         if(p.hasPermission("asceciacurrencies.player.top")){
                             if(args[1].equals("all")){
                                 cAPI.currency.top(true, "args[2]", p);

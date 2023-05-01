@@ -149,7 +149,6 @@ public class Currency {
                                 p.getWorld().dropItemNaturally(p.getLocation(), item);
                             }
                             i += Double.valueOf(material[0]);
-                            System.out.println(item_string + " i is equal to:" + i + " / " + (cMarketValue*cEcoActivity));
                             if(cMarketValue*cEcoActivity <= i){
                                 break;
                             }
@@ -158,6 +157,11 @@ public class Currency {
                 }
                 for(String key: PlayersConfig.get().getKeys(false)){
                     PlayersConfig.get().set(key + ".balance." + name, null);
+                    if(PlayersConfig.get().getString(key + ".team") != null){
+                        if(PlayersConfig.get().getString(key + ".team").equals(name)){
+                            PlayersConfig.get().set(key + ".team", null);
+                        }
+                    }
                 }
                 PlayersConfig.save();
             }
@@ -194,6 +198,11 @@ public class Currency {
         ItemStack nuggets = new ItemStack(Material.IRON_NUGGET, 1);
         for (String key : PlayersConfig.get().getKeys(false)) {
             PlayersConfig.get().set(key + ".balance." + name, null);
+            if(PlayersConfig.get().getString(key + ".team") != null){
+                if(PlayersConfig.get().getString(key + ".team").equals(name)){
+                    PlayersConfig.get().set(key + ".team", null);
+                }
+            }
         }
         if (CurrenciesConfig.get().contains(name)){
             CurrenciesConfig.get().set(name, null);
@@ -264,8 +273,8 @@ public class Currency {
                         if (cEcoActivity > 0.2 && cPower > 0) {
                             CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoActivity - (5e-5/cPower));
                         }
-                        if (cEcoActivity <= 0.2){
-                            CurrenciesConfig.get().set(currencies + ".economic-activity", 0.2);
+                        if (cEcoActivity <= 0.1){
+                            CurrenciesConfig.get().set(currencies + ".economic-activity", 0.101);
                         }
                         if (cValue > 0){
                             CurrenciesConfig.get().set(currencies + ".power", (Double.valueOf(Math.round((cValue / globalamount) * 1000)) / 1000)*cEcoActivity);
@@ -439,7 +448,7 @@ public class Currency {
         //checking if sender created a currency
         if (PlayersConfig.get().contains(id + ".hascreated")){
             //checking every currency
-                double pBalance = PlayersConfig.get().getDouble(id + "." + currencies + ".balance");
+                double pBalance = PlayersConfig.get().getDouble(id + ".balance." + currencies);
                 double cMarketAmount = CurrenciesConfig.get().getDouble(currencies + ".amount");
                 double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
                 double cEcoActivity = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
@@ -462,6 +471,18 @@ public class Currency {
                             if (isNameValid == true) {
                                 //cloning the currency
                                 PlayersConfig.get().set(id + ".balance." + newName, pBalance);
+                                for(String player: PlayersConfig.get().getKeys(false)){
+                                    if(PlayersConfig.get().getString(player + ".team") != null){
+                                        if(PlayersConfig.get().getString(player + ".team").equals(currencies)){
+                                            PlayersConfig.get().set(player + ".team", newName);
+                                        }
+                                    }
+                                    if(PlayersConfig.get().getString(player + ".invite") != null) {
+                                        if (PlayersConfig.get().get(id + ".invite").equals(currencies)) {
+                                            PlayersConfig.get().set(id + ".invite", newName);
+                                        }
+                                    }
+                                }
                                 CurrenciesConfig.get().set(newName, CurrenciesConfig.get().get(currencies));
                                 //deleting the original
                                 PlayersConfig.get().set(id + ".balance." + currencies, null);
@@ -512,7 +533,6 @@ public class Currency {
                 for(String playerBalance: scoreboard){
                     for(String player: PlayersConfig.get().getKeys(false)){
                         // if the player balance = current ranking player
-                        System.out.println(scoreboard);
                         if(playerBalance.equals(String.valueOf(PlayersConfig.get().getDouble(player + ".balance." + currencies)))){
                             i++;
                             if(i <= 5){
@@ -587,9 +607,8 @@ public class Currency {
                                     next_material = material_prices.get(material_prices.indexOf(material)-1);
                                 }
                                 if (difference >= Double.valueOf(material[0]) && difference < Double.valueOf(next_material[0])) {
-                                    if(Double.valueOf(material[0])+i > cPower*amount){
-                                        continue;
-                                    }else{
+                                    if(Double.valueOf(material[0])+i > cPower*amount) continue;
+                                    else{
                                         String item_string = material[1].substring(12);
                                         Material itemMaterial = Material.valueOf(item_string.toUpperCase());
                                         final ItemStack itemGiven = new ItemStack(itemMaterial, 1);
@@ -598,7 +617,6 @@ public class Currency {
                                             p.getWorld().dropItemNaturally(p.getLocation(), item);
                                         }
                                         i += Double.valueOf(material[0]);
-                                        System.out.println(item_string + " i is equal to:" + i);
                                         if(cPower*amount <= i){
                                             break;
                                         }

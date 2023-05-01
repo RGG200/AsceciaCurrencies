@@ -1,5 +1,6 @@
 package me.rgn.asceciacurrencies;
 
+import me.rgn.asceciacurrencies.Listeners.JoinListener;
 import me.rgn.asceciacurrencies.files.CurrenciesConfig;
 import me.rgn.asceciacurrencies.files.LanguageConfig;
 import me.rgn.asceciacurrencies.commands.*;
@@ -12,6 +13,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.logging.Logger;
+
 public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter {
 
     public static JavaPlugin plugin;
@@ -20,6 +23,8 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
     public void onEnable() {
         plugin = this;
         //init configs
+        getServer().getPluginManager().registerEvents(new JoinListener(), this);
+        Bukkit.getLogger().info("Registering Events... !");
         getConfig().options().copyDefaults();
         saveDefaultConfig();
         CurrenciesConfig.setup();
@@ -35,7 +40,7 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         getCommand("Currencies").setExecutor(new Currencies());
         getCommand("Currencies").setTabCompleter(new Currencies());
         //printing success
-        System.out.println("[Ascecia-Currencies]: Plugin Loaded !");
+        Bukkit.getLogger().info("Plugin Loaded !");
         //does stuff
         BukkitScheduler economic_evolution = getServer().getScheduler();
         BukkitScheduler economy_check = getServer().getScheduler();
@@ -50,13 +55,13 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                     double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
                     double cEcoAct = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
                     CurrenciesConfig.get().set(currencies + ".power", (Double.valueOf(Math.round((cValue / cMarketAmount) * 1000)) / 1000)*cEcoAct);
-                    if (cEcoAct < 0.2) {
-                        CurrenciesConfig.get().set(currencies + ".economic-activity", 0.21);
+                    if (cEcoAct <= 0.1) {
+                        CurrenciesConfig.get().set(currencies + ".economic-activity", 0.101);
                     }
                     CurrenciesConfig.save();
                 }
             }
-        },0L, 20L);
+        },0L, 20L*60);
         economic_evolution.scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
@@ -65,8 +70,8 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                     double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
                     double cEcoAct = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
                     CurrenciesConfig.get().set(currencies + ".economic-activity", cEcoAct - 0.01);
-                    if (cEcoAct < 0.2) {
-                        CurrenciesConfig.get().set(currencies + ".economic-activity", 0.21);
+                    if (cEcoAct <= 0.1) {
+                        CurrenciesConfig.get().set(currencies + ".economic-activity", 0.101);
                     }
                     CurrenciesConfig.get().set(currencies + ".totalvalue", cValue);
                     CurrenciesConfig.get().set(currencies + ".power", (Double.valueOf(Math.round((cValue / cMarketAmount) * 1000)) / 1000)*cEcoAct);
@@ -74,17 +79,6 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                 }
             }
         }, 0L, 576000L);
-        invites.scheduleSyncRepeatingTask(this, new Runnable() {
-            @Override
-            public void run() {
-                for (String player : PlayersConfig.get().getKeys(false)){
-                    PlayersConfig.get().set(player + ".invite", null);
-                }
-                PlayersConfig.save();
-                PlayersConfig.reload();
-                Bukkit.getServer().broadcastMessage(ChatColor.AQUA + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".info-0"));
-            }
-        },0L, 200 * 20);
 
     }
 }

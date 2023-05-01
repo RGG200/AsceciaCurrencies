@@ -72,11 +72,12 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-16_9", " You left your team ");
 
         //info in english
-        LanguageConfig.get().set("en-us.info-0", "[Currencies]: Invitations to currency teams have expired");
+        LanguageConfig.get().set("en-us.info-0", "[Currencies]: You have no invitations pending");
+        LanguageConfig.get().set("en-us.info-0_1", "[Currencies]: You have been invited to the team of the currency ");
 
         //errors in english
         LanguageConfig.get().set("en-us.error-0", "[Currencies]: /currencies create (currencyname)");
-        LanguageConfig.get().set("en-us.error-0_1", "[Currencies]: Your currency needs to be 3 caracthers long minimum and 9 max and not use any special characters or numbers or spaces");
+        LanguageConfig.get().set("en-us.error-0_1", "[Currencies]: Your currency needs to be 3 caracthers long minimum and not use any special characters or numbers or spaces");
         LanguageConfig.get().set("en-us.error-0_2", "[Currencies]: The Currency Already Exists");
         LanguageConfig.get().set("en-us.error-0_3", "[Currencies]: You Have Already Created a currency");
 
@@ -198,7 +199,9 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-16_9", " Tu as Quitté ton équipe");
 
         //info in french
-        LanguageConfig.get().set("fr-FR.info-0", "[Currencies]: Les invitations pour les equipes des monnaies ont expirées");
+        LanguageConfig.get().set("fr-FR.info-0", "[Currencies]: Aucune invitations.");
+        LanguageConfig.get().set("fr-FR.info-0_1", "[Currencies]: Vous êtes invité par l'équipe de ");
+
 
         //erreur en français
         LanguageConfig.get().set("fr-FR.error-0", "[Currencies]: /currencies create (nom)");
@@ -328,7 +331,8 @@ public class Messages {
         LanguageConfig.get().set("es-ES.message-16_9", " Salido de su equipo ");
 
         //info in spanish
-        LanguageConfig.get().set("es-ES.info-0", "[Currencies]: Las invitacíones son expirada");
+        LanguageConfig.get().set("es-ES.info-0", "[Currencies]: No invitacíonnes de equipos");
+        LanguageConfig.get().set("es-ES.info-0_1", "[Currencies]: Invitado con el equipo ");
 
         //erreur en español
         LanguageConfig.get().set("es-ES.error-0", "[Currencies]: /currencies create (nombre)");
