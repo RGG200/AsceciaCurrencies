@@ -13,7 +13,7 @@ import java.util.List;
 public class Team {
     public static boolean addTeamMember(CommandSender s, String playername){
         for(String currencies: CurrenciesConfig.get().getKeys(false)){
-            if(PlayersConfig.get().get(playername + ".team") == null && s.getName().equals(CurrenciesConfig.get().getString(PlayersConfig.get().getString(s.getName() + ".team") + ".author"))){
+            if(PlayersConfig.get().get(playername + ".team") == null && !s.getName().equals(CurrenciesConfig.get().getString(PlayersConfig.get().get(playername + ".team") + ".author"))){
                 if(PlayersConfig.get().getString(playername + ".invite") == null){
                     s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_4"));
                 }
@@ -48,6 +48,8 @@ public class Team {
                         }else{
                             s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_6"));
                         }
+                    }else{
+                        PlayersConfig.get().set(playername + ".invite", currencies);
                     }
                     Bukkit.getServer().broadcastMessage(ChatColor.GREEN + playername + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16_1")  + currencies);
                 }

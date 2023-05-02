@@ -1,6 +1,7 @@
 package me.rgn.asceciacurrencies;
 
 import me.rgn.asceciacurrencies.Listeners.JoinListener;
+import me.rgn.asceciacurrencies.api.CurrenciesAPI;
 import me.rgn.asceciacurrencies.files.CurrenciesConfig;
 import me.rgn.asceciacurrencies.files.LanguageConfig;
 import me.rgn.asceciacurrencies.commands.*;
@@ -24,7 +25,7 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         plugin = this;
         //init configs
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
-        Bukkit.getLogger().info("Registering Events... !");
+        Bukkit.getLogger().info("[Ascecia-Currencies]: Registering Events... !");
         getConfig().options().copyDefaults();
         saveDefaultConfig();
         CurrenciesConfig.setup();
@@ -36,11 +37,12 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         PlayersConfig.setup();
         PlayersConfig.get().options().copyDefaults(true);
         PlayersConfig.save();
+        CurrenciesAPI.currency.reloadConfig(Bukkit.getConsoleSender());
         //getting command
         getCommand("Currencies").setExecutor(new Currencies());
         getCommand("Currencies").setTabCompleter(new Currencies());
         //printing success
-        Bukkit.getLogger().info("Plugin Loaded !");
+        Bukkit.getLogger().info("[Ascecia-Currencies]: Plugin Loaded !");
         //does stuff
         BukkitScheduler economic_evolution = getServer().getScheduler();
         BukkitScheduler economy_check = getServer().getScheduler();
