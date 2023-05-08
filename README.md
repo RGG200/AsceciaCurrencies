@@ -20,7 +20,3 @@ Ascecia Currencies is a minecraft plugin that allows players to create their own
 - Ascecia-SubCurrencies : To Be Annonced
 
 ## Other plugins
-
-- Ascecia-House : To Be Annonced
-- Ascecia-Shops : To Be Annonced
-- Ascecia-Nations : To Be Annonced
