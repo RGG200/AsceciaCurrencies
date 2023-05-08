@@ -13,7 +13,12 @@ Ascecia Currencies is a minecraft plugin that allows players to create their own
 ## Credits
 
 - Me / Developer
-- You / Tester
+- kauf0 / Tester
+
+## Want to help me ?
+
+- If you want to help me continue developping this plugin you can always donate.
+[[!Donate with Paypal](https://github.com/andreostrovsky/donate-with-paypal/blob/master/blue.svg)](https://www.paypal.com/donate/?hosted_button_id=AWPA9RF58Q5C6)
 
 ## Planned extensions
 
