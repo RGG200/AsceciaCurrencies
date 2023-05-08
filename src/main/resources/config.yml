@@ -10,9 +10,6 @@ ores_prices:
   iron_block: 9.0
   copper_block: 9.0
   diamond: 20.0
-  netherite_scrap: 20.0
   gold_block: 45.0
   emerald_block: 81.0
-  netherite_ingot: 100.0
   diamond_block: 180.0
-  netherite_block: 900.0

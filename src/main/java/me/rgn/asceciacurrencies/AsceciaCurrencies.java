@@ -2,6 +2,7 @@ package me.rgn.asceciacurrencies;
 
 import me.rgn.asceciacurrencies.Listeners.JoinListener;
 import me.rgn.asceciacurrencies.api.CurrenciesAPI;
+import me.rgn.asceciacurrencies.api.versions.*;
 import me.rgn.asceciacurrencies.files.CurrenciesConfig;
 import me.rgn.asceciacurrencies.files.LanguageConfig;
 import me.rgn.asceciacurrencies.commands.*;
@@ -22,6 +23,45 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
 
     @Override
     public void onEnable() {
+        String sVersion = Bukkit.getBukkitVersion().split("-")[0];
+        switch (sVersion){
+            case "1.19.4":
+                CurrenciesAPI.currency = new Currency1_19();
+                CurrenciesAPI.team = new Team1_19();
+                break;
+            case "1.19.3":
+                CurrenciesAPI.currency = new Currency1_19();
+                CurrenciesAPI.team = new Team1_19();
+                break;
+            case "1.19.2":
+                CurrenciesAPI.currency = new Currency1_19();
+                CurrenciesAPI.team = new Team1_19();
+                break;
+            case "1.19.1":
+                CurrenciesAPI.currency = new Currency1_19();
+                CurrenciesAPI.team = new Team1_19();
+                break;
+            case "1.19":
+                CurrenciesAPI.currency = new Currency1_19();
+                CurrenciesAPI.team = new Team1_19();
+                break;
+            case "1.18.2":
+                CurrenciesAPI.currency = new Currency1_18();
+                CurrenciesAPI.team = new Team1_18();
+                break;
+            case "1.18.1":
+                CurrenciesAPI.currency = new Currency1_18();
+                CurrenciesAPI.team = new Team1_18();
+                break;
+            case "1.18":
+                CurrenciesAPI.currency = new Currency1_18();
+                CurrenciesAPI.team = new Team1_18();
+                break;
+            default:
+                getLogger().severe("[Ascecia-Currencies]: Unsupported version disabling plugin...");
+                Bukkit.getPluginManager().disablePlugin(this);
+                break;
+        }
         plugin = this;
         //init configs
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
