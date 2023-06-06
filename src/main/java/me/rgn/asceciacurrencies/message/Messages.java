@@ -9,7 +9,7 @@ public class Messages {
         if (!LanguageConfig.get().contains("language")){
             LanguageConfig.get().set("language", "en-us");
         }
-        String[] locales = {"fr-FR", "en-us", "es-ES"};
+        String[] locales = {"fr-FR", "en-us", "es-ES", "ru-RU"};
         LanguageConfig.get().set("locales", locales);
         //messages in english
         LanguageConfig.get().set("en-us.message-0", "[Currencies]: The Currency ");
