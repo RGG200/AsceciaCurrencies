@@ -397,6 +397,133 @@ public class Messages {
         LanguageConfig.get().set("es-ES.error-16_5", "[Currencies]: El judador ya en un equipo !");
         LanguageConfig.get().set("es-ES.error-16_7", "[Currencies]: No puede salir de su equipo !");
 
+        //messages in russian
+        LanguageConfig.get().set("ru-RU.message-0", "[Currencies]: Валюта ");
+        LanguageConfig.get().set("ru-RU.message-0_1", " была создана ");
+
+        LanguageConfig.get().set("ru-RU.message-1", "[Currencies]: Ваша валюта была удалена");
+        LanguageConfig.get().set("ru-RU.message-1_1", "[Currencies]: Вы удалили валюту, и руды не будут выданы.");
+
+        LanguageConfig.get().set("ru-RU.message-2", "[Currencies]: Ты отчеканил ");
+
+        LanguageConfig.get().set("ru-RU.message-3", "[Currencies]: You deposited");
+        LanguageConfig.get().set("ru-RU.message-3_1", " iron Worth of ores to your currency");
+
+        LanguageConfig.get().set("ru-RU.message-4", "Вы успешно оплатили ");
+        LanguageConfig.get().set("ru-RU.message-4_1", "Вы успешно получили ");
+        LanguageConfig.get().set("ru-RU.message-4_2", " to ");
+        LanguageConfig.get().set("ru-RU.message-4_3", " от ");
+
+        LanguageConfig.get().set("ru-RU.message-5", "[Currencies]: You Withdrew ");
+
+        LanguageConfig.get().set("ru-RU.message-6", "[Currencies]: Описание установлено ! ");
+
+        LanguageConfig.get().set("ru-RU.message-7", "| Ascecia Currencies | Помощь | \n \n /currencies create (Название) - creates a currency  \n /currencies delete (Название) - deletes your currency \n /currencies withdraw (name)  (Количество) - turn back an amount of your currency into iron \n /currencies info (name) - gives you info about a currency \n /currencies list - gives you a list of all currencies available \n /currencies mint (name)  (Количество) - makes an amount of currency \n /currencies deposit (nombre) - deposit the amount of ores you're holding in your hand into your currency to increase its power \n /currencies pay (playername) (name)  (Количество) - pays the target with an amount of currency \n /currencies wallet - give you details about your wallet \n /currencies top (all/one) (Currency) - Leaderboard of the richest \n /currencies team (set/invite/kick/list/permissions/join/leave) - Manage a currency's team");
+
+        LanguageConfig.get().set("ru-RU.message-8", "| Currency Info -> | ");
+        LanguageConfig.get().set("ru-RU.message-8_1", " | \n \n Amount of Currency available on the market: ");
+        LanguageConfig.get().set("ru-RU.message-8_2", "\n Power of the currency: ");
+        LanguageConfig.get().set("ru-RU.message-8_3", "\n Number of users: ");
+        LanguageConfig.get().set("ru-RU.message-8_4", "\n Economic Activity of the currency: ");
+        LanguageConfig.get().set("ru-RU.message-8_5", "\n Total value of the currency: ");
+        LanguageConfig.get().set("ru-RU.message-8_6", "\n Author: ");
+        LanguageConfig.get().set("ru-RU.message-8_7", "\n Description: ");
+
+        LanguageConfig.get().set("ru-RU.message-9","\n | Ascecia-Currencies | Currency-List | \n \n");
+        LanguageConfig.get().set("ru-RU.message-9_1",": \n      Power: ");
+        LanguageConfig.get().set("ru-RU.message-9_2","\n        Economic-Activity: ");
+
+        LanguageConfig.get().set("ru-RU.message-10","\n | Ascecia-Currencies | Wallet | \n \n");
+        LanguageConfig.get().set("ru-RU.message-10_1","\n       Balance: ");
+
+        LanguageConfig.get().set("ru-RU.message-11", " Has been renamed to ");
+
+        LanguageConfig.get().set("ru-RU.message-12", "[Currencies]: Configuration Reloaded !");
+
+        LanguageConfig.get().set("ru-RU.message-13", "| Ascecia Currencies | Top |");
+
+        LanguageConfig.get().set("ru-RU.message-14", "Язык установлен !");
+
+        LanguageConfig.get().set("ru-RU.message-15", "[Currencies]: Значение установлено !");
+
+        LanguageConfig.get().set("ru-RU.message-16", "[Ascecia Currencies]: Teams: \n \n");
+        LanguageConfig.get().set("ru-RU.message-16_1", " has been invited to the team of ");
+        LanguageConfig.get().set("ru-RU.message-16_2", "[Ascecia Currencies]: Player Kicked !");
+        LanguageConfig.get().set("ru-RU.message-16_3", "[Ascecia Currencies]: Player Permissions: ");
+        LanguageConfig.get().set("ru-RU.message-16_4", "\n      Minting: ");
+        LanguageConfig.get().set("ru-RU.message-16_5", "\n      Depositing: ");
+        LanguageConfig.get().set("ru-RU.message-16_6", "\n      Renaming: ");
+        LanguageConfig.get().set("ru-RU.message-16_7", "\n      Description: ");
+        LanguageConfig.get().set("ru-RU.message-16_8", " Joined");
+        LanguageConfig.get().set("ru-RU.message-16_9", " You left your team ");
+
+        //info in russain
+        LanguageConfig.get().set("ru-RU.info-0", "[Currencies]: You have no invitations pending");
+        LanguageConfig.get().set("ru-RU.info-0_1", "[Currencies]: You have been invited to the team of the currency ");
+
+        //errors in russain
+        LanguageConfig.get().set("ru-RU.error-0", "[Currencies]: /currencies create (Название валюты)");
+        LanguageConfig.get().set("ru-RU.error-0_1", "[Currencies]: Длина названия вашей валюты должна составлять минимум 3 символа и не содержать никаких специальных символов, цифр или пробелов");
+        LanguageConfig.get().set("ru-RU.error-0_2", "[Currencies]: Валюта уже существует");
+        LanguageConfig.get().set("ru-RU.error-0_3", "[Currencies]: Вы уже создали валюту");
+
+        LanguageConfig.get().set("ru-RU.error-1", "[Currencies]: /currencies delete (Название валюты)");
+        LanguageConfig.get().set("ru-RU.error-1_1", "[Currencies]: Вы не являетесь владельцем этой валюты !");
+
+        LanguageConfig.get().set("ru-RU.error-2", "[Currencies]: /currencies description (description)");
+
+        LanguageConfig.get().set("ru-RU.error-3", "[Currencies]: /currencies force delete (Название валюты)");
+
+        LanguageConfig.get().set("ru-RU.error-4", "[Currencies]: /currencies info (Название валюты)");
+        LanguageConfig.get().set("ru-RU.error-4_1", "[Currencies]: Этой валюты не существует");
+
+        LanguageConfig.get().set("ru-RU.error-5", "[Currencies]: Нет доступных валют. создайте его с помощью /currencies create");
+
+        LanguageConfig.get().set("ru-RU.error-6", "[Currencies]: /currencies mint (name)  (Количество)");
+
+        LanguageConfig.get().set("ru-RU.error-7", "[Currencies]: you don't have a currency. create one using /currencies create");
+
+        LanguageConfig.get().set("ru-RU.error-8", "you need to make at least one of your currency do /currencies mint !");
+        LanguageConfig.get().set("ru-RU.error-8_1", "The chosen material is not an ore and thus can't be deposited in your currency !");
+        LanguageConfig.get().set("ru-RU.error-8_2", "/c deposit (name)");
+
+        LanguageConfig.get().set("ru-RU.error-9", "[Currencies]: /currencies pay (playername) (Название валюты)  (Количество)");
+        LanguageConfig.get().set("ru-RU.error-9_1", "[Currencies]: The Player Specified isn't Online");
+        LanguageConfig.get().set("ru-RU.error-9_2", "[Currencies]: The Currency Specified doesn't exist");
+        LanguageConfig.get().set("ru-RU.error-9_3", "[Currencies]: У вас недостаточно денег");
+        LanguageConfig.get().set("ru-RU.error-9_4", "[Currencies]: Вы не можете дать себе деньги");
+
+        LanguageConfig.get().set("ru-RU.error-10", "[Currencies]: /currencies withdraw (Название валюты)  (Количество)");
+        LanguageConfig.get().set("ru-RU.error-10_1", "[Currencies]: The amount entered is too low !");
+        LanguageConfig.get().set("ru-RU.error-10_2", "[Currencies]: The Currency specified does not exist !");
+        LanguageConfig.get().set("ru-RU.error-10_3", "[Currencies]: You do not have enough money !");
+        LanguageConfig.get().set("ru-RU.error-10_4", "[Currencies]: The amount entered is too high !");
+
+        LanguageConfig.get().set("ru-RU.error-11", "[Currencies]: You do not have the permission to do this !");
+
+        LanguageConfig.get().set("ru-RU.error-12", "[Currencies]: You do not own any currency !");
+        LanguageConfig.get().set("ru-RU.error-12_1", "[Currencies]: /currencies rename (name)");
+        LanguageConfig.get().set("ru-RU.error-12_2", "[Currencies]: The new Name can't be the same as the old one !");
+
+        LanguageConfig.get().set("ru-RU.error-13", "[Currencies]: /currencies top (all/one) (currency)");
+        LanguageConfig.get().set("ru-RU.error-13_1", "[Currencies]: This currency doesn't exist");
+
+        LanguageConfig.get().set("ru-RU.error-14", "[Currencies]: /currencies config language (language)");
+        LanguageConfig.get().set("ru-RU.error-14_1", "[Currencies]: this language isn't in the configuration");
+        LanguageConfig.get().set("ru-RU.error-14_2", "[Currencies]: /currencies config (language/reload)");
+
+        LanguageConfig.get().set("ru-RU.error-15", "[Currencies]: this ore value isn't in the configuration");
+        LanguageConfig.get().set("ru-RU.error-15_1", "[Currencies]: /currencies config ore (ore) (value)");
+
+        LanguageConfig.get().set("ru-RU.error-16", "[Currencies]: /currencies team (invite/kick/permissions) (playername) \n /currencies team set (playername) (permission) (true/false) \n /currencies team (list/join) (Название валюты) \n /currencies team leave");
+        LanguageConfig.get().set("ru-RU.error-16_1", "[Currencies]: This Permission doesn't exist !");
+        LanguageConfig.get().set("ru-RU.error-16_2", "[Currencies]: This Player isn't in the team !");
+        LanguageConfig.get().set("ru-RU.error-16_3", "[Currencies]: This Player is already in the team !");
+        LanguageConfig.get().set("ru-RU.error-16_4", "[Currencies]: You haven't been invited to this team !");
+        LanguageConfig.get().set("ru-RU.error-16_5", "[Currencies]: The player is already in a team !");
+        LanguageConfig.get().set("ru-RU.error-16_6", "[Currencies]: You already invited this player to your team !");
+        LanguageConfig.get().set("ru-RU.error-16_7", "[Currencies]: You can't leave your own team !");
+        
         LanguageConfig.save();
     }
 }
