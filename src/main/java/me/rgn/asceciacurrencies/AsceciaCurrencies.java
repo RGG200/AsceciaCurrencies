@@ -25,6 +25,14 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
     public void onEnable() {
         String sVersion = Bukkit.getBukkitVersion().split("-")[0];
         switch (sVersion){
+            case "1.20.1":
+                CurrenciesAPI.currency = new Currency1_19();
+                CurrenciesAPI.team = new Team1_19();
+                break;
+            case "1.20":
+                CurrenciesAPI.currency = new Currency1_19();
+                CurrenciesAPI.team = new Team1_19();
+                break;
             case "1.19.4":
                 CurrenciesAPI.currency = new Currency1_19();
                 CurrenciesAPI.team = new Team1_19();
@@ -46,16 +54,16 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                 CurrenciesAPI.team = new Team1_19();
                 break;
             case "1.18.2":
-                CurrenciesAPI.currency = new Currency1_18();
-                CurrenciesAPI.team = new Team1_18();
+                CurrenciesAPI.currency = new Currency1_19();
+                CurrenciesAPI.team = new Team1_19();
                 break;
             case "1.18.1":
-                CurrenciesAPI.currency = new Currency1_18();
-                CurrenciesAPI.team = new Team1_18();
+                CurrenciesAPI.currency = new Currency1_19();
+                CurrenciesAPI.team = new Team1_19();
                 break;
             case "1.18":
-                CurrenciesAPI.currency = new Currency1_18();
-                CurrenciesAPI.team = new Team1_18();
+                CurrenciesAPI.currency = new Currency1_19();
+                CurrenciesAPI.team = new Team1_19();
                 break;
             default:
                 getLogger().severe("[Ascecia-Currencies]: Unsupported version disabling plugin...");
@@ -120,7 +128,7 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                     CurrenciesConfig.save();
                 }
             }
-        }, 0L, 576000L);
+        }, 0L, 20L*3600*8*plugin.getConfig().getInt("economic_rate")/20);
 
     }
 }

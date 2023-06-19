@@ -82,6 +82,18 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
                 }
+                // give ownership
+                if (args[0].equals("give-ownership")) {
+                    if (p.hasPermission("asceciacurrencies.player.manage")) {
+                        if (args.length < 3 || args.length > 3) {
+                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-17"));
+                        } else {
+                            CurrenciesAPI.currency.giveOwnership( p, args[1], args[2]);
+                        }
+                    } else {
+                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                    }
+                }
 
                 //delete
                 else if (args[0].equals("delete") || args[0].equals("del")) {
@@ -292,7 +304,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                         }
                 }else {
-                    if (sender instanceof Player && !args[0].equals("ore") && !args[0].equals("force-delete")) {
+                    if (sender instanceof Player && !args[0].equals("create")) {
                         p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
                     }
                 }
@@ -304,8 +316,8 @@ public class Currencies implements CommandExecutor, TabCompleter {
         }
         return true;
     }
-    private static final String[] COMMANDS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team"};
-    private static final String[] COMMANDSPlUS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "force-delete", "config"};
+    private static final String[] COMMANDS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "give-ownership"};
+    private static final String[] COMMANDSPlUS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "force-delete", "config", "give-ownership"};
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String CommandLabel, String[] args){
         if(cmd.getName().equals("currencies")){
@@ -325,6 +337,11 @@ public class Currencies implements CommandExecutor, TabCompleter {
             else if (args.length == 2) {
                 switch (args[0].toLowerCase()){
                     case "delete","del", "info", "withdraw","wd", "mint", "depo", "deposit", "rename":
+                        for (String currencies: CurrenciesConfig.get().getKeys(false)) {
+                            completions.add(currencies);
+                        }
+                        break;
+                    case "give-ownership":
                         for (String currencies: CurrenciesConfig.get().getKeys(false)) {
                             completions.add(currencies);
                         }
@@ -372,6 +389,12 @@ public class Currencies implements CommandExecutor, TabCompleter {
                     case "pay", "top":
                         for (String currencies: CurrenciesConfig.get().getKeys(false)) {
                             completions.add(currencies);
+                        }
+                        break;
+                    case "give-ownership":
+                        for (Player player: Bukkit.getServer().getOnlinePlayers()){
+                            String pName = player.getName();
+                            completions.add(pName);
                         }
                         break;
                     case "config":

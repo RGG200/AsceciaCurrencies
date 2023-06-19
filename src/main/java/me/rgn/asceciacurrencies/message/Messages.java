@@ -9,7 +9,7 @@ public class Messages {
         if (!LanguageConfig.get().contains("language")){
             LanguageConfig.get().set("language", "en-us");
         }
-        String[] locales = {"fr-FR", "en-us", "es-ES", "ru-RU"};
+        String[] locales = {"fr-FR", "en-us", "es-ES"};
         LanguageConfig.get().set("locales", locales);
         //messages in english
         LanguageConfig.get().set("en-us.message-0", "[Currencies]: The Currency ");
@@ -70,6 +70,8 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-16_7", "\n      Description: ");
         LanguageConfig.get().set("en-us.message-16_8", " Joined");
         LanguageConfig.get().set("en-us.message-16_9", " You left your team ");
+
+        LanguageConfig.get().set("en_us.message-17", "[Currencies]: You gave ownership of your currency to ");
 
         //info in english
         LanguageConfig.get().set("en-us.info-0", "[Currencies]: You have no invitations pending");
@@ -138,6 +140,11 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-16_6", "[Currencies]: You already invited this player to your team !");
         LanguageConfig.get().set("en-us.error-16_7", "[Currencies]: You can't leave your own team !");
 
+        LanguageConfig.get().set("en-us.error-17", "/currencies give-ownership (Currency's name) (Player's name)");
+        LanguageConfig.get().set("en-us.error-17_1", "[Currencies]: You can't give ownership of your currency to yourself !");
+        LanguageConfig.get().set("en-us.error-17_2", "[Currencies]: You do not own this currency !");
+        LanguageConfig.get().set("en-us.error-17_3", "[Currencies]: The specified player already owns a currency !");
+
         //messages en français
         LanguageConfig.get().set("fr-FR.message-0", "[Currencies]: La monnaie ");
         LanguageConfig.get().set("fr-FR.message-0_1", " à été crée ");
@@ -196,7 +203,9 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-16_6", "\n      Renommer: ");
         LanguageConfig.get().set("fr-FR.message-16_7", "\n      Description: ");
         LanguageConfig.get().set("fr-FR.message-16_8", " a rejoint l'equipe de ");
-        LanguageConfig.get().set("fr-FR.message-16_9", " Tu as Quitté ton équipe");
+        LanguageConfig.get().set("fr-FR.message-16_9", " Tu as Quitté(e) ton équipe");
+
+        LanguageConfig.get().set("fr-FR.message-17", "[Currencies]: Tu as légué(e) ta monnaie à ");
 
         //info in french
         LanguageConfig.get().set("fr-FR.info-0", "[Currencies]: Aucune invitations.");
@@ -266,6 +275,11 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.error-16_6", "[Currencies]: Vous avez deja invité ce joueur !");
         LanguageConfig.get().set("fr-FR.error-16_7", "[Currencies]: Tu ne peut pas quitter ta propre équipe !");
 
+        LanguageConfig.get().set("fr-FR.error-17", "/currencies give-ownership (Nom de la monnaie) (Nom du joueur)");
+        LanguageConfig.get().set("fr-FR.error-17_1", "[Currencies]: Tu ne peut pas te donner le contrôle de ta monnaie alors que tu l'as déja !");
+        LanguageConfig.get().set("fr-FR.error-17_2", "[Currencies]: Tu ne possède pas cette monnaie là !");
+        LanguageConfig.get().set("fr-FR.error-17_3", "[Currencies]: Le joueur spécifié possède déja une monnaie !");
+
         LanguageConfig.save();
 
         //español
@@ -329,6 +343,8 @@ public class Messages {
         LanguageConfig.get().set("es-ES.message-16_7", "\n      Describir: ");
         LanguageConfig.get().set("es-ES.message-16_8", " Se unió a el equipo ");
         LanguageConfig.get().set("es-ES.message-16_9", " Salido de su equipo ");
+
+        LanguageConfig.get().set("es-ES.message-17", "[Currencies]: cediaste la propiedad de su moneda a ");
 
         //info in spanish
         LanguageConfig.get().set("es-ES.info-0", "[Currencies]: No invitacíonnes de equipos");
@@ -396,6 +412,11 @@ public class Messages {
         LanguageConfig.get().set("es-ES.error-16_6", "[Currencies]: El jugador ya está invitado en su equipo !");
         LanguageConfig.get().set("es-ES.error-16_5", "[Currencies]: El judador ya en un equipo !");
         LanguageConfig.get().set("es-ES.error-16_7", "[Currencies]: No puede salir de su equipo !");
+
+        LanguageConfig.get().set("es-ES.error-17", "/currencies give-ownership (Nombre de la monneda) (Nombre del jugador)");
+        LanguageConfig.get().set("es-ES.error-17_1", "[Currencies]: No puede cedar la propriedad de su moneda a tù !");
+        LanguageConfig.get().set("es-ES.error-17_2", "[Currencies]: No posee este moneda !");
+        LanguageConfig.get().set("es-ES.error-17_3", "[Currencies]: El jugador specificado ya posee una moneda !");
 
         //messages in russian
         LanguageConfig.get().set("ru-RU.message-0", "[Currencies]: Валюта ");
@@ -523,7 +544,12 @@ public class Messages {
         LanguageConfig.get().set("ru-RU.error-16_5", "[Currencies]: The player is already in a team !");
         LanguageConfig.get().set("ru-RU.error-16_6", "[Currencies]: You already invited this player to your team !");
         LanguageConfig.get().set("ru-RU.error-16_7", "[Currencies]: You can't leave your own team !");
-        
+
+        LanguageConfig.get().set("ru-RU.error-17", "/currencies give-ownership (Currency's name) (Player's name)");
+        LanguageConfig.get().set("ru-RU.error-17_1", "[Currencies]: You can't give ownership of your currency to yourself !");
+        LanguageConfig.get().set("ru-RU.error-17_2", "[Currencies]: You do not own this currency !");
+        LanguageConfig.get().set("ru-RU.error-17_3", "[Currencies]: The specified player already owns a currency !");
+
         LanguageConfig.save();
     }
 }

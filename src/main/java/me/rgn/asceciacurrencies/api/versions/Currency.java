@@ -21,7 +21,6 @@ public interface Currency {
     public boolean rename (Player p,String currencies, String newName);
     public boolean withdraw(Player p, String name, double amount);
     public boolean wallet(Player p);
-    public Boolean top(Boolean all, String name, Player p);
-
-
+    public boolean top(Boolean all, String name, Player p);
+    public boolean giveOwnership(Player author, String name, String new_author);
 }
