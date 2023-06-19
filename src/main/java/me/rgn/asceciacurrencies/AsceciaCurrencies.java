@@ -96,6 +96,7 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         BukkitScheduler economy_check = getServer().getScheduler();
         BukkitScheduler invites = getServer().getScheduler();
         AsceciaWebServerController socketController = new AsceciaWebServerController(29007);
+        plugin.getConfig().set("economic_rate", 20);
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, socketController::transferData, 20, 20 * 5);
         economy_check.scheduleSyncRepeatingTask(this, new Runnable(){
             @Override
