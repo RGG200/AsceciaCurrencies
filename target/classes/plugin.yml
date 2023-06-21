@@ -25,6 +25,7 @@ permissions:
       top:
       team:
       pay:
+      convert:
     admin:
       forcemanage:
       reload-config:

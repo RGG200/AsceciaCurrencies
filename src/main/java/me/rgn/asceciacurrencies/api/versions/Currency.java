@@ -23,4 +23,5 @@ public interface Currency {
     public boolean wallet(Player p);
     public boolean top(Boolean all, String name, Player p);
     public boolean giveOwnership(Player author, String name, String new_author);
+    public boolean convertCurrency(Player p, String name, String name2, double amount);
 }

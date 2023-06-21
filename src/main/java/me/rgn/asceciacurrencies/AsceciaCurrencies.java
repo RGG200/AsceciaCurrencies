@@ -12,17 +12,19 @@ import me.rgn.asceciacurrencies.web.AsceciaWebServerController;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.logging.Logger;
 
 public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter {
-
     public static JavaPlugin plugin;
-
     @Override
     public void onEnable() {
+        //Hook into Vault
         String sVersion = Bukkit.getBukkitVersion().split("-")[0];
         switch (sVersion){
             case "1.20.1":
@@ -72,8 +74,9 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         }
         plugin = this;
         //init configs
-        getServer().getPluginManager().registerEvents(new JoinListener(), this);
+        plugin.getConfig().addDefault("economic-rate", 20);
         Bukkit.getLogger().info("[Ascecia-Currencies]: Registering Events... !");
+        getServer().getPluginManager().registerEvents(new JoinListener(), plugin);
         getConfig().options().copyDefaults();
         saveDefaultConfig();
         CurrenciesConfig.setup();
@@ -96,7 +99,6 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         BukkitScheduler economy_check = getServer().getScheduler();
         BukkitScheduler invites = getServer().getScheduler();
         AsceciaWebServerController socketController = new AsceciaWebServerController(29007);
-        plugin.getConfig().set("economic_rate", 20);
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, socketController::transferData, 20, 20 * 5);
         economy_check.scheduleSyncRepeatingTask(this, new Runnable(){
             @Override
@@ -129,7 +131,6 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                     CurrenciesConfig.save();
                 }
             }
-        }, 0L, 20L*3600*8*plugin.getConfig().getInt("economic_rate")/20);
-
+        }, 0L, 20L*3600*8*20/plugin.getConfig().getInt("economic_rate"));
     }
 }

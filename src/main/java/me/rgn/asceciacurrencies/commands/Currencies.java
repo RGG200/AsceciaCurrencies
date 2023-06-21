@@ -82,6 +82,16 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
                 }
+                //convert
+                if(args[0].equals("convert")){
+                    if(p.hasPermission("asceciacurrencies.player.convert")) {
+                        if (args.length < 4 || args.length > 4) {
+                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-18"));
+                        }else{
+                            CurrenciesAPI.currency.convertCurrency(p, args[1], args[2], Double.valueOf(args[3]));
+                        }
+                    }
+                }
                 // give ownership
                 if (args[0].equals("give-ownership")) {
                     if (p.hasPermission("asceciacurrencies.player.manage")) {
@@ -304,7 +314,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                         }
                 }else {
-                    if (sender instanceof Player && !args[0].equals("create")) {
+                    if (sender instanceof Player && !args[0].equals("create") && !args[0].equals("convert")) {
                         p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
                     }
                 }
@@ -316,8 +326,8 @@ public class Currencies implements CommandExecutor, TabCompleter {
         }
         return true;
     }
-    private static final String[] COMMANDS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "give-ownership"};
-    private static final String[] COMMANDSPlUS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "force-delete", "config", "give-ownership"};
+    private static final String[] COMMANDS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "give-ownership", "convert"};
+    private static final String[] COMMANDSPlUS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "force-delete", "config", "give-ownership", "convert"};
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String CommandLabel, String[] args){
         if(cmd.getName().equals("currencies")){
@@ -341,7 +351,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             completions.add(currencies);
                         }
                         break;
-                    case "give-ownership":
+                    case "give-ownership", "convert":
                         for (String currencies: CurrenciesConfig.get().getKeys(false)) {
                             completions.add(currencies);
                         }
@@ -386,7 +396,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
             }
             else if (args.length == 3) {
                 switch (args[0].toLowerCase()){
-                    case "pay", "top":
+                    case "pay", "top", "convert":
                         for (String currencies: CurrenciesConfig.get().getKeys(false)) {
                             completions.add(currencies);
                         }

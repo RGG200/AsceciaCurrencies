@@ -64,7 +64,7 @@ public class Currency1_19 implements Currency {
                     if (name.length() == count) {
                         isNameValid = true;
                     }
-                    if (isNameValid == true) {
+                    if (isNameValid) {
                         PlayersConfig.get().set(id + ".balance." + name, 1.0);
                         PlayersConfig.get().set(id + ".hascreated", true);
                         CurrenciesConfig.get().set(name + ".power", 0.0);
@@ -180,7 +180,7 @@ public class Currency1_19 implements Currency {
         String id = p.getName();
         for (String currencies : CurrenciesConfig.get().getKeys(false)){
             String author = CurrenciesConfig.get().getString(currencies + ".author");
-            if (author.equals(id) || CurrenciesConfig.get().getBoolean(currencies + ".team." + id + ".description") == true){
+            if (author.equals(id) || CurrenciesConfig.get().getBoolean(currencies + ".team." + id + ".description")){
                 CurrenciesConfig.get().set(currencies + ".description", description);
                 p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-6"));
             }
@@ -214,13 +214,49 @@ public class Currency1_19 implements Currency {
         }
         return true;
     }
+    public boolean convertCurrency(Player p, String name, String name2, double amount){
+        //init variables
+        double cPower = CurrenciesConfig.get().getDouble(name + ".power");
+        double c2Power = CurrenciesConfig.get().getDouble(name2 + ".power");
+        double cValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
+        double c2Value = CurrenciesConfig.get().getDouble(name2 + ".totalvalue");
+        //if currencies exiwt
+        if(CurrenciesConfig.get().contains(name) && CurrenciesConfig.get().contains(name2)){
+            //if player is not poor
+            if(PlayersConfig.get().contains(p.getName().toString() + ".balance." + name)) {
+                if (amount > 1 && PlayersConfig.get().getDouble(p.getName().toString() + ".balance." + name) > amount) {
+                    PlayersConfig.get().set(p.getName().toString() + ".balance." + name, PlayersConfig.get().getDouble(p.getName().toString() + ".balance." + name) - amount);
+                    if (!PlayersConfig.get().contains(p.getName().toString() + ".balance." + name2)) {
+                        PlayersConfig.get().addDefault(p.getName().toString() + ".balance." + name2, 0.0);
+                    }
+                    CurrenciesConfig.get().set(name + ".amount", CurrenciesConfig.get().getDouble(name + ".amount") - amount);
+                    CurrenciesConfig.get().set(name2 + ".amount", CurrenciesConfig.get().getDouble(name2 + ".amount") + Math.round(amount * (cPower / c2Power*1000))/1000);
+                    CurrenciesConfig.get().set(name + ".totalvalue", cValue - amount*cPower);
+                    CurrenciesConfig.get().set(name2 + ".totalvalue", c2Value + amount * (cPower / c2Power) * c2Power);
+                    PlayersConfig.get().set(p.getName().toString() + ".balance." + name2, PlayersConfig.get().getDouble(p.getName().toString() + ".balance." + name2) + Math.round(amount * (cPower / c2Power*1000))/1000);
+                    p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-18") + amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-18_1") + (amount * cPower/c2Power) + " "+ name2);
+                } else {
+                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_3"));
+                }
+            }else{
+                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_3"));
+            }
+        }else{
+            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9_2"));
+        }
+        PlayersConfig.save();
+        CurrenciesConfig.save();
+        PlayersConfig.reload();
+        CurrenciesConfig.reload();
+        return true;
+    }
     public boolean giveOwnership(Player author, String name, String new_author){
-        if(!new_author.equals(author.getName().toString())) {
+        if(!new_author.equals(author.getName())) {
             if (CurrenciesConfig.get().contains(name)) {
-                if (CurrenciesConfig.get().getString(name + ".author").equals(author.getName().toString())) {
-                    if (PlayersConfig.get().getBoolean(new_author + ".hascreated") != true) {
+                if (CurrenciesConfig.get().getString(name + ".author").equals(author.getName())) {
+                    if (!PlayersConfig.get().getBoolean(new_author + ".hascreated")) {
                         CurrenciesConfig.get().set(name + ".author", new_author);
-                        PlayersConfig.get().set(author.getName().toString() + ".hascreated", false);
+                        PlayersConfig.get().set(author.getName() + ".hascreated", false);
                         CurrenciesConfig.save();
                         author.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-17"));
                         CurrenciesConfig.reload();
@@ -283,7 +319,7 @@ public class Currency1_19 implements Currency {
             double cPower = CurrenciesConfig.get().getDouble(currencies + ".power");
             String author = CurrenciesConfig.get().getString(currencies + ".author");
             if (Double.valueOf(Math.round(amount*1000))/1000 >= 1) {
-                if (id.equals(author) || CurrenciesConfig.get().getBoolean(currencies + ".team." + id + ".mint") == true) {
+                if (id.equals(author) || CurrenciesConfig.get().getBoolean(currencies + ".team." + id + ".mint")) {
                     double pbalance = PlayersConfig.get().getDouble(id + ".balance." + currencies);
                     PlayersConfig.get().set(id + ".balance." + currencies, pbalance + Double.valueOf(Math.round(amount*1000))/1000);
                     globalamount += Double.valueOf(Math.round(amount*1000))/1000;
@@ -334,7 +370,7 @@ public class Currency1_19 implements Currency {
             List team = CurrenciesConfig.get().getList(currencies + ".team");
             //check if player has a currency
             //check if he's the author of the currency being checked
-            if (author.equals(id) || CurrenciesConfig.get().getBoolean(currencies + ".team." + id + ".deposit") == true) {
+            if (author.equals(id) || CurrenciesConfig.get().getBoolean(currencies + ".team." + id + ".deposit")) {
                 //check useless to see if there's no currency minted
                 if (cMarketAmount == 0) {
                     p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-8"));
@@ -342,7 +378,7 @@ public class Currency1_19 implements Currency {
                     if(AsceciaCurrencies.plugin.getConfig().contains("ores_prices." + p.getInventory().getItemInMainHand().getType().toString().toLowerCase())){
                         amount = AsceciaCurrencies.plugin.getConfig().getDouble("ores_prices." + p.getInventory().getItemInMainHand().getType().toString().toLowerCase()) * itemamount;
                         CurrenciesConfig.get().set(currencies + ".totalvalue", cValue + amount);
-                        CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000*cEcoActivity))/1000);;
+                        CurrenciesConfig.get().set(currencies + ".power", Double.valueOf(Math.round(((cValue + amount) / cMarketAmount)*1000*cEcoActivity))/1000);
                         p.getInventory().setItemInMainHand(null);
                         p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3") + " " + amount + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-3_1"));
                     }else {
@@ -476,7 +512,7 @@ public class Currency1_19 implements Currency {
             String description = CurrenciesConfig.get().getString(currencies + ".description");
             String author = CurrenciesConfig.get().getString(currencies + ".author");
             //checking if sender is the author of the currency
-            if (id.equals(author) || CurrenciesConfig.get().getBoolean(currencies + ".team." + id + ".rename") == true){
+            if (id.equals(author) || CurrenciesConfig.get().getBoolean(currencies + ".team." + id + ".rename")){
                 if (!newName.equals(currencies)){
                     if (newName.length() > 2 && newName.length() <= 9) {
                         for (int k = 0; k < newName.length(); k++) {
@@ -487,7 +523,7 @@ public class Currency1_19 implements Currency {
                         if (newName.length() == count) {
                             isNameValid = true;
                         }
-                        if (isNameValid == true) {
+                        if (isNameValid) {
                             //cloning the currency
                             PlayersConfig.get().set(id + ".balance." + newName, pBalance);
                             for(String player: PlayersConfig.get().getKeys(false)){
@@ -593,8 +629,8 @@ public class Currency1_19 implements Currency {
         double cMarketValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
         double cMarketAmount = CurrenciesConfig.get().getDouble(name + ".amount");
         double cEcoActivity = CurrenciesConfig.get().getDouble(name + ".economic-activity");
-        String id = p.getName().toString();
-        String pname = p.getName().toString();
+        String id = p.getName();
+        String pname = p.getName();
         //if currency exists
         if (CurrenciesConfig.get().contains(name)) {
             double pBalance = PlayersConfig.get().getDouble(id + ".balance." + name);
