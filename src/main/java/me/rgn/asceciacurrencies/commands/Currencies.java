@@ -15,15 +15,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import javax.annotation.processing.Completions;
+import javax.naming.InsufficientResourcesException;
 import java.util.*;
 
 public class Currencies implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         CurrenciesAPI cAPI = new CurrenciesAPI();
+        CommandSender s = sender;
         if (args.length != 0) {
             if (args[0].equals("force-delete")) {
-                CommandSender s = sender;
                 if (s.hasPermission("asceciacurrencies.admin.forcemanage")) {
                     if (args.length != 2) {
                         s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-3"));
@@ -32,7 +33,6 @@ public class Currencies implements CommandExecutor, TabCompleter {
                     }
                 }
             }else if (args[0].equals("config")){
-                CommandSender s = sender;
                 if (args.length == 1){
                     s.sendMessage(ChatColor.DARK_RED + "/currencies config (language/reload/ore)");
                 }else{
@@ -56,7 +56,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             }
                             break;
                         case "ore":
-                            if(args.length == 4){
+                            if(args.length == 4 && !Double.valueOf(args[2]).isNaN()){
                                 if (s.hasPermission("asceciacurrencies.admin.ore")) {
                                     CurrenciesAPI.currency.setOrePrice(args[2], Double.valueOf(args[3]), s);
                                 }
@@ -65,13 +65,11 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             }
                     }
                 }
-            }else if (sender instanceof Player) {
-                //init variable
-                Player p = (Player) sender;
-                UUID uuid = p.getUniqueId();
-                String id = uuid.toString();
-                //Create
-                if (args[0].equals("create")) {
+            }
+            //Create
+            else if (args[0].equals("create")) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
                     if (p.hasPermission("asceciacurrencies.player.manage")) {
                         if (args.length < 2 || args.length > 2) {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0"));
@@ -82,31 +80,27 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
                 }
-                //convert
-                if(args[0].equals("convert")){
-                    if(p.hasPermission("asceciacurrencies.player.convert")) {
-                        if (args.length < 4 || args.length > 4) {
-                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-18"));
-                        }else{
-                            CurrenciesAPI.currency.convertCurrency(p, args[1], args[2], Double.valueOf(args[3]));
-                        }
-                    }
-                }
-                // give ownership
-                if (args[0].equals("give-ownership")) {
+            }
+            // give ownership
+            else if (args[0].equals("give-ownership")) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
                     if (p.hasPermission("asceciacurrencies.player.manage")) {
                         if (args.length < 3 || args.length > 3) {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-17"));
                         } else {
-                            CurrenciesAPI.currency.giveOwnership( p, args[1], args[2]);
+                            CurrenciesAPI.currency.giveOwnership(p, args[1], args[2]);
                         }
                     } else {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
                 }
+            }
 
-                //delete
-                else if (args[0].equals("delete") || args[0].equals("del")) {
+            //delete
+            else if (args[0].equals("delete") || args[0].equals("del")) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
                     if (p.hasPermission("asceciacurrencies.player.manage")) {
                         if (args.length < 2 || args.length > 2) {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-1"));
@@ -117,8 +111,11 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
                 }
-                //description
-                else if (args[0].equals("description") || args[0].equals("desc")) {
+            }
+            //description
+            else if (args[0].equals("description") || args[0].equals("desc")) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
                     if (p.hasPermission("asceciacurrencies.player.infos")) {
                         String message = "";
                         for (int i = 1; i < args.length; i++) {
@@ -130,10 +127,13 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
                 }
-                //withdraw
-                else if (args[0].equals("withdraw") || args[0].equals("wd")) {
+            }
+            //withdraw
+            else if (args[0].equals("withdraw") || args[0].equals("wd")) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
                     if (p.hasPermission("asceciacurrencies.player.withdraw")) {
-                        if (args.length < 3 || args.length > 3) {
+                        if (args.length < 3 || args.length > 3 && Double.valueOf(args[2]).isNaN()) {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10"));
                         } else {
                             CurrenciesAPI.currency.withdraw(p, args[1], Double.valueOf(args[2]));
@@ -142,63 +142,33 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
                 }
-                //info
-                else if (args[0].equals("info")) {
-                    if (p.hasPermission("asceciacurrencies.player.infos")) {
-                        if (args.length == 2) {
-                            CurrenciesAPI.currency.info(p, args[1]);
-                        } else {
-                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-4"));
-                        }
+            }
+            //info
+            else if (args[0].equals("info")) {
+                if (s.hasPermission("asceciacurrencies.player.infos")) {
+                    if (args.length == 2) {
+                        CurrenciesAPI.currency.info(s, args[1]);
                     } else {
-                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                        s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-4"));
                     }
+                } else {
+                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                 }
-                //list
-                else if (args[0].equals("list")) {
-                    if (p.hasPermission("asceciacurrencies.player.infos")) {
-                        CurrenciesAPI.currency.list(p);
-                    } else {
-                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
-                    }
-                }else if (args[0].equals("config")){
-                    CommandSender s = sender;
-                    if (args.length == 1){
-                        s.sendMessage(ChatColor.DARK_RED + "/currencies config (language/reload/ore)");
-                    }else{
-                        switch (args[1]){
-                            case "language":
-                                if (s.hasPermission("asceciacurrencies.admin.language")) {
-                                    if(args.length == 3 && CurrenciesAPI.languageConfig.get().contains(args[1])){
-                                        CurrenciesAPI.currency.language(args[2], s);
-                                    }else{
-                                        s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-14"));
-                                    }
-                                } else {
-                                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
-                                }
-                                break;
-                            case "reload":
-                                if (s.hasPermission("asceciacurrencies.admin.reloadconfig")) {
-                                    CurrenciesAPI.currency.reloadConfig(s);
-                                }else{
-                                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
-                                }
-                                break;
-                            case "ore":
-                                if(args.length == 4){
-                                    if (s.hasPermission("asceciacurrencies.admin.ore")) {
-                                        CurrenciesAPI.currency.setOrePrice(args[2], Double.valueOf(args[3]), s);
-                                    }
-                                }else{
-                                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-15_1"));
-                                }
-                        }
-                    }
-
-                } else if (args[0].equals("mint")) {
+            }
+            //list
+            else if (args[0].equals("list")) {
+                if (s.hasPermission("asceciacurrencies.player.infos")) {
+                    CurrenciesAPI.currency.list(s);
+                } else {
+                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                }
+            }
+            //mint
+            else if (args[0].equals("mint")) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
                     if (p.hasPermission("asceciacurrencies.player.mint")) {
-                        if (args.length < 3 || args.length > 3) {
+                        if (args.length < 3 || args.length > 3 && Double.valueOf(args[2]).isNaN()) {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-6"));
                         } else {
                             CurrenciesAPI.currency.mint(p, args[1], Double.valueOf(args[2]));
@@ -207,23 +177,29 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
                 }
-                //mint
-                else if (args[0].equals("deposit") || args[0].equals("depo")) {
-                    if(args.length == 2){
+            }
+            //deposit
+            else if (args[0].equals("deposit") || args[0].equals("depo")) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
+                    if (args.length == 2 && !Double.valueOf(args[2]).isNaN()) {
                         if (p.hasPermission("asceciacurrencies.player.deposit")) {
                             int itemamount = p.getInventory().getItemInMainHand().getAmount();
                             CurrenciesAPI.currency.deposit(p, args[1], itemamount);
                         } else {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                         }
-                    }else{
+                    } else {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-8_2"));
                     }
                 }
-                //pay
-                else if (args[0].equals("pay")) {
+            }
+            //pay
+            else if (args[0].equals("pay")) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
                     if (p.hasPermission("asceciacurrencies.player.pay")) {
-                        if (args.length < 4 || args.length > 4) {
+                        if (args.length < 4 || args.length > 4 && Double.valueOf(args[2]).isNaN()) {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9"));
                         } else {
                             Player target = Bukkit.getServer().getPlayer(args[1]);
@@ -233,10 +209,14 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
 
-                }//rename
-                else if (args[0].equals("rename")) {
+                }
+            }
+            //rename
+            else if (args[0].equals("rename")) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
                     if (p.hasPermission("asceciacurrencies.player.rename")) {
-                        if (args.length != 3) {
+                        if (args.length != 3 ) {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-12_1"));
                         } else {
                             CurrenciesAPI.currency.rename(p, args[1], args[2]);
@@ -245,89 +225,100 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
 
-                } else if (args[0].equals("wallet") || args[0].equals("wal")) {
-                    if (p.hasPermission("asceciacurrencies.player.wallet")) {
-                        CurrenciesAPI.currency.wallet(p);
+                }
+            }
+            //wallet
+            else if (args[0].equals("wallet") || args[0].equals("wal")) {
+                if (s.hasPermission("asceciacurrencies.player.wallet")) {
+                    if(args.length == 1) {
+                        if(sender instanceof Player){
+                            Player p = (Player) sender;
+                            CurrenciesAPI.currency.wallet(p, p);
+                        }else {
+                            s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                        }
+                    }else{
+                        if(s.hasPermission("asceciacurrencies.admin.wallet")){
+                            CurrenciesAPI.currency.wallet(s, Bukkit.getPlayer(args[1]));
+                        }
+                    }
+                } else {
+                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11_1"));
+                }
+            }else if(args[0].equals("top")){
+                if(args.length == 2 || args.length == 3){
+                    if(s.hasPermission("asceciacurrencies.player.top")){
+                        if(args[1].equals("all")){
+                            cAPI.currency.top(true, "args[2]", s);
+                        }else if(args[1].equals("one")){
+                            if(cAPI.currenciesConfig.get().contains(args[2])){
+                                cAPI.currency.top(false, args[2], s);
+                            }else{
+                                s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13_1"));
+                            }
+                        }else{
+                            s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13"));
+                        }
+                    }else{
+                        s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                    }
+                }else{
+                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13"));
+                }
+            }else if (args[0].equals("team")) {
+                if (sender instanceof Player) {
+                    Player p = (Player) sender;
+                    if (s.hasPermission("asceciacurrencies.player.team")) {
+                        if (args.length == 2 && args[1].equals("leave") || args.length == 2 && args[1].equals("join")) {
+                            switch (args[1]) {
+                                case "leave":
+                                    CurrenciesAPI.team.leaveTeam(s);
+                                    break;
+                                case "join":
+                                    CurrenciesAPI.team.addTeamMember(s, s.getName());
+                                    break;
+                            }
+                        } else if (args.length == 3) {
+                            switch (args[1]) {
+                                case "join":
+                                    CurrenciesAPI.team.addTeamMember(s, s.getName());
+                                    break;
+                                case "kick":
+                                    CurrenciesAPI.team.kickTeamMember(s, args[2]);
+                                    break;
+                                case "list":
+                                    CurrenciesAPI.team.teamList(s, args[2]);
+                                    break;
+                                case "permissions", "perms":
+                                    CurrenciesAPI.team.getTeamMemberPermissions(s, args[2]);
+                                    break;
+                                case "invite":
+                                    CurrenciesAPI.team.inviteMember(s, args[2]);
+                                    break;
+                            }
+                        } else if (args.length == 5) {
+                            switch (args[1]) {
+                                case "set":
+                                    CurrenciesAPI.team.setTeamMemberPermission(s, args[2], args[3], Boolean.valueOf(args[4]));
+                                    break;
+                            }
+                        } else {
+                            s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16"));
+                        }
                     } else {
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                     }
-                }else if(args[0].equals("top")){
-                    if(args.length == 2 || args.length == 3){
-                        if(p.hasPermission("asceciacurrencies.player.top")){
-                            if(args[1].equals("all")){
-                                cAPI.currency.top(true, "args[2]", p);
-                            }else if(args[1].equals("one")){
-                                if(cAPI.currenciesConfig.get().contains(args[2])){
-                                    cAPI.currency.top(false, args[2], p);
-                                }else{
-                                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13_1"));
-                                }
-                            }else{
-                                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13"));
-                            }
-                        }else{
-                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
-                        }
-                    }else{
-                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13"));
-                    }
-                }else if (args[0].equals("team")){
-                    CommandSender s = sender;
-                        if (s.hasPermission("asceciacurrencies.player.team")) {
-                            if(args.length == 2 && args[1].equals("leave") || args.length == 2 && args[1].equals("join")){
-                                switch (args[1]){
-                                    case "leave":
-                                        CurrenciesAPI.team.leaveTeam(s);
-                                        break;
-                                    case "join":
-                                        CurrenciesAPI.team.addTeamMember(s, s.getName());
-                                        break;
-                                }
-                            }else if(args.length == 3){
-                                switch (args[1]){
-                                    case "join":
-                                        CurrenciesAPI.team.addTeamMember(s, s.getName());
-                                        break;
-                                    case "kick":
-                                        CurrenciesAPI.team.kickTeamMember(s, args[2]);
-                                        break;
-                                    case "list":
-                                        CurrenciesAPI.team.teamList(s, args[2]);
-                                        break;
-                                    case "permissions", "perms":
-                                        CurrenciesAPI.team.getTeamMemberPermissions(s, args[2]);
-                                        break;
-                                    case "invite":
-                                        CurrenciesAPI.team.inviteMember(s, args[2]);
-                                        break;
-                                }
-                            }else if(args.length == 5){
-                                switch (args[1]){
-                                    case "set":
-                                        CurrenciesAPI.team.setTeamMemberPermission(s, args[2], args[3], Boolean.valueOf(args[4]));
-                                        break;
-                                }
-                            }else{
-                                s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16"));
-                            }
-                        }else{
-                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
-                        }
-                }else {
-                    if (sender instanceof Player && !args[0].equals("create") && !args[0].equals("convert")) {
-                        p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
-                    }
                 }
+            }else {
+                s.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
             }
-        } else {
-            if (sender instanceof Player p) {
-                p.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
-            }
+        }else {
+            s.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
         }
         return true;
     }
-    private static final String[] COMMANDS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "give-ownership", "convert"};
-    private static final String[] COMMANDSPlUS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "force-delete", "config", "give-ownership", "convert"};
+    private static final String[] COMMANDS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "give-ownership"};
+    private static final String[] COMMANDSPlUS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "force-delete", "config", "give-ownership"};
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String CommandLabel, String[] args){
         if(cmd.getName().equals("currencies")){
@@ -363,6 +354,11 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             completions.add("ore");
                         }
                         break;
+                    case "wallet":
+                        for (Player player: Bukkit.getServer().getOnlinePlayers()){
+                            String pName = player.getName();
+                            completions.add(pName);
+                        }
                     case "force-delete":
                         if(sender.hasPermission("asceciacurrencies.admin.forcemanage")) {
                             for (String currencies : CurrenciesConfig.get().getKeys(false)) {

@@ -8,62 +8,29 @@ import me.rgn.asceciacurrencies.files.LanguageConfig;
 import me.rgn.asceciacurrencies.commands.*;
 import me.rgn.asceciacurrencies.files.PlayersConfig;
 import me.rgn.asceciacurrencies.message.Messages;
-import me.rgn.asceciacurrencies.web.AsceciaWebServerController;
+import me.rgn.asceciacurrencies.web.ACWebServer;
+import me.rgn.asceciacurrencies.web.ACWebServerController;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter {
+
     public static JavaPlugin plugin;
+
+
     @Override
     public void onEnable() {
-        //Hook into Vault
         String sVersion = Bukkit.getBukkitVersion().split("-")[0];
         switch (sVersion){
-            case "1.20.1":
-                CurrenciesAPI.currency = new Currency1_19();
-                CurrenciesAPI.team = new Team1_19();
-                break;
-            case "1.20":
-                CurrenciesAPI.currency = new Currency1_19();
-                CurrenciesAPI.team = new Team1_19();
-                break;
-            case "1.19.4":
-                CurrenciesAPI.currency = new Currency1_19();
-                CurrenciesAPI.team = new Team1_19();
-                break;
-            case "1.19.3":
-                CurrenciesAPI.currency = new Currency1_19();
-                CurrenciesAPI.team = new Team1_19();
-                break;
-            case "1.19.2":
-                CurrenciesAPI.currency = new Currency1_19();
-                CurrenciesAPI.team = new Team1_19();
-                break;
-            case "1.19.1":
-                CurrenciesAPI.currency = new Currency1_19();
-                CurrenciesAPI.team = new Team1_19();
-                break;
-            case "1.19":
-                CurrenciesAPI.currency = new Currency1_19();
-                CurrenciesAPI.team = new Team1_19();
-                break;
-            case "1.18.2":
-                CurrenciesAPI.currency = new Currency1_19();
-                CurrenciesAPI.team = new Team1_19();
-                break;
-            case "1.18.1":
-                CurrenciesAPI.currency = new Currency1_19();
-                CurrenciesAPI.team = new Team1_19();
-                break;
-            case "1.18":
+            case "1.20.1", "1.19", "1.19.2", "1.19.1", "1.18.2", "1.18.1", "1.18", "1.19.3", "1.19.4", "1.20":
                 CurrenciesAPI.currency = new Currency1_19();
                 CurrenciesAPI.team = new Team1_19();
                 break;
@@ -74,9 +41,8 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         }
         plugin = this;
         //init configs
-        plugin.getConfig().addDefault("economic-rate", 20);
+        getServer().getPluginManager().registerEvents(new JoinListener(), this);
         Bukkit.getLogger().info("[Ascecia-Currencies]: Registering Events... !");
-        getServer().getPluginManager().registerEvents(new JoinListener(), plugin);
         getConfig().options().copyDefaults();
         saveDefaultConfig();
         CurrenciesConfig.setup();
@@ -98,8 +64,6 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         BukkitScheduler economic_evolution = getServer().getScheduler();
         BukkitScheduler economy_check = getServer().getScheduler();
         BukkitScheduler invites = getServer().getScheduler();
-        AsceciaWebServerController socketController = new AsceciaWebServerController(29007);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, socketController::transferData, 20, 20 * 5);
         economy_check.scheduleSyncRepeatingTask(this, new Runnable(){
             @Override
             public void run() {
@@ -131,6 +95,8 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                     CurrenciesConfig.save();
                 }
             }
-        }, 0L, 20L*3600*8*20/plugin.getConfig().getInt("economic_rate"));
+        }, 0L, 20L*3600*8);
+        ACWebServerController socketController = new ACWebServerController(29007);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, socketController::transferData, 20, 20 * 15);
     }
 }
