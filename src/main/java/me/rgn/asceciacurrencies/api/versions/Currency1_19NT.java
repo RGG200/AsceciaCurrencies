@@ -1,7 +1,6 @@
 package me.rgn.asceciacurrencies.api.versions;
 
 import me.rgn.asceciacurrencies.AsceciaCurrencies;
-import me.rgn.asceciacurrencies.economy.ACurrency;
 import me.rgn.asceciacurrencies.files.CurrenciesConfig;
 import me.rgn.asceciacurrencies.files.LanguageConfig;
 import me.rgn.asceciacurrencies.files.PlayersConfig;
@@ -17,9 +16,8 @@ import com.google.errorprone.annotations.OverridingMethodsMustInvokeSuper;
 
 import java.util.*;
 
-public class Currency1_19 implements Currency {
+public class Currency1_19NT implements Currency {
     public boolean isCurrencyCreated;
-    public static HashMap<String, ACurrency> CurrenciesMap = new HashMap<String, ACurrency>();
     public boolean add(Player p, String name, double amount){
         if(p != null){
             if (CurrenciesConfig.get().contains(name)){
@@ -83,7 +81,6 @@ public class Currency1_19 implements Currency {
                         CurrenciesConfig.get().set(name + ".team." + id + ".deposit", true);
                         CurrenciesConfig.get().set(name + ".team." + id + ".rename", true);
                         CurrenciesConfig.get().set(name + ".team." + id + ".description", true);
-                        CurrenciesMap.put(name, new ACurrency());
                         PlayersConfig.get().set(id + ".team", name);
                         p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0") + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-0_1"));
                         isCurrencyCreated = true;
@@ -169,7 +166,6 @@ public class Currency1_19 implements Currency {
             }
             PlayersConfig.get().set(id + ".hascreated", null);
             isCurrencyCreated = false;
-            CurrenciesMap.remove(cname);
             CurrenciesConfig.get().set(cname, null);
             CurrenciesConfig.save();
             PlayersConfig.save();
@@ -206,7 +202,6 @@ public class Currency1_19 implements Currency {
             }
         }
         if (CurrenciesConfig.get().contains(name)){
-            CurrenciesMap.remove(name);
             CurrenciesConfig.get().set(name, null);
             PlayersConfig.get().set(id + ".hascreated", null);
             isCurrencyCreated = false;
@@ -562,8 +557,6 @@ public class Currency1_19 implements Currency {
                                     }
                                 }
                             }
-                            CurrenciesMap.remove(currencies);
-                            CurrenciesMap.put(newName, new ACurrency());
                             CurrenciesConfig.get().set(newName, CurrenciesConfig.get().get(currencies));
                             //deleting the original
                             PlayersConfig.get().set(id + ".balance." + currencies, null);
