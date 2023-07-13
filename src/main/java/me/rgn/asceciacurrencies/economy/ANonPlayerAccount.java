@@ -6,6 +6,8 @@ import me.lokka30.treasury.api.economy.account.AccountPermission;
 import me.lokka30.treasury.api.economy.account.NonPlayerAccount;
 import me.lokka30.treasury.api.economy.currency.Currency;
 import me.lokka30.treasury.api.economy.transaction.EconomyTransaction;
+import me.rgn.asceciacurrencies.files.CurrenciesConfig;
+import me.rgn.asceciacurrencies.files.PlayersConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,8 +18,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 
 public class ANonPlayerAccount implements NonPlayerAccount {
+    String non_player_id;
     @Override
     public @NotNull NamespacedKey identifier() {
         return null;
@@ -35,12 +39,32 @@ public class ANonPlayerAccount implements NonPlayerAccount {
 
     @Override
     public @NotNull CompletableFuture<BigDecimal> retrieveBalance(@NotNull Currency currency) {
-        return null;
+        return  CompletableFuture.completedFuture(BigDecimal.valueOf(PlayersConfig.get().getDouble(non_player_id + ".balance." + currency.getIdentifier())));
     }
 
     @Override
     public @NotNull CompletableFuture<BigDecimal> doTransaction(@NotNull EconomyTransaction economyTransaction) {
-        return null;
+        switch(economyTransaction.getType()){
+            case SET -> {
+                Logger.getLogger("AsceciaCurrencies").severe("This type of transactions are not allowed");
+                return null;
+            }
+            case DEPOSIT -> {
+                PlayersConfig.get().set(non_player_id + ".balance." + economyTransaction.getCurrencyId(), PlayersConfig.get().getDouble(non_player_id + ".balance." + economyTransaction.getCurrencyId()) + economyTransaction.getAmount().doubleValue());
+                CurrenciesConfig.get().set(economyTransaction.getCurrencyId() + ".amount", CurrenciesConfig.get().getDouble(economyTransaction.getCurrencyId() + ".amount") + economyTransaction.getAmount().doubleValue());
+                CurrenciesConfig.get().set(economyTransaction.getCurrencyId() + ".totalvalue", CurrenciesConfig.get().getDouble(economyTransaction.getCurrencyId() + ".totalvalue") + economyTransaction.getAmount().doubleValue() * CurrenciesConfig.get().getDouble(economyTransaction.getCurrencyId() + ".power"));
+            }
+            case WITHDRAWAL -> {
+                if(PlayersConfig.get().getDouble(non_player_id + ".balance." + economyTransaction.getCurrencyId()) > economyTransaction.getAmount().doubleValue()){
+                    PlayersConfig.get().set(non_player_id + ".balance." + economyTransaction.getCurrencyId(), PlayersConfig.get().getDouble(non_player_id + ".balance." + economyTransaction.getCurrencyId()) - economyTransaction.getAmount().doubleValue());
+                    CurrenciesConfig.get().set(economyTransaction.getCurrencyId() + ".amount", CurrenciesConfig.get().getDouble(economyTransaction.getCurrencyId() + ".amount") - economyTransaction.getAmount().doubleValue());
+                    CurrenciesConfig.get().set(economyTransaction.getCurrencyId() + ".totalvalue", CurrenciesConfig.get().getDouble(economyTransaction.getCurrencyId() + ".totalvalue") - economyTransaction.getAmount().doubleValue() * CurrenciesConfig.get().getDouble(economyTransaction.getCurrencyId() + ".power"));
+                }else{
+
+                }
+            }
+        }
+        return CompletableFuture.completedFuture(BigDecimal.valueOf(PlayersConfig.get().getDouble(non_player_id + ".balance." + economyTransaction.getCurrencyId())));
     }
 
     @Override
@@ -50,22 +74,22 @@ public class ANonPlayerAccount implements NonPlayerAccount {
 
     @Override
     public @NotNull CompletableFuture<Collection<String>> retrieveHeldCurrencies() {
-        return null;
+        return CompletableFuture.failedFuture(new UnsupportedOperationException("Ascecia Currencies does not support this feature"));
     }
 
     @Override
     public @NotNull CompletableFuture<Collection<EconomyTransaction>> retrieveTransactionHistory(int transactionCount, @NotNull Temporal from, @NotNull Temporal to) {
-        return null;
+        return CompletableFuture.failedFuture(new UnsupportedOperationException("Ascecia Currencies does not support this feature"));
     }
 
     @Override
     public @NotNull CompletableFuture<Collection<UUID>> retrieveMemberIds() {
-        return null;
+        return CompletableFuture.failedFuture(new UnsupportedOperationException("Ascecia Currencies does not support this feature"));
     }
 
     @Override
     public @NotNull CompletableFuture<Boolean> isMember(@NotNull UUID player) {
-        return null;
+        return CompletableFuture.failedFuture(new UnsupportedOperationException("Ascecia Currencies does not support this feature"));
     }
 
     @Override

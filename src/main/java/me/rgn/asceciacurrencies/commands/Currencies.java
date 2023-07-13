@@ -239,7 +239,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         }
                     }else{
                         if(s.hasPermission("asceciacurrencies.admin.wallet")){
-                            CurrenciesAPI.currency.wallet(s, Bukkit.getPlayer(args[1]));
+                            CurrenciesAPI.currency.wallet(s, Bukkit.getOfflinePlayer(args[1]));
                         }
                     }
                 } else {
@@ -275,25 +275,25 @@ public class Currencies implements CommandExecutor, TabCompleter {
                                     CurrenciesAPI.team.leaveTeam(s);
                                     break;
                                 case "join":
-                                    CurrenciesAPI.team.addTeamMember(s, s.getName());
+                                    CurrenciesAPI.team.addTeamMember(s, p.getUniqueId().toString());
                                     break;
                             }
                         } else if (args.length == 3) {
                             switch (args[1]) {
                                 case "join":
-                                    CurrenciesAPI.team.addTeamMember(s, s.getName());
+                                    CurrenciesAPI.team.addTeamMember(s, p.getUniqueId().toString());
                                     break;
                                 case "kick":
-                                    CurrenciesAPI.team.kickTeamMember(s, args[2]);
+                                    CurrenciesAPI.team.kickTeamMember(s, Bukkit.getOfflinePlayer(args[2]).getUniqueId().toString());
                                     break;
                                 case "list":
                                     CurrenciesAPI.team.teamList(s, args[2]);
                                     break;
                                 case "permissions", "perms":
-                                    CurrenciesAPI.team.getTeamMemberPermissions(s, args[2]);
+                                    CurrenciesAPI.team.getTeamMemberPermissions(s, Bukkit.getOfflinePlayer(args[2]).getUniqueId().toString());
                                     break;
                                 case "invite":
-                                    CurrenciesAPI.team.inviteMember(s, args[2]);
+                                    CurrenciesAPI.team.inviteMember(s, Bukkit.getOfflinePlayer(args[2]).getUniqueId().toString());
                                     break;
                             }
                         } else if (args.length == 5) {

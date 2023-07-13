@@ -22,7 +22,7 @@ public interface Currency {
     public boolean reloadConfig(CommandSender sender);
     public boolean rename (Player p,String currencies, String newName);
     public boolean withdraw(Player p, String name, double amount);
-    public boolean wallet(CommandSender s, Player p);
+    public boolean wallet(CommandSender s, OfflinePlayer p);
     public boolean top(Boolean all, String name, CommandSender p);
     public boolean giveOwnership(Player author, String name, String new_author);
 }

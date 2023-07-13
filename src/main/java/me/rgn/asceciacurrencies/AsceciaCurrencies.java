@@ -23,8 +23,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -36,14 +34,11 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
     public static JavaPlugin plugin;
 
     public HashMap<String, APlayerAccount> PlayersMap = new HashMap<String, APlayerAccount>();
-
-    final EconomyProvider econProvider = new ACEconomyProvider();
-
-
     @Override
     public void onEnable() {
         String sVersion = Bukkit.getBukkitVersion().split("-")[0];
         if(getServer().getPluginManager().getPlugin("Treasury") != null){
+            final EconomyProvider econProvider = new ACEconomyProvider();
             ServiceRegistry.INSTANCE.registerService(
                     EconomyProvider.class,
                     econProvider,
@@ -61,17 +56,8 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                     break;
             }
         }else{
-            getLogger().warning("Treasury is not installed disabling treasury support.");
-            switch (sVersion){
-                case "1.20.1", "1.19", "1.19.2", "1.19.1", "1.18.2", "1.18.1", "1.18", "1.19.3", "1.19.4", "1.20":
-                    CurrenciesAPI.currency = new Currency1_19NT();
-                    CurrenciesAPI.team = new Team1_19();
-                    break;
-                default:
-                    getLogger().severe("[Ascecia-Currencies]: Unsupported version disabling plugin...");
-                    Bukkit.getPluginManager().disablePlugin(this);
-                    break;
-            }
+            getLogger().severe("Treasury is not installed disabling plugin.");
+            Bukkit.getPluginManager().disablePlugin(this);
         }
         plugin = this;
         //init configs
@@ -101,12 +87,17 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         for(String player: PlayersConfig.get().getKeys(false)){
             OfflinePlayer p = getServer().getOfflinePlayer(player);
             PlayersConfig.get().set(p.getUniqueId().toString(), PlayersConfig.get().get(p.getName()));
+            PlayersConfig.get().set(p.getUniqueId() + ".name", p.getName());
             for (String currency: CurrenciesConfig.get().getKeys(false)) {
                 if(CurrenciesConfig.get().getString(currency + ".author").equals(p.getName())){
                     CurrenciesConfig.get().set(currency + ".author", p.getUniqueId().toString());
+                    CurrenciesConfig.get().set(currency + ".team." + p.getUniqueId(), CurrenciesConfig.get().get(currency + ".team." + p.getName()));
+                    CurrenciesConfig.get().set(currency + ".team." + p.getName(), null);
                 }
             }
             PlayersConfig.get().set(p.getName(),null);
+            PlayersConfig.save();
+            PlayersConfig.reload();
         }
         economy_check.scheduleSyncRepeatingTask(this, new Runnable(){
             @Override
@@ -155,7 +146,6 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         getConfig().set("defaultcurrency" + ".description", "defaultDescription");
         getConfig().set("defaultcurrency" + ".peers", 1);
         getConfig().set("defaultcurrency" + ".author", "default");
-        getConfig().set("defaultcurrency" + ".convert-fee", 0);
         CurrenciesMap.put("defaultcurrency", new ACurrency());
         CurrenciesMap.get("defaultcurrency").name = "defaultcurrency";
         CurrenciesMap.get("defaultcurrency").symbol = "defaultcurrency".substring(0, 1);
@@ -168,7 +158,7 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                     for(String player: PlayersConfig.get().getKeys(false)){
                         if(PlayersMap.containsKey(player)){
                             PlayersMap.get(player).player_id = player;
-                        }else if(PlayersMap.containsKey(player) && PlayersConfig.get().contains(player)){
+                        }else if(PlayersMap.containsKey(player) && !PlayersConfig.get().contains(player)){
                             PlayersMap.remove(player);
                         }
                         else{
@@ -179,7 +169,7 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                         if(CurrenciesMap.containsKey(currency)){
                             CurrenciesMap.get(currency).name = currency;
                             CurrenciesMap.get(currency).symbol = currency.substring(0, 0);
-                            CurrenciesMap.get(currency).conversionRATE = BigDecimal.valueOf(CurrenciesConfig.get().getDouble(currency + ".power") * (1 + CurrenciesConfig.get().getDouble(currency + ".convert-fee")));
+                            CurrenciesMap.get(currency).conversionRATE = BigDecimal.valueOf(CurrenciesConfig.get().getDouble(currency + ".power") * (1));
                         }else{
                             CurrenciesMap.put(currency, new ACurrency());
                         }

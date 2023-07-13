@@ -45,7 +45,7 @@ public class ACurrency implements Currency {
 
     @Override
     public int getPrecision() {
-        return 0;
+        return 3;
     }
 
     @Override

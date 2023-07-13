@@ -10,6 +10,7 @@ commands:
     description: The core command
     usage: /<command> <subcommand>
     aliases: [c, cu]
+depend: ["Treasury"]
 permissions:
   ascecia:
     player:
