@@ -4,7 +4,7 @@ Ascecia Currencies is a minecraft plugin that allows players to create their own
 
 ## Discord
 
-[![Join Discord](https://github.com/RGG200/Ascecia-Currencies/discord-logo-16.png)](https://discord.gg/n4nNd5j75U)
+[![Join Discord](https://raw.githubusercontent.com/RGG200/Ascecia-Currencies/main/Discord-logo.png)](https://discord.gg/n4nNd5j75U)
 
 ## [Wiki](https://github.com/RGG200/Ascecia-Currencies/wiki)
 
