@@ -2,10 +2,6 @@
 
 Ascecia Currencies is a minecraft plugin that allows players to create their own currencies and make local economies as well as exchange and trade with those currencies.
 
-## Discord
-
-[![Join Discord](https://raw.githubusercontent.com/RGG200/Ascecia-Currencies/main/Discord-logo.png)](https://discord.gg/n4nNd5j75U)
-
 ## [Wiki](https://github.com/RGG200/Ascecia-Currencies/wiki)
 
 - [Features](https://github.com/RGG200/Ascecia-Currencies/wiki/Features)
@@ -17,17 +13,14 @@ Ascecia Currencies is a minecraft plugin that allows players to create their own
 ## Credits
 
 - Me / Developer
-- kauf0 / Tester
-
-## Want to help me ?
-
-- If you want to help me continue developping this plugin you can always donate.
-
-[![Donate with Paypal](https://github.com/andreostrovsky/donate-with-paypal/blob/master/blue.svg)](https://www.paypal.com/donate/?hosted_button_id=AWPA9RF58Q5C6)
+- You / Tester
 
 ## Planned extensions
 
 - Ascecia-SubCurrencies : To Be Annonced
 
 ## Other plugins
-- comming soon ?
+
+- Ascecia-House : To Be Annonced
+- Ascecia-Shops : To Be Annonced
+- Ascecia-Nations : To Be Annonced
