@@ -1,7 +1,6 @@
 package me.rgn.asceciacurrencies.Listeners;
 
 import me.rgn.asceciacurrencies.api.CurrenciesAPI;
-import me.rgn.asceciacurrencies.files.PlayersConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,9 +13,6 @@ public class JoinListener implements Listener {
             e.getPlayer().sendMessage(ChatColor.GOLD + CurrenciesAPI.languageConfig.get().getString(CurrenciesAPI.languageConfig.get().getString("language") + ".info-0"));
         }else if(CurrenciesAPI.playersConfig.get().getString(e.getPlayer().getName() + ".invite") != null){
             e.getPlayer().sendMessage(ChatColor.GOLD + CurrenciesAPI.languageConfig.get().getString(CurrenciesAPI.languageConfig.get().getString("language") + ".info-0_1") + CurrenciesAPI.playersConfig.get().getString(e.getPlayer().getName() + ".invite"));
-        }
-        if(!PlayersConfig.get().contains(e.getPlayer().getUniqueId() + ".name")){
-            PlayersConfig.get().set(e.getPlayer().getUniqueId() + ".name", e.getPlayer().getName());
         }
     }
 }

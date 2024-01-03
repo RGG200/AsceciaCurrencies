@@ -10,7 +10,8 @@ commands:
     description: The core command
     usage: /<command> <subcommand>
     aliases: [c, cu]
-depend: ["Treasury"]
+softdepend:
+  - Medieval-factions
 permissions:
   ascecia:
     player:
@@ -24,8 +25,10 @@ permissions:
       top:
       team:
       pay:
+      account:
     admin:
       forcemanage:
       reload-config:
       language:
       ore:
+      account:
