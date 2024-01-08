@@ -29,7 +29,7 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
     @Override
     public void onEnable() {
         String sVersion = Bukkit.getBukkitVersion().split("-")[0];switch (sVersion){
-            case "1.20.2","1.20.1", "1.19", "1.19.2", "1.19.1", "1.18.2", "1.18.1", "1.18", "1.19.3", "1.19.4", "1.20":
+            case "1.20.4","1.20.3","1.20.2","1.20.1", "1.19", "1.19.2", "1.19.1", "1.18.2", "1.18.1", "1.18", "1.19.3", "1.19.4", "1.20","1.17.1","1.17":
                 CurrenciesAPI.currency = new Currency1_19();
                 CurrenciesAPI.team = new Team1_19();
                 break;
