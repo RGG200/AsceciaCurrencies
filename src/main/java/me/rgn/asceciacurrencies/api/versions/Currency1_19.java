@@ -153,6 +153,7 @@ public class Currency1_19 implements Currency {
             for (double i = 0; i < cMarketValue*cEcoActivity; i+=0.01) {
                 double difference = (cMarketValue*cEcoActivity)-i;
                 final List<String[]> material_prices = new ArrayList<>();
+                //to implement→ for(String price: AsceciaCurrencies.plugin.getConfig().getConfigurationSection("ores_prices")){
                 for(String price: AsceciaCurrencies.plugin.getConfig().getKeys(true)){
                     if(!price.equals("ores_prices")){
                         final String[] material_price = {String.valueOf(AsceciaCurrencies.plugin.getConfig().getDouble(price)), price};
