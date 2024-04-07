@@ -114,11 +114,13 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                 player = Bukkit.getOfflinePlayer(player).getUniqueId().toString();
             }
             List<Tuple<String, Double>> pwallet = new ArrayList<>();
-            for(String cbalance: PlayersConfig.get().getConfigurationSection(player + ".balance").getKeys(false)){
-                Tuple<String, Double> cbal = new Tuple<>();
-                cbal.First = cbalance;
-                cbal.Second = PlayersConfig.get().getDouble(player + ".balance." + cbalance);
-                pwallet.add(cbal);
+            if(PlayersConfig.get().contains(player + ".balance")) {
+                for (String cbalance : PlayersConfig.get().getConfigurationSection(player + ".balance").getKeys(false)) {
+                    Tuple<String, Double> cbal = new Tuple<>();
+                    cbal.First = cbalance;
+                    cbal.Second = PlayersConfig.get().getDouble(player + ".balance." + cbalance);
+                    pwallet.add(cbal);
+                }
             }
             if(PlayersConfig.get().getString(player + ".DET") == null) {
                 SimpleDateFormat DF = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
@@ -172,8 +174,6 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                             CurrenciesAPI.currencyObjects.get(index).modify(currencies, CurrenciesConfig.get().getString(currencies + ".description"), CurrenciesConfig.get().getDouble(currencies + ".amount"), CurrenciesConfig.get().getDouble(currencies + ".totalvalue"), CurrenciesConfig.get().getDouble(currencies + ".power"), CurrenciesConfig.get().getDouble(currencies + ".economic-activity"), CurrenciesConfig.get().getString(currencies + ".author"), CurrenciesConfig.get().getInt(currencies + ".peers"), team);
                         }
                     }
-                    getLogger().info(CurrenciesAPI.currencyObjects.get(0).currency_name);
-                    getLogger().info(CurrenciesAPI.PlayerAccounts.get(0).player_name);
                     double cMarketAmount = CurrenciesConfig.get().getDouble(currencies + ".amount");
                     double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
                     double cEcoAct = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");

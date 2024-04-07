@@ -21,7 +21,7 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-2", "[Currencies]: You minted ");
 
         LanguageConfig.get().set("en-us.message-3", "[Currencies]: You deposited");
-        LanguageConfig.get().set("en-us.message-3_1", " iron Worth of ores to your currency");
+        LanguageConfig.get().set("en-us.message-3_1", " units of ores to your currency");
 
         LanguageConfig.get().set("en-us.message-4", "You succesfully payed ");
         LanguageConfig.get().set("en-us.message-4_1", "You succesfully recieved ");
@@ -101,6 +101,7 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-5", "[Currencies]: No currencies available. create one with /currencies create");
 
         LanguageConfig.get().set("en-us.error-6", "[Currencies]: /currencies mint (name) (amount)");
+        LanguageConfig.get().set("en-us.error-6_1", "[Currencies]: You do not have enough material in your hand to mint the specified amount");
 
         LanguageConfig.get().set("en-us.error-7", "[Currencies]: you don't have a currency. create one using /currencies create");
 
@@ -244,6 +245,7 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.error-5", "[Currencies]: Aucune monnaie disponible. Créez-en une avec /currencies create");
 
         LanguageConfig.get().set("fr-FR.error-6", "[Currencies]: /currencies mint (nom) (montant)");
+        LanguageConfig.get().set("fr-FR.error-6_1", "[Currencies]: Vous n'avez pas assez de materiaux dans votre main pour frapper le montant indiqué");
 
         LanguageConfig.get().set("fr-FR.error-7", "[Currencies]: Vous ne possèdez pas de monnaie. Créez-en une avec /currencies create");
 
@@ -320,6 +322,7 @@ public class Messages {
         LanguageConfig.get().set("es-ES.message-5", "[Currencies]: Retiraste");
 
         LanguageConfig.get().set("es-ES.message-6", "[Currencies]: Descripción definida !");
+        LanguageConfig.get().set("es-ES.error-6_1", "[Currencies]: No tienes suficiente material en la mano para acuñar la cantidad de cambio indicada.");
 
         LanguageConfig.get().set("es-ES.message-7", "| Ascecia Currencies | Ayuda | \n \n /currencies create (nombre) - crear una moneda \n /currencies delete (nombre) - supprimir una moneda \n /currencies witdraw (nombre) (cantidad) - Retirar alguna cantidad de moneda \n /currencies info (nombre) - Información sobre una moneda \n /currencies list - Lista de las monedas \n /currencies mint (nombre) (cantidad) - acuñar alguna cantidad de moneda \n /currencies deposit (nombre) - Depositar las minerales que son en tú mano \n /currencies pay (nombre del jugador) (nombre de la moneda) (cantidad) - Pagar una cantidad de moneda a una otra persona \n /currencies wallet - muestra tú cartera \n /currencies top (all/one) (nombre) - El clasificación de los que son más ricos \n /currencies team (set/invite/kick/list/permissions/join/leave) - equipo para currencies \n /currencies give-ownership (moneda) (jugador) - da la proriedad de tù moneda al jugador specificado \n /currency account - muestra tù cuenta");
 

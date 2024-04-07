@@ -31,4 +31,5 @@ permissions:
       reload-config:
       language:
       ore:
+      mm:
       account:

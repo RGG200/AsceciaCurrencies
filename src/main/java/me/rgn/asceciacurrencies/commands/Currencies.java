@@ -67,6 +67,15 @@ public class Currencies implements CommandExecutor, TabCompleter {
                                 }else{
                                     s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-15_1"));
                                 }
+                            case "mint_material", "mm":
+                                //check for perms
+                                if(args.length == 4 && !Double.valueOf(args[2]).isNaN()){
+                                    if (s.hasPermission("asceciacurrencies.admin.mm")) {
+                                        CurrenciesAPI.currency.setMintMaterialPrice(args[2], Double.valueOf(args[3]), s);
+                                    }
+                                }else{
+                                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-15_1"));
+                                }
                         }
                     }
                     break;
@@ -189,7 +198,8 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             if (args.length < 3 || args.length > 3 && Double.valueOf(args[2]).isNaN()) {
                                 p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-6"));
                             } else {
-                                CurrenciesAPI.currency.mint(p, args[1], Double.valueOf(args[2]));
+                                int itemamount = p.getInventory().getItemInMainHand().getAmount();
+                                CurrenciesAPI.currency.mint(p, args[1], Double.valueOf(args[2]), itemamount);
                             }
                         } else {
                             p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
@@ -427,6 +437,8 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             completions.add("reload");
                             completions.add("language");
                             completions.add("ore");
+                            completions.add("mint_material");
+                            completions.add("mm");
                         }
                         break;
                     case "wallet":

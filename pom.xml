@@ -6,7 +6,7 @@
 
     <groupId>me.rgn</groupId>
     <artifactId>AsceciaCurrencies</artifactId>
-    <version>2.0.1-Release</version>
+    <version>2.1-Release</version>
     <packaging>jar</packaging>
 
     <name>AsceciaCurrencies</name>
