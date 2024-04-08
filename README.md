@@ -1,6 +1,6 @@
 ## Description
 
-Ascecia Currencies is a minecraft plugin that allows players to create their own currencies and make local economies as well as exchange and trade with those currencies.
+Ascecia Currencies is a minecraft plugin that allows players to create their own currencies and make local and dynamic economies to spark exchange and trade with those currencies.
 
 ## [Wiki](https://github.com/RGG200/Ascecia-Currencies/wiki)
 
@@ -12,8 +12,7 @@ Ascecia Currencies is a minecraft plugin that allows players to create their own
 
 ## Credits
 
-- Me / Developer
-- kauf0 / Tester
+- RGG200 / Developer
 
 ## Want to help me ?
 
