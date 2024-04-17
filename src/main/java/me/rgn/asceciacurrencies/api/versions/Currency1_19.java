@@ -85,7 +85,7 @@ public class Currency1_19 implements Currency {
                         CurrenciesConfig.get().set(name + ".team." + id + ".rename", true);
                         CurrenciesConfig.get().set(name + ".team." + id + ".description", true);
                         PlayersConfig.get().set(id + ".team", name);
-                        PlayersConfig.get().set(id + ".name", Bukkit.getOfflinePlayer(UUID.fromString(id)).getName());
+                        PlayersConfig.get().set(id + ".name", Bukkit.getServer().getOfflinePlayer(UUID.fromString(id)).getName());
                         //adding author to playerAcounts list
                         List<Tuple<String, Double>> pwallet = new ArrayList<>();
                         SimpleDateFormat DF = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
@@ -460,7 +460,7 @@ public class Currency1_19 implements Currency {
                     //if balance key not created
                     if (!PlayersConfig.get().contains(playeridd + ".balance." + name)) {
                         PlayersConfig.get().addDefault(playeridd + ".balance." + name, 0.0);
-                        PlayersConfig.get().set(playeridd + ".name", Bukkit.getOfflinePlayer(UUID.fromString(playeridd)).getName());
+                        PlayersConfig.get().set(playeridd + ".name", Bukkit.getServer().getOfflinePlayer(UUID.fromString(playeridd)).getName());
                         List<Tuple<String, Double>> pwallet = new ArrayList<>();
                         SimpleDateFormat DF = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
                         Date date = new Date();
@@ -476,7 +476,6 @@ public class Currency1_19 implements Currency {
                     double pbalance = PlayersConfig.get().getDouble(playeridd + ".balance." + name);
                     if (!PlayersConfig.get().contains(targetidd + ".balance." + name)) {
                         PlayersConfig.get().addDefault(targetidd + ".balance." + name, 0.0);
-                        PlayersConfig.get().set(playeridd + ".name", Bukkit.getOfflinePlayer(UUID.fromString(playeridd)).getName());
                         CurrenciesConfig.get().set(name + ".peers", nPeers + 1);
                         List<Tuple<String, Double>> pwallet = new ArrayList<>();
                         SimpleDateFormat DF = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
@@ -499,8 +498,8 @@ public class Currency1_19 implements Currency {
                                 PlayersConfig.get().set(playeridd + ".balance." + name, pbalance - Double.valueOf(Math.round(amount * 1000)) / 1000);
                                 CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + (0.001 * nPeers));
                                 CurrenciesConfig.get().set(name + ".power", Double.valueOf(Math.round((cValue / cMarketAmount) * 1000 * cEcoActivity)) / 1000);
-                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + Double.valueOf(Math.round(amount * 1000)) / 1000 + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + tName);
-                                target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_1") + Double.valueOf(Math.round(amount * 1000)) / 1000 + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_3") + pName);
+                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + Double.valueOf(Math.round(amount * 1000)) / 1000 + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + target.getName());
+                                target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_1") + Double.valueOf(Math.round(amount * 1000)) / 1000 + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_3") + p.getName());
                                 PlayersConfig.save();
                                 CurrenciesConfig.save();
                             } else {

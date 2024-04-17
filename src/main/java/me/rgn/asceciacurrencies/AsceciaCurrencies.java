@@ -103,13 +103,9 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
             }
         }
         for(String player: PlayersConfig.get().getKeys(false)){
-            if(PlayersConfig.get().get(player + ".name") == null && !player.equals(Bukkit.getOfflinePlayer(UUID.fromString(player)).getName())){
-                PlayersConfig.get().set(player + ".name", player);
-            } else if (player.equals(Bukkit.getOfflinePlayer(UUID.fromString(player)).getName())) {
-                PlayersConfig.get().set(Bukkit.getOfflinePlayer(player).getUniqueId().toString(), PlayersConfig.get().get(player));
-            }
+            PlayersConfig.get().set(player + ".name", Bukkit.getOfflinePlayer(UUID.fromString(player)).getName());
             if(player.equals(PlayersConfig.get().getString(player+ ".name"))) {
-                PlayersConfig.get().set(Bukkit.getOfflinePlayer(player).getUniqueId().toString(), PlayersConfig.get().get(player));
+                PlayersConfig.get().set(Bukkit.getOfflinePlayer(UUID.fromString(player)).getUniqueId().toString(), PlayersConfig.get().get(player));
                 PlayersConfig.get().set(player, null);
                 player = Bukkit.getOfflinePlayer(player).getUniqueId().toString();
             }

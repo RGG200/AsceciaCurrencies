@@ -322,7 +322,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             }
                         }else{
                             if(s.hasPermission("asceciacurrencies.admin.wallet")){
-                                CurrenciesAPI.currency.wallet(s, Bukkit.getPlayer(args[1]));
+                                CurrenciesAPI.currency.wallet(s, Bukkit.getServer().getPlayer(args[1]));
                             }
                         }
                     } else {
