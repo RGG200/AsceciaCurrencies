@@ -435,9 +435,8 @@ public class Currency1_19 implements Currency {
         //init variables for some reason
         String targetidd = target.getUniqueId().toString();
         String playeridd = p.getUniqueId().toString();
-        String pName = p.getUniqueId().toString();
-        String tName = target.getUniqueId().toString();
-        double cPower = CurrenciesConfig.get().getDouble(name + ".power");
+        String pName = p.getName().toString();
+        String tName = target.getName().toString();
         double cValue = CurrenciesConfig.get().getDouble(name + ".totalvalue");
         double cMarketAmount = CurrenciesConfig.get().getDouble(name + ".amount");
         double cEcoActivity = CurrenciesConfig.get().getDouble(name + ".economic-activity");
@@ -460,7 +459,6 @@ public class Currency1_19 implements Currency {
                     //if balance key not created
                     if (!PlayersConfig.get().contains(playeridd + ".balance." + name)) {
                         PlayersConfig.get().addDefault(playeridd + ".balance." + name, 0.0);
-                        PlayersConfig.get().set(playeridd + ".name", Bukkit.getServer().getOfflinePlayer(UUID.fromString(playeridd)).getName());
                         List<Tuple<String, Double>> pwallet = new ArrayList<>();
                         SimpleDateFormat DF = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
                         Date date = new Date();
@@ -488,26 +486,27 @@ public class Currency1_19 implements Currency {
                         }
                         PlayersConfig.get().set(playeridd + ".DET", DF.format(date));
                         CurrenciesAPI.PlayerAccounts.add(new PlayerAccount(targetidd, DF.format(date), pwallet));
-                        double tbalance = PlayersConfig.get().getDouble(targetidd + ".balance." + name);
-                        //if amount not too low
-                        if (pbalance >= Double.valueOf(Math.round(amount * 1000)) / 1000) {
-                            if (Double.valueOf(Math.round(amount * 1000)) / 1000 >= 0.01) {
-                                //pay
-                                nPeers = CurrenciesConfig.get().getInt(name + ".peers");
-                                PlayersConfig.get().set(targetidd + ".balance." + name, tbalance + Double.valueOf(Math.round(amount * 1000)) / 1000);
-                                PlayersConfig.get().set(playeridd + ".balance." + name, pbalance - Double.valueOf(Math.round(amount * 1000)) / 1000);
-                                CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + (0.001 * nPeers));
-                                CurrenciesConfig.get().set(name + ".power", Double.valueOf(Math.round((cValue / cMarketAmount) * 1000 * cEcoActivity)) / 1000);
-                                p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + Double.valueOf(Math.round(amount * 1000)) / 1000 + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + target.getName());
-                                target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_1") + Double.valueOf(Math.round(amount * 1000)) / 1000 + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_3") + p.getName());
-                                PlayersConfig.save();
-                                CurrenciesConfig.save();
-                            } else {
-                                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_1"));
-                            }
+                    }
+                    double tbalance = PlayersConfig.get().getDouble(targetidd + ".balance." + name);
+                    //if amount not too low
+                    double rounded_amount = (double) Math.round(amount * 100) / 100;
+                    if (pbalance >= rounded_amount) {
+                        if (rounded_amount >= 0.01) {
+                            //pay
+                            nPeers = CurrenciesConfig.get().getInt(name + ".peers");
+                            PlayersConfig.get().set(targetidd + ".balance." + name, tbalance + rounded_amount);
+                            PlayersConfig.get().set(playeridd + ".balance." + name, pbalance - rounded_amount);
+                            CurrenciesConfig.get().set(name + ".economic-activity", cEcoActivity + (0.001 * nPeers));
+                            CurrenciesConfig.get().set(name + ".power", Double.valueOf(Math.round((cValue / cMarketAmount) * 1000 * cEcoActivity)) / 1000);
+                            p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4") + rounded_amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_2") + tName);
+                            target.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_1") + rounded_amount + " " + name + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-4_3") + pName);
+                            PlayersConfig.save();
+                            CurrenciesConfig.save();
                         } else {
-                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9_3"));
+                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-10_1"));
                         }
+                    } else {
+                        p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9_3"));
                     }
                 }
             }
@@ -637,12 +636,16 @@ public class Currency1_19 implements Currency {
                         }
                         if (isNameValid == true) {
                             //cloning the currency
-                            PlayersConfig.get().set(id + ".balance." + newName, pBalance);
+
                             for(String player: PlayersConfig.get().getKeys(false)){
                                 if(PlayersConfig.get().getString(player + ".team") != null){
                                     if(PlayersConfig.get().getString(player + ".team").equals(currencies)){
                                         PlayersConfig.get().set(player + ".team", newName);
                                     }
+                                }
+                                if(PlayersConfig.get().contains(player + ".balance." + currencies)) {
+                                    PlayersConfig.get().set(player + ".balance." + newName, PlayersConfig.get().getDouble(player + ".balance." + currencies));
+                                    PlayersConfig.get().set(player + ".balance." + currencies, null);
                                 }
                                 if(PlayersConfig.get().getString(player + ".invite") != null) {
                                     if (PlayersConfig.get().get(id + ".invite").equals(currencies)) {
@@ -652,7 +655,6 @@ public class Currency1_19 implements Currency {
                             }
                             CurrenciesConfig.get().set(newName, CurrenciesConfig.get().get(currencies));
                             //deleting the original
-                            PlayersConfig.get().set(id + ".balance." + currencies, null);
                             List<Tuple<String, List<Tuple<String, Boolean>>>> team = new ArrayList<>();
                             Tuple<String, List<Tuple<String, Boolean>>> player = new Tuple<>();
                             List<Tuple<String, Boolean>> playerperms = new ArrayList<>();

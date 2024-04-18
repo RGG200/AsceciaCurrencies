@@ -10,10 +10,11 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Team1_19 implements Team {
     public boolean addTeamMember(Player p, String playerid){
-        playerid = Bukkit.getOfflinePlayer(playerid).getUniqueId().toString();
+        playerid = Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString();
         for(String currencies: CurrenciesConfig.get().getKeys(false)){
             if(PlayersConfig.get().get(playerid + ".team") == null && !p.getUniqueId().toString().equals(CurrenciesConfig.get().getString(PlayersConfig.get().get(playerid + ".team") + ".author"))){
                 if(PlayersConfig.get().getString(playerid + ".invite") == null){
@@ -41,17 +42,17 @@ public class Team1_19 implements Team {
         return true;
     }
     public boolean inviteMember(Player p, String playerid){
-        if(PlayersConfig.get().getString(Bukkit.getOfflinePlayer(playerid).getUniqueId().toString() + ".team") == null){
+        if(PlayersConfig.get().getString(Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString() + ".team") == null){
             for(String currencies: CurrenciesConfig.get().getKeys(false)){
                 if(CurrenciesConfig.get().getString(currencies + ".author").equals(p.getName())){
-                    if(PlayersConfig.get().getString(Bukkit.getOfflinePlayer(playerid).getUniqueId().toString() + ".invite") != null){
-                        if(!PlayersConfig.get().getString(Bukkit.getOfflinePlayer(playerid).getUniqueId().toString() + ".invite").equals(currencies)){
-                            PlayersConfig.get().set(Bukkit.getOfflinePlayer(playerid).getUniqueId().toString() + ".invite", currencies);
+                    if(PlayersConfig.get().getString(Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString() + ".invite") != null){
+                        if(!PlayersConfig.get().getString(Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString() + ".invite").equals(currencies)){
+                            PlayersConfig.get().set(Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString() + ".invite", currencies);
                         }else{
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_6"));
                         }
                     }else{
-                        PlayersConfig.get().set(Bukkit.getOfflinePlayer(playerid).getUniqueId().toString() + ".invite", currencies);
+                        PlayersConfig.get().set(Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString() + ".invite", currencies);
                     }
                     Bukkit.getServer().broadcastMessage(ChatColor.GREEN + playerid + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16_1")  + currencies);
                 }
@@ -69,11 +70,11 @@ public class Team1_19 implements Team {
     }
 
     public boolean setTeamMemberPermission(Player p, String playerid, String Permission, Boolean allowordeny){
-        if(PlayersConfig.get().get(Bukkit.getOfflinePlayer(playerid).getUniqueId().toString() + ".team") != null){
+        if(PlayersConfig.get().get(Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString() + ".team") != null){
             for(String currencies: CurrenciesConfig.get().getKeys(false)){
                 if (CurrenciesConfig.get().getString(currencies + ".author").equals(p.getUniqueId().toString().toString())){
-                    if(CurrenciesConfig.get().contains(currencies + ".team." + Bukkit.getOfflinePlayer(playerid).getUniqueId().toString() + "." + Permission)){
-                        CurrenciesConfig.get().set(currencies + ".team." + Bukkit.getOfflinePlayer(playerid).getUniqueId().toString() + "." + Permission, allowordeny);
+                    if(CurrenciesConfig.get().contains(currencies + ".team." + Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString() + "." + Permission)){
+                        CurrenciesConfig.get().set(currencies + ".team." + Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString() + "." + Permission, allowordeny);
                         p.sendMessage(ChatColor.GREEN + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-15"));
                     }else{
                         p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-16_1"));
@@ -91,7 +92,7 @@ public class Team1_19 implements Team {
         if(CurrenciesConfig.get().contains(name)){
             p.sendMessage(ChatColor.AQUA + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".message-16"));
             for (String player: CurrenciesConfig.get().getConfigurationSection(name + ".team").getKeys(false)){
-                p.sendMessage("     " + ChatColor.GREEN + "- " + Bukkit.getOfflinePlayer(player).getName().toString() );
+                p.sendMessage("     " + ChatColor.GREEN + "- " + Bukkit.getServer().getOfflinePlayer(UUID.fromString(player)).getName());
                 PlayersConfig.get().set(player + ".team", name);
             }
         }else{
@@ -103,7 +104,7 @@ public class Team1_19 implements Team {
     }
     public boolean kickTeamMember(Player p, String playerid){
         final List<?> team = new ArrayList<>();
-        playerid = Bukkit.getOfflinePlayer(playerid).getUniqueId().toString();
+        playerid = Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString();
         if(PlayersConfig.get().get(playerid + ".team") != null && !p.getUniqueId().toString().equals(CurrenciesConfig.get().getString(PlayersConfig.get().getString(p.getUniqueId().toString() + ".team") + ".author"))){
             if (CurrenciesConfig.get().getString(PlayersConfig.get().getString(playerid + ".team") + ".author").equals(p.getUniqueId().toString().toString())){
                 CurrenciesConfig.get().set(PlayersConfig.get().getString(playerid + ".team") + ".team." + playerid, null);
@@ -134,7 +135,7 @@ public class Team1_19 implements Team {
         return true;
     }
     public boolean getTeamMemberPermissions(Player p, String playerid){
-        playerid = Bukkit.getOfflinePlayer(playerid).getUniqueId().toString();
+        playerid = Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString();
         final List<?> team = new ArrayList<>();
         if(PlayersConfig.get().get(playerid + ".team") != null){
             for(String currencies: CurrenciesConfig.get().getKeys(false)){
