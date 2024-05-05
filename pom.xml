@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.rgn</groupId>
+    <groupId>com.github.RGG200</groupId>     
     <artifactId>AsceciaCurrencies</artifactId>
     <version>2.1.2-Release</version>
     <packaging>jar</packaging>
@@ -16,7 +16,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>https://panascecia.duckdns.org</url>
+    <url>https://jitpack.io/#jitpack/Ascecia-Currencies/2.1.2</url>
 
     <build>
         <plugins>
