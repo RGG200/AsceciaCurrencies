@@ -8,12 +8,13 @@
     <artifactId>AsceciaCurrencies</artifactId>
     <version>2.1.2-Release</version>
     <packaging>jar</packaging>
-    <profiles>
-             <profile>
-                      <id>main</id>
-             </profile>
-    </profiles>
     <name>AsceciaCurrencies</name>
+    <profiles>
+         <profile>
+             <id>main</id>
+         </profile>
+    </profiles>
+    
 
     <description>Ascecia Currencies is a plugin that allow new currencies to be made</description>
     <properties>
