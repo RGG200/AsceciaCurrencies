@@ -1,3 +1,7 @@
+# AsceciaCurrencies
+
+[![](https://jitpack.io/v/RGG200/AsceciaCurrencies.svg)](https://jitpack.io/#RGG200/AsceciaCurrencies)
+
 ## Description
 
 Ascecia Currencies is a minecraft plugin that allows players to create their own currencies and make local and dynamic economies to spark exchange and trade with those currencies.
