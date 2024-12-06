@@ -1,16 +1,29 @@
 ores_prices:
-  iron_nugget: 0.11111111111111
+  iron_nugget: 0.11
   coal: 0.5
-  gold_nugget: 0.55555555555555
-  iron_ingot: 1
+  gold_nugget: 0.5
+  iron_ingot: 1.0
+  copper_ingot: 1.0
   coal_block: 4.5
-  gold_ingot: 5
-  emerald: 9
-  iron_block: 9
-  diamond: 20
-  netherite_scrap: 20
-  gold_block: 45
-  emerald_block: 81
-  netherite_ingot: 100
-  diamond_block: 180
-  netherite_block: 900
+  gold_ingot: 5.0
+  emerald: 9.0
+  iron_block: 9.0
+  copper_block: 9.0
+  diamond: 20.0
+  gold_block: 45.0
+  emerald_block: 81.0
+  diamond_block: 180.0
+reserve_materials:
+  paper: 10.0
+  cobblestone: 0.01
+  iron_nugget: 0.1
+  iron_ingot: 1.0
+  gold_nugget: 0.5
+  gold_ingot: 5.0
+  diamond: 20.0
+  iron_block: 9.0
+  gold_block: 45.0
+plugin-version: '${project.version}'
+build: "212.4I182"
+economic-activity-decrease-rate: 10
+economic-activity-min: 0.1

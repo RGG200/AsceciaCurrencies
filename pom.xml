@@ -4,19 +4,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.rgn</groupId>
+    <groupId>me.rgn</groupId>     
     <artifactId>AsceciaCurrencies</artifactId>
-    <version>1.0-Release</version>
+    <version>2.1.3-Release</version>
     <packaging>jar</packaging>
-
     <name>AsceciaCurrencies</name>
+    <profiles>
+         <profile>
+             <id>main</id>
+         </profile>
+    </profiles>
+    
 
     <description>Ascecia Currencies is a plugin that allow new currencies to be made</description>
     <properties>
         <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>    
     </properties>
-    <url>https://panascecia.duckdns.org</url>
+    <url>https://jitpack.io/#jitpack/Ascecia-Currencies/2.1.2</url>
 
     <build>
         <plugins>
@@ -63,14 +68,34 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.3-R0.1-SNAPSHOT</version>
+            <version>1.18-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>be.ceau</groupId>
+            <artifactId>chart</artifactId>
+            <version>2.6.0</version>
         </dependency>
     </dependencies>
 </project>
