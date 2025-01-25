@@ -258,7 +258,8 @@ public class Currency1_19 implements Currency {
         }
         return true;
     }
-    public boolean giveOwnership(Player author, String name, String new_author){
+    public boolean giveOwnership(Player author, String name, String new_authors_name){
+        String new_author = Bukkit.getOfflinePlayer(new_authors_name).getUniqueId().toString();
         if(!new_author.equals(author.getUniqueId().toString())) {
             if (CurrenciesConfig.get().contains(name)) {
                 if (CurrenciesConfig.get().getString(name + ".author").equals(author.getUniqueId().toString())) {

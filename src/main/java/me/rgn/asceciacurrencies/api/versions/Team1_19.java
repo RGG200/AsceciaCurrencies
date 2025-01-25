@@ -41,7 +41,8 @@ public class Team1_19 implements Team {
         CurrenciesConfig.reload();
         return true;
     }
-    public boolean inviteMember(Player p, String playerid){
+    public boolean inviteMember(Player p, String playername){
+        String playerid = Bukkit.getOfflinePlayer(playername).getUniqueId().toString();
         if(PlayersConfig.get().getString(Bukkit.getOfflinePlayer(UUID.fromString(playerid)).getUniqueId().toString() + ".team") == null){
             for(String currencies: CurrenciesConfig.get().getKeys(false)){
                 if(CurrenciesConfig.get().getString(currencies + ".author").equals(p.getName())){

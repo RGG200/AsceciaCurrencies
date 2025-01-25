@@ -516,7 +516,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             break;
                         }else if(args[1].equals("invite")){
                             for(Player player: Bukkit.getServer().getOnlinePlayers()){
-                                completions.add(player.getName());
+                                completions.add(player.getName().toString());
                             }
                         }
                         else{
@@ -537,6 +537,8 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         completions.add("description");
                         break;
                 }
+                Collections.sort(completions);
+                return StringUtil.copyPartialMatches(args[3], completions, new ArrayList<>());
             }else if(args.length == 5){
                 switch (args[0]){
                     case "team":
@@ -544,6 +546,8 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         completions.add("false");
                         break;
                 }
+                Collections.sort(completions);
+                return StringUtil.copyPartialMatches(args[4], completions, new ArrayList<>());
             }
 
         }
