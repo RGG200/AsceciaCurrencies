@@ -24,6 +24,6 @@ reserve_materials:
   iron_block: 9.0
   gold_block: 45.0
 plugin-version: '${project.version}'
-build: "214.12505"
+build: "215.05302"
 economic-activity-decrease-rate: 10
 economic-activity-min: 0.1
