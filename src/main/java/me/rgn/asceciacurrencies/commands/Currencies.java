@@ -27,7 +27,6 @@ public class Currencies implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        CurrenciesAPI cAPI = new CurrenciesAPI();
         CommandSender s = sender;
         if (args.length != 0) {
             switch(args[0]){
@@ -59,23 +58,25 @@ public class Currencies implements CommandExecutor, TabCompleter {
                                 }
                                 break;
                             case "ore":
-                                //check for perms
-                                if(args.length == 4 && !Double.valueOf(args[2]).isNaN()){
+                                //check for perms + if value is double
+                                if(args.length == 4 && !Double.valueOf(args[3]).isNaN()){
                                     if (s.hasPermission("asceciacurrencies.admin.ore")) {
-                                        CurrenciesAPI.currency.setOrePrice(args[2], Double.valueOf(args[3]), s);
+                                        CurrenciesAPI.currency.setOrePrice(args[2], Double.parseDouble(args[3]), s);
                                     }
                                 }else{
                                     s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-15_1"));
                                 }
-                            case "mint_material", "mm":
+                                break;
+                            case "mint-material", "mm":
                                 //check for perms
-                                if(args.length == 4 && !Double.valueOf(args[2]).isNaN()){
+                                if(args.length == 4 && !Double.valueOf(args[3]).isNaN()){
                                     if (s.hasPermission("asceciacurrencies.admin.mm")) {
-                                        CurrenciesAPI.currency.setMintMaterialPrice(args[2], Double.valueOf(args[3]), s);
+                                        CurrenciesAPI.currency.setMintMaterialPrice(args[2], Double.parseDouble(args[3]), s);
                                     }
                                 }else{
                                     s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-15_1"));
                                 }
+                                break;
                         }
                     }
                     break;
@@ -87,6 +88,22 @@ public class Currencies implements CommandExecutor, TabCompleter {
                                 p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-0"));
                             } else {
                                 CurrenciesAPI.currency.create(p, args[1]);
+                            }
+                        } else {
+                            p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
+                        }
+                    }else{
+                        Bukkit.getServer().getLogger().warning("You must be a player to execute this command");
+                    }
+                    break;
+                case "force-create", "fc":
+                    if (sender instanceof Player) {
+                        Player p = (Player) sender;
+                        if (p.hasPermission("asceciacurrencies.admin.forcemanage")) {
+                            if (args.length < 2 || args.length > 2) {
+                                p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-19"));
+                            } else {
+                                CurrenciesAPI.currency.forceCreate(p, args[1]);
                             }
                         } else {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
@@ -216,7 +233,11 @@ public class Currencies implements CommandExecutor, TabCompleter {
                                 p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9"));
                             } else {
                                 Player target = Bukkit.getServer().getPlayer(args[1]);
-                                CurrenciesAPI.currency.pay(p, target, args[2], Double.valueOf(args[3]));
+                                if(target != null && target.getName().equalsIgnoreCase(args[1])){
+                                    CurrenciesAPI.currency.pay(p, target, args[2], Double.valueOf(args[3]));
+                                }else{
+                                    p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-9_1"));
+                                }
                             }
                         } else {
                             p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
@@ -257,27 +278,57 @@ public class Currencies implements CommandExecutor, TabCompleter {
                                         break;
                                 }
                             } else if (args.length == 3) {
+                                Boolean isPlayerRegistered = false;
                                 switch (args[1]) {
                                     case "join":
                                         CurrenciesAPI.team.addTeamMember(p, p.getUniqueId().toString());
                                         break;
                                     case "kick":
-                                        CurrenciesAPI.team.kickTeamMember(p, args[2]);
+                                        // Checking if the player ever connected
+                                        for(String pid : CurrenciesAPI.playersConfig.get().getKeys(false)) {
+                                            if (Objects.equals(CurrenciesAPI.playersConfig.get().getString(pid + ".name"), args[2])) {
+                                                CurrenciesAPI.team.kickTeamMember(p, pid);
+                                                isPlayerRegistered = true;
+                                            }
+                                        }
+                                        if(!isPlayerRegistered) p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-18_1"));
                                         break;
                                     case "list":
                                         CurrenciesAPI.team.teamList(p, args[2]);
                                         break;
                                     case "permissions", "perms":
-                                        CurrenciesAPI.team.getTeamMemberPermissions(p, args[2]);
+                                        // Checking if the player ever connected
+                                        for(String pid : CurrenciesAPI.playersConfig.get().getKeys(false)) {
+                                            if (Objects.equals(CurrenciesAPI.playersConfig.get().getString(pid + ".name"), args[2])) {
+                                                CurrenciesAPI.team.getTeamMemberPermissions(p, pid);
+                                                isPlayerRegistered = true;
+                                            }
+                                        }
+                                        if(!isPlayerRegistered) p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-18_1"));
                                         break;
                                     case "invite":
-                                        CurrenciesAPI.team.inviteMember(p, args[2]);
+                                        // Checking if the player ever connected
+                                        for(String pid : CurrenciesAPI.playersConfig.get().getKeys(false)) {
+                                            if (Objects.equals(CurrenciesAPI.playersConfig.get().getString(pid + ".name"), args[2])) {
+                                                CurrenciesAPI.team.inviteMember(p, pid);
+                                                isPlayerRegistered = true;
+                                            }
+                                        }
+                                        if(!isPlayerRegistered) p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-18_1"));
                                         break;
                                 }
                             } else if (args.length == 5) {
+                                Boolean isPlayerRegistered = false;
                                 switch (args[1]) {
                                     case "set":
-                                        CurrenciesAPI.team.setTeamMemberPermission(p, args[2], args[3], Boolean.valueOf(args[4]));
+                                        // Checking if the player ever connected
+                                        for(String pid : CurrenciesAPI.playersConfig.get().getKeys(false)) {
+                                            if (Objects.equals(CurrenciesAPI.playersConfig.get().getString(pid + ".name"), args[2])) {
+                                                CurrenciesAPI.team.setTeamMemberPermission(p, pid, args[3], Boolean.valueOf(args[4]));
+                                                isPlayerRegistered = true;
+                                            }
+                                        }
+                                        if(!isPlayerRegistered) p.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-18_1"));
                                         break;
                                 }
                             } else {
@@ -291,19 +342,9 @@ public class Currencies implements CommandExecutor, TabCompleter {
                     }
                     break;
                 case "top":
-                    if(args.length == 2 || args.length == 3){
+                    if(args.length == 3){
                         if(s.hasPermission("asceciacurrencies.player.top")){
-                            if(args[1].equals("all")){
-                                cAPI.currency.top(true, "args[2]", s);
-                            }else if(args[1].equals("one")){
-                                if(cAPI.currenciesConfig.get().contains(args[2])){
-                                    cAPI.currency.top(false, args[2], s);
-                                }else{
-                                    s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13_1"));
-                                }
-                            }else{
-                                s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-13"));
-                            }
+                            CurrenciesAPI.currency.top(args[1], s, Integer.parseInt(args[2]));
                         }else{
                             s.sendMessage(ChatColor.DARK_RED + LanguageConfig.get().getString(LanguageConfig.get().getString("language") + ".error-11"));
                         }
@@ -370,16 +411,22 @@ public class Currencies implements CommandExecutor, TabCompleter {
                     }
                     break;
                 default:
-                    s.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
+                    if(args.length == 2) {
+                        CurrenciesAPI.currency.help(s, Integer.parseInt(args[1]));
+                    }else{
+                        CurrenciesAPI.currency.help(s, 1);
+                    }
             }
         }else {
-            s.sendMessage(ChatColor.YELLOW + cAPI.languageConfig.get().getString(cAPI.languageConfig.get().getString("language") + ".message-7"));
+            s.sendMessage(ChatColor.YELLOW + CurrenciesAPI.languageConfig.get().getString(CurrenciesAPI.languageConfig.get().getString("language") + ".message-7"));
         }
+        // Updating currency objects
         for (String currencies : CurrenciesConfig.get().getKeys(false)) {
             int index = IntStream.range(0, CurrenciesAPI.currencyObjects.size())
                     .filter(i -> CurrenciesAPI.currencyObjects.get(i).currency_name.equals(currencies))
                     .findFirst()
                     .orElse(-1);
+            // Researching currency team members for updating the currency object
             List<Tuple<String, List<Tuple<String, Boolean>>>> team = new ArrayList<>();
             Tuple<String, List<Tuple<String, Boolean>>> player = new Tuple<>();
             List<Tuple<String, Boolean>> playerperms = new ArrayList<>();
@@ -407,8 +454,8 @@ public class Currencies implements CommandExecutor, TabCompleter {
         }
             return true;
     }
-    private static final String[] COMMANDS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "give-ownership", "account"};
-    private static final String[] COMMANDSPlUS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "force-delete", "config", "give-ownership", "account"};
+    private static final String[] COMMANDS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "give-ownership", "account", "help"};
+    private static final String[] COMMANDSPlUS = {"create", "delete", "del", "mint", "description", "desc", "info", "list", "deposit", "depo", "withdraw", "wd", "wal", "wallet", "pay", "rename", "top", "team", "force-create", "force-delete", "config", "give-ownership", "account", "help"};
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String CommandLabel, String[] args){
         if(cmd.getName().equals("currencies")){
@@ -418,7 +465,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                 //if first character is matching the subcommand
                 if(sender.hasPermission("asceciacurrencies.admin")){
                     StringUtil.copyPartialMatches(args[0], Arrays.asList(COMMANDSPlUS), completions);
-                }else{
+                }else if(sender.hasPermission("asceciacurrencies.player")){
                     StringUtil.copyPartialMatches(args[0], Arrays.asList(COMMANDS), completions);
                 }
                 //SORT THE LIST
@@ -427,18 +474,15 @@ public class Currencies implements CommandExecutor, TabCompleter {
             }
             else if (args.length == 2) {
                 switch (args[0].toLowerCase()){
-                    case "delete","del", "info", "withdraw","wd", "mint", "depo", "deposit", "rename", "give-ownership", "convert":
-                        for (String currencies: CurrenciesConfig.get().getKeys(false)) {
-                            completions.add(currencies);
-                        }
+                    case "delete","del", "info", "withdraw","wd", "mint", "depo", "deposit", "rename", "give-ownership", "convert", "top":
+                        completions.addAll(CurrenciesConfig.get().getKeys(false));
                         break;
                     case "config":
                         if(sender.hasPermission("asceciacurrencies.admin.reload-config")){
                             completions.add("reload");
                             completions.add("language");
                             completions.add("ore");
-                            completions.add("mint_material");
-                            completions.add("mm");
+                            completions.add("mint-material");
                         }
                         break;
                     case "wallet":
@@ -448,9 +492,7 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         }
                     case "force-delete":
                         if(sender.hasPermission("asceciacurrencies.admin.forcemanage")) {
-                            for (String currencies : CurrenciesConfig.get().getKeys(false)) {
-                                completions.add(currencies);
-                            }
+                            completions.addAll(CurrenciesConfig.get().getKeys(false));
                         }
                         break;
                     case "pay":
@@ -458,10 +500,6 @@ public class Currencies implements CommandExecutor, TabCompleter {
                             String pName = player.getName();
                             completions.add(pName);
                         }
-                        break;
-                    case "top":
-                        completions.add("all");
-                        completions.add("one");
                         break;
                     case "team":
                         completions.add("set");
@@ -484,10 +522,8 @@ public class Currencies implements CommandExecutor, TabCompleter {
             }
             else if (args.length == 3) {
                 switch (args[0].toLowerCase()){
-                    case "pay", "top", "convert":
-                        for (String currencies: CurrenciesConfig.get().getKeys(false)) {
-                            completions.add(currencies);
-                        }
+                    case "pay", "convert":
+                        completions.addAll(CurrenciesConfig.get().getKeys(false));
                         break;
                     case "give-ownership":
                         for (Player player: Bukkit.getServer().getOnlinePlayers()){
@@ -496,35 +532,43 @@ public class Currencies implements CommandExecutor, TabCompleter {
                         }
                         break;
                     case "config":
-                        if(args[1].equals("language")){
-                            List<String> locales = LanguageConfig.get().getStringList("locales");
-                            completions.addAll(locales);
-                        }
-                        else if(args[1].equals("ore")) {
-                            for (String ore : AsceciaCurrencies.plugin.getConfig().getKeys(true)) {
-                                if (!ore.equals("ores_prices")) {
-                                    completions.add(ore.substring(12));
+                        switch (args[1]) {
+                            case "language" -> {
+                                List<String> locales = LanguageConfig.get().getStringList("locales");
+                                completions.addAll(locales);
+                            }
+                            case "ore" -> {
+                                for (String ore : AsceciaCurrencies.plugin.getConfig().getKeys(true)) {
+                                    if (!ore.equals("ores_prices") && ore.contains("ores_prices")) {
+                                        completions.add(ore.substring(12));
+                                    }
+                                }
+                            }
+                            case "mint-material", "mm" -> {
+                                for (String mm : AsceciaCurrencies.plugin.getConfig().getKeys(true)) {
+                                    if (!mm.equals("reserve_materials") && mm.contains("reserve_materials")) {
+                                        completions.add(mm.substring(18));
+                                    }
                                 }
                             }
                         }
                         break;
                     case "team":
-                        if(!args[1].equals("list") && !args[1].equals("join")){
-                            for (String player: PlayersConfig.get().getKeys(false)){
-                                completions.add(PlayersConfig.get().getString(player + ".name"));
+                        if(!args[1].equals("leave")) {
+                            if (!args[1].equals("list") && !args[1].equals("join")) {
+                                for (String player : PlayersConfig.get().getKeys(false)) {
+                                    completions.add(PlayersConfig.get().getString(player + ".name"));
+                                }
+                            } else {
+                                completions.addAll(CurrenciesConfig.get().getKeys(false));
                             }
-                            break;
-                        }else if(args[1].equals("invite")){
-                            for(Player player: Bukkit.getServer().getOnlinePlayers()){
-                                completions.add(player.getName().toString());
+                            if (args[1].equals("invite")) {
+                                for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                                    completions.add(player.getName());
+                                }
                             }
                         }
-                        else{
-                            for (String currencies: CurrenciesConfig.get().getKeys(false)) {
-                                completions.add(currencies);
-                            }
-                            break;
-                        }
+                        break;
                 }
                 Collections.sort(completions);
                 return StringUtil.copyPartialMatches(args[2], completions, new ArrayList<>());

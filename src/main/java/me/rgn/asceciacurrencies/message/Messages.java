@@ -32,7 +32,8 @@ public class Messages {
 
         LanguageConfig.get().set("en-us.message-6", "[Currencies]: Description set ! ");
 
-        LanguageConfig.get().set("en-us.message-7", "| Ascecia Currencies | Help | \n \n /currencies create (name) - creates a currency  \n /currencies delete (name) - deletes your currency \n /currencies withdraw (name) (amount) - turn back an amount of your currency into iron \n /currencies info (name) - gives you info about a currency \n /currencies list - gives you a list of all currencies available \n /currencies mint (name) (amount) - makes an amount of currency \n /currencies deposit (nombre) - deposit the amount of ores you're holding in your hand into your currency to increase its power \n /currencies pay (playername) (name) (amount) - pays the target with an amount of currency \n /currencies wallet - give you details about your wallet \n /currencies top (all/one) (Currency) - Leaderboard of the richest \n /currencies team (set/invite/kick/list/permissions/join/leave) - Manage a currency's team \n /currencies give-ownership (currency) (player) - give ownership to someone else \n /currency account - shows your account");
+        LanguageConfig.get().set("en-us.message-7", " /currencies create (name) - creates a currency  \n /currencies delete (name) - deletes your currency \n /currencies withdraw (name) (amount) - turn back an amount of your currency into iron \n /currencies info (name) - gives you info about a currency \n /currencies list - gives you a list of all currencies available \n /currencies mint (name) (amount) - makes an amount of currency \n /currencies deposit (nombre) - deposit the amount of ores you're holding in your hand into your currency to increase its power \n /currencies pay (playername) (name) (amount) - pays the target with an amount of currency \n /currencies wallet - give you details about your wallet \n /currencies top (currency) (page) - Leaderboard of the richest \n /currencies team (set/invite/kick/list/permissions/join/leave) - Manage a currency's team \n /currencies give-ownership (currency) (player) - give ownership to someone else \n /currency account - shows your account");
+        LanguageConfig.get().set("en-us.message-7_1", "| Ascecia Currencies | Help | Page n°");
 
         LanguageConfig.get().set("en-us.message-8", "| Currency Info -> | ");
         LanguageConfig.get().set("en-us.message-8_1", " | \n \n Amount of Currency available on the market: ");
@@ -55,6 +56,7 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-12", "[Currencies]: Configuration Reloaded !");
 
         LanguageConfig.get().set("en-us.message-13", "| Ascecia Currencies | Top |");
+        LanguageConfig.get().set("en-us.message-13_1", "Page n°");
 
         LanguageConfig.get().set("en-us.message-14", "Language set !");
 
@@ -74,8 +76,8 @@ public class Messages {
         LanguageConfig.get().set("en-us.message-17", "[Currencies]: You gave ownership of your currency to ");
 
         LanguageConfig.get().set("en-us.message-18", "[AsceciaCurrencies]: your Account ");
-        LanguageConfig.get().set("en-us.message-18_1", "\n \n   Date of Creation: ");
-        LanguageConfig.get().set("en-us.message-18_2", "\n  Wallet: do /c wallet to see your wallet");
+        LanguageConfig.get().set("en-us.message-18_1", "\n \n Date of Creation: ");
+        LanguageConfig.get().set("en-us.message-18_2", "\n Wallet: do /c wallet to see your wallet");
         LanguageConfig.get().set("en-us.message-18_3", "[AsceciaCurrencies]: the account of ");
 
         //info in english
@@ -113,7 +115,8 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-9_1", "[Currencies]: The Player Specified isn't Online");
         LanguageConfig.get().set("en-us.error-9_2", "[Currencies]: The Currency Specified doesn't exist");
         LanguageConfig.get().set("en-us.error-9_3", "[Currencies]: You do not have enough money");
-        LanguageConfig.get().set("en-us.error-9_4", "[Currencies]: You Can't give yourself money");
+        LanguageConfig.get().set("en-us.error-9_4", "[Currencies]: You can't give yourself money");
+        LanguageConfig.get().set("en-us.error-9_5", "[Currencies]: The Player doesn't have a registered account");
 
         LanguageConfig.get().set("en-us.error-10", "[Currencies]: /currencies withdraw (currencyname) (amount)");
         LanguageConfig.get().set("en-us.error-10_1", "[Currencies]: The amount entered is too low !");
@@ -127,7 +130,7 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-12_1", "[Currencies]: /currencies rename (name)");
         LanguageConfig.get().set("en-us.error-12_2", "[Currencies]: The new Name can't be the same as the old one !");
 
-        LanguageConfig.get().set("en-us.error-13", "[Currencies]: /currencies top (all/one) (currency)");
+        LanguageConfig.get().set("en-us.error-13", "[Currencies]: /currencies top (currency) (page)");
         LanguageConfig.get().set("en-us.error-13_1", "[Currencies]: This currency doesn't exist");
 
         LanguageConfig.get().set("en-us.error-14", "[Currencies]: /currencies config language (language)");
@@ -154,6 +157,8 @@ public class Messages {
         LanguageConfig.get().set("en-us.error-18", "[Currencies]: /currencies account");
         LanguageConfig.get().set("en-us.error-18_1", "[Currencies]: The player never connected");
 
+        LanguageConfig.get().set("en-us.error-19", "[Currencies]: /currencies force-create (currencyname)");
+
         //messages en français
         LanguageConfig.get().set("fr-FR.message-0", "[Currencies]: La monnaie ");
         LanguageConfig.get().set("fr-FR.message-0_1", " à été crée ");
@@ -175,7 +180,8 @@ public class Messages {
 
         LanguageConfig.get().set("fr-FR.message-6", "[Currencies]: Description définie ! ");
 
-        LanguageConfig.get().set("fr-FR.message-7", "| Ascecia Currencies | Aide | \n /currencies create (nom) - creer une monnaie  \n /currencies delete (nom) - supprime une monnaie \n /currencies withdraw (nom) (montant) - vous redonne des minerais que vous avez mis en fonction du montant entré \n /currencies info (nom) - une liste d'infos sur une monnaie \n /currencies list - liste de toutes les monnaies existante \n /currencies mint (nom) (montant) - frappe un montant de monnaie \n /currencies deposit (nom) - depose le nombre de minerais que vous tenez dans votre main pour augmenter la valeur et la puissance de votre monnaie \n /currencies pay (nom du joueur) (nom de la monnaie) (montant) - paye la personne concernée \n /currencies wallet - vous montre votre porte-feuille \n /currencies top (all/one) (monnaie) - classement des joueurs les plus riches \n /currencies team (set/invite/kick/list/permissions/join/leave) - Gérer l'équipe du monnaie \n /currencies give-ownership (monnaie) (joueur) - céder votre monnaie à quelqu'un d'autre \n /currency account - montre votre compte");
+        LanguageConfig.get().set("fr-FR.message-7", " /currencies create (nom) - creer une monnaie  \n /currencies delete (nom) - supprime une monnaie \n /currencies withdraw (nom) (montant) - vous redonne des minerais que vous avez mis en fonction du montant entré \n /currencies info (nom) - une liste d'infos sur une monnaie \n /currencies list - liste de toutes les monnaies existante \n /currencies mint (nom) (montant) - frappe un montant de monnaie \n /currencies deposit (nom) - depose le nombre de minerais que vous tenez dans votre main pour augmenter la valeur et la puissance de votre monnaie \n /currencies pay (nom du joueur) (nom de la monnaie) (montant) - paye la personne concernée \n /currencies wallet - vous montre votre porte-feuille \n /currencies top (monnaie) (page) - classement des joueurs les plus riches \n /currencies team (set/invite/kick/list/permissions/join/leave) - Gérer l'équipe du monnaie \n /currencies give-ownership (monnaie) (joueur) - céder votre monnaie à quelqu'un d'autre \n /currency account - montre votre compte");
+        LanguageConfig.get().set("fr-FR.message-7_1", "| Ascecia Currencies | Aide | Page n°");
 
         LanguageConfig.get().set("fr-FR.message-8", "| Monnaie Info -> | ");
         LanguageConfig.get().set("fr-FR.message-8_1", " | \n \n Montant de monnaie disponible sur le marché: ");
@@ -198,6 +204,7 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-12", "[Currencies]: Configuration rechargée !");
 
         LanguageConfig.get().set("fr-FR.message-13", "| Ascecia Currencies | Top |");
+        LanguageConfig.get().set("fr-FR.message-13_1", "Page n°");
 
         LanguageConfig.get().set("fr-FR.message-14", "Langue Définie !");
 
@@ -217,11 +224,11 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.message-17", "[Currencies]: Tu as légué(e) ta monnaie à ");
 
         LanguageConfig.get().set("fr-FR.message-18", "[AsceciaCurrencies]: Votre compte ");
-        LanguageConfig.get().set("fr-FR.message-18_1", "\n \n   Date de Creation: ");
-        LanguageConfig.get().set("fr-FR.message-18_2", "\n  Porte-Monnaie: faites /c wallet pour voir le contenu de votre porte monnaie ");
+        LanguageConfig.get().set("fr-FR.message-18_1", "\n \n Date de Creation: ");
+        LanguageConfig.get().set("fr-FR.message-18_2", "\n Porte-Monnaie: faites /c wallet pour voir le contenu de votre porte monnaie");
         LanguageConfig.get().set("fr-FR.message-18_3", "[AsceciaCurrencies]: le compte de ");
 
-        //info in french
+        //info en français
         LanguageConfig.get().set("fr-FR.info-0", "[Currencies]: Aucune invitations.");
         LanguageConfig.get().set("fr-FR.info-0_1", "[Currencies]: Vous êtes invité par l'équipe de ");
 
@@ -258,6 +265,7 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.error-9_2", "[Currencies]: La monnaie spécifiée n'éxiste pas");
         LanguageConfig.get().set("fr-FR.error-9_3", "[Currencies]: Vous n'avez pas assez d'argent pour payer !");
         LanguageConfig.get().set("fr-FR.error-9_4", "[Currencies]: Vous ne pouvez pas vous donner de l'argent");
+        LanguageConfig.get().set("fr-FR.error-9_5", "[Currencies]: Le joueur spécifié n'as pas de compte enregistré");
 
         LanguageConfig.get().set("fr-FR.error-10", "[Currencies]: /currencies withdraw (nom) (montant)");
         LanguageConfig.get().set("fr-FR.error-10_1", "[Currencies]: Le montant entré est trop faible");
@@ -271,7 +279,7 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.error-12_1", "[Currencies]: /currencies rename (nom)");
         LanguageConfig.get().set("fr-FR.error-12_2", "[Currencies]: Le nouveau nom ne peut pas être le même que l'ancien");
 
-        LanguageConfig.get().set("fr-FR.error-13", "[Currencies]: /currencies top (all/one) (monnaie)");
+        LanguageConfig.get().set("fr-FR.error-13", "[Currencies]: /currencies top (monnaie) (page)");
         LanguageConfig.get().set("fr-FR.error-13_1", "[Currencies]: Cette Monnaie n'existe pas");
 
         LanguageConfig.get().set("fr-FR.error-14", "[Currencies]: /currencies config language (langue)");
@@ -298,11 +306,11 @@ public class Messages {
         LanguageConfig.get().set("fr-FR.error-18", "[Currencies]: /currencies account");
         LanguageConfig.get().set("fr-FR.error-18_1", "[Currencies]: Le joueur ne s'est jamais connecté");
 
+        LanguageConfig.get().set("fr-FR.error-19", "[Currencies]: /currencies force-create (nom de la monnaie)");
+
         LanguageConfig.save();
 
-        //español
-
-        //messages en español
+        //mensajes en español
         LanguageConfig.get().set("es-ES.message-0", "[Currencies]: La moneda");
         LanguageConfig.get().set("es-ES.message-0_1", " se ha creado");
 
@@ -324,7 +332,8 @@ public class Messages {
         LanguageConfig.get().set("es-ES.message-6", "[Currencies]: Descripción definida !");
         LanguageConfig.get().set("es-ES.error-6_1", "[Currencies]: No tienes suficiente material en la mano para acuñar la cantidad de cambio indicada.");
 
-        LanguageConfig.get().set("es-ES.message-7", "| Ascecia Currencies | Ayuda | \n \n /currencies create (nombre) - crear una moneda \n /currencies delete (nombre) - supprimir una moneda \n /currencies witdraw (nombre) (cantidad) - Retirar alguna cantidad de moneda \n /currencies info (nombre) - Información sobre una moneda \n /currencies list - Lista de las monedas \n /currencies mint (nombre) (cantidad) - acuñar alguna cantidad de moneda \n /currencies deposit (nombre) - Depositar las minerales que son en tú mano \n /currencies pay (nombre del jugador) (nombre de la moneda) (cantidad) - Pagar una cantidad de moneda a una otra persona \n /currencies wallet - muestra tú cartera \n /currencies top (all/one) (nombre) - El clasificación de los que son más ricos \n /currencies team (set/invite/kick/list/permissions/join/leave) - equipo para currencies \n /currencies give-ownership (moneda) (jugador) - da la proriedad de tù moneda al jugador specificado \n /currency account - muestra tù cuenta");
+        LanguageConfig.get().set("es-ES.message-7", " /currencies create (nombre) - crear una moneda \n /currencies delete (nombre) - supprimir una moneda \n /currencies witdraw (nombre) (cantidad) - Retirar alguna cantidad de moneda \n /currencies info (nombre) - Información sobre una moneda \n /currencies list - Lista de las monedas \n /currencies mint (nombre) (cantidad) - acuñar alguna cantidad de moneda \n /currencies deposit (nombre) - Depositar las minerales que son en tú mano \n /currencies pay (nombre del jugador) (nombre de la moneda) (cantidad) - Pagar una cantidad de moneda a una otra persona \n /currencies wallet - muestra tú cartera \n /currencies top (moneda) (pagina) - El clasificación de los que son más ricos \n /currencies team (set/invite/kick/list/permissions/join/leave) - equipo para currencies \n /currencies give-ownership (moneda) (jugador) - da la proriedad de tù moneda al jugador specificado \n /currency account - muestra tù cuenta");
+        LanguageConfig.get().set("es-ES.message-7_1", "| Ascecia Currencies | Ayuda | Pagina n°");
 
         LanguageConfig.get().set("es-ES.message-8", "\n | Ascecia-Currencies | Moneda info -> | ");
         LanguageConfig.get().set("es-ES.message-8_1", " | \n \n Cantidad de moneda en circulación: ");
@@ -339,7 +348,7 @@ public class Messages {
         LanguageConfig.get().set("es-ES.message-9_1","\n      Potencia: ");
         LanguageConfig.get().set("es-ES.message-9_2","\n      Actividad económica: ");
 
-        LanguageConfig.get().set("es-ES.message-10","\n | Ascecia-Currencies | Carrera | \n \n");
+        LanguageConfig.get().set("es-ES.message-10","\n | Ascecia-Currencies | Cartera | \n \n");
         LanguageConfig.get().set("es-ES.message-10_1"," \n      Saldo: ");
 
         LanguageConfig.get().set("es-ES.message-11", " Se ha Renombrada a ");
@@ -347,6 +356,7 @@ public class Messages {
         LanguageConfig.get().set("es-ES.message-12", "[Currencies]: Configuración Recargada !");
 
         LanguageConfig.get().set("es-ES.message-13", "| Ascecia Currencies | Top |");
+        LanguageConfig.get().set("es-ES.message-13_1", "Pagina n°");
 
         LanguageConfig.get().set("es-ES.message-14", "[Currencies]: Idioma definida !");
 
@@ -366,11 +376,11 @@ public class Messages {
         LanguageConfig.get().set("es-ES.message-17", "[Currencies]: cediaste la propiedad de su moneda a ");
 
         LanguageConfig.get().set("es-ES.message-18", "[AsceciaCurrencies]: tù cuenta ");
-        LanguageConfig.get().set("es-ES.message-18_1", "\n \n   Fecha de Creacíon: ");
-        LanguageConfig.get().set("es-ES.message-18_2", "\n   Porte-Monnaie: hace /c wallet para ver tù carrera");
+        LanguageConfig.get().set("es-ES.message-18_1", "\n \n Fecha de Creacíon: ");
+        LanguageConfig.get().set("es-ES.message-18_2", "\n Cartera: hace /c wallet para ver tù cartera");
         LanguageConfig.get().set("es-ES.message-18_3", "[AsceciaCurrencies]: el cuenta de ");
 
-        //info in spanish
+        //info
         LanguageConfig.get().set("es-ES.info-0", "[Currencies]: No invitacíonnes de equipos");
         LanguageConfig.get().set("es-ES.info-0_1", "[Currencies]: Invitado con el equipo ");
 
@@ -405,6 +415,7 @@ public class Messages {
         LanguageConfig.get().set("es-ES.error-9_2", "[Currencies]: La moneda especificada no existe");
         LanguageConfig.get().set("es-ES.error-9_3", "[Currencies]: No tienes suficiente dinero para pagar");
         LanguageConfig.get().set("es-ES.error-9_4", "[Currencies]: No puede darse dinero");
+        LanguageConfig.get().set("es-ES.error-9_5", "[Currencies]: El jugador no tiene un cuenta");
 
         LanguageConfig.get().set("es-ES.error-10", "[Currencies]: /currencies withdraw (nombre) (cantidad)");
         LanguageConfig.get().set("es-ES.error-10_1", "[Currencies]: La cantidad está demasiado bajo (< 1)");
@@ -418,7 +429,7 @@ public class Messages {
         LanguageConfig.get().set("es-ES.error-12_1", "[Currencies]: /currencies rename (nombre)");
         LanguageConfig.get().set("es-ES.error-12_2", "[Currencies]: El nuevo nombre debe ser diferente del anterior");
 
-        LanguageConfig.get().set("es-ES.error-13", "[Currencies]: /currencies top (all/one) (moneda)");
+        LanguageConfig.get().set("es-ES.error-13", "[Currencies]: /currencies top (moneda) (pagina)");
         LanguageConfig.get().set("es-ES.error-13_1", "[Currencies]: Este moneda no existe");
 
         LanguageConfig.get().set("es-ES.error-14", "[Currencies]: /currencies config language (idioma)");
@@ -445,6 +456,8 @@ public class Messages {
         LanguageConfig.get().set("es-ES.error-18", "[Currencies]: /currencies account");
         LanguageConfig.get().set("es-ES.error-18_1", "[Currencies]: El jugador no ha conectado");
 
+        LanguageConfig.get().set("es-ES.error-19", "[Currencies]: /currencies force-create (nom de la monnaie)");
+
         //messages in russian
         LanguageConfig.get().set("ru-RU.message-0", "[Currencies]: Валюта ");
         LanguageConfig.get().set("ru-RU.message-0_1", " была создана ");
@@ -466,7 +479,7 @@ public class Messages {
 
         LanguageConfig.get().set("ru-RU.message-6", "[Currencies]: Описание установлено ! ");
 
-        LanguageConfig.get().set("ru-RU.message-7", "| Ascecia Currencies | Помощь | \n \n /currencies create (Название) - creates a currency  \n /currencies delete (Название) - deletes your currency \n /currencies withdraw (name)  (Количество) - turn back an amount of your currency into iron \n /currencies info (name) - gives you info about a currency \n /currencies list - gives you a list of all currencies available \n /currencies mint (name)  (Количество) - makes an amount of currency \n /currencies deposit (nombre) - deposit the amount of ores you're holding in your hand into your currency to increase its power \n /currencies pay (playername) (name)  (Количество) - pays the target with an amount of currency \n /currencies wallet - give you details about your wallet \n /currencies top (all/one) (Currency) - Leaderboard of the richest \n /currencies team (set/invite/kick/list/permissions/join/leave) - Manage a currency's team");
+        LanguageConfig.get().set("ru-RU.message-7", "| Ascecia Currencies | Помощь | \n \n /currencies create (Название) - creates a currency  \n /currencies delete (Название) - deletes your currency \n /currencies withdraw (name)  (Количество) - turn back an amount of your currency into iron \n /currencies info (name) - gives you info about a currency \n /currencies list - gives you a list of all currencies available \n /currencies mint (name)  (Количество) - makes an amount of currency \n /currencies deposit (nombre) - deposit the amount of ores you're holding in your hand into your currency to increase its power \n /currencies pay (playername) (name)  (Количество) - pays the target with an amount of currency \n /currencies wallet - give you details about your wallet \n /currencies top (currency) (page) - Leaderboard of the richest \n /currencies team (set/invite/kick/list/permissions/join/leave) - Manage a currency's team");
 
         LanguageConfig.get().set("ru-RU.message-8", "| Currency Info -> | ");
         LanguageConfig.get().set("ru-RU.message-8_1", " | \n \n Amount of Currency available on the market: ");
@@ -504,6 +517,13 @@ public class Messages {
         LanguageConfig.get().set("ru-RU.message-16_7", "\n      Description: ");
         LanguageConfig.get().set("ru-RU.message-16_8", " Joined");
         LanguageConfig.get().set("ru-RU.message-16_9", " You left your team ");
+
+        LanguageConfig.get().set("ru-RU.message-17", "[Currencies]: cediaste la propiedad de su moneda a ");
+
+        LanguageConfig.get().set("ru-RU.message-18", "[AsceciaCurrencies]: tù cuenta ");
+        LanguageConfig.get().set("ru-RU.message-18_1", "\n \n   Fecha de Creacíon: ");
+        LanguageConfig.get().set("ru-RU.message-18_2", "\n   Porte-Monnaie: hace /c wallet para ver tù carrera");
+        LanguageConfig.get().set("ru-RU.message-18_3", "[AsceciaCurrencies]: el cuenta de ");
 
         //info in russain
         LanguageConfig.get().set("ru-RU.info-0", "[Currencies]: You have no invitations pending");
@@ -553,7 +573,7 @@ public class Messages {
         LanguageConfig.get().set("ru-RU.error-12_1", "[Currencies]: /currencies rename (name)");
         LanguageConfig.get().set("ru-RU.error-12_2", "[Currencies]: The new Name can't be the same as the old one !");
 
-        LanguageConfig.get().set("ru-RU.error-13", "[Currencies]: /currencies top (all/one) (currency)");
+        LanguageConfig.get().set("ru-RU.error-13", "[Currencies]: /currencies top (currency) (page)");
         LanguageConfig.get().set("ru-RU.error-13_1", "[Currencies]: This currency doesn't exist");
 
         LanguageConfig.get().set("ru-RU.error-14", "[Currencies]: /currencies config language (language)");
@@ -576,6 +596,11 @@ public class Messages {
         LanguageConfig.get().set("ru-RU.error-17_1", "[Currencies]: You can't give ownership of your currency to yourself !");
         LanguageConfig.get().set("ru-RU.error-17_2", "[Currencies]: You do not own this currency !");
         LanguageConfig.get().set("ru-RU.error-17_3", "[Currencies]: The specified player already owns a currency !");
+
+        LanguageConfig.get().set("ru-RU.error-18", "[Currencies]: /currencies account");
+        LanguageConfig.get().set("ru-RU.error-18_1", "[Currencies]: El jugador no ha conectado");
+
+        LanguageConfig.get().set("ru-RU.error-19", "[Currencies]: /currencies force-create (nom de la monnaie)");
 
         LanguageConfig.save();
     }

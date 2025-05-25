@@ -7,12 +7,14 @@ import org.bukkit.entity.Player;
 public interface Currency {
     public boolean add(Player p, String name, double amount);
     public boolean create(Player p, String name);
+    public boolean forceCreate(Player p, String name);
     public boolean delete(Player p, String name);
     public boolean deposit(Player p,String currencies, double itemamount);
     public boolean description(Player p, String description);
     public boolean setMintMaterialPrice(String mm, double amount, CommandSender sender);
     public boolean forceDelete(String name, CommandSender sender);
     public boolean giveOwnership(Player author, String name, String new_author);
+    public boolean help(CommandSender s, int pagenum);
     public boolean info(CommandSender p, String name);
     public boolean language(String language, CommandSender sender);
     public boolean list(CommandSender p);
@@ -25,7 +27,7 @@ public interface Currency {
     public boolean setOrePrice(String ore, double amount, CommandSender sender);
     public boolean showAccount(Player p);
     public boolean showAccountOther(CommandSender s, OfflinePlayer op);
-    public boolean top(Boolean all, String name, CommandSender p);
+    public boolean top(String name, CommandSender p, int pagenum);
     public boolean withdraw(Player p, String name, double amount);
     public boolean wallet(CommandSender s, Player p);
 }

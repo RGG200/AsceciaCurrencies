@@ -77,10 +77,12 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                 Tuple<String, Boolean> playerperm = new Tuple<>();
                 if(CurrenciesConfig.get().getConfigurationSection(currencies + ".team") != null) {
                     for (String playerinteam : CurrenciesConfig.get().getConfigurationSection(currencies + ".team").getKeys(false)) {
-                        if (playerinteam.equals(Bukkit.getOfflinePlayer(playerinteam).getName())) {
-                            CurrenciesConfig.get().set(currencies + ".team." + Bukkit.getOfflinePlayer(playerinteam).getUniqueId().toString(), CurrenciesConfig.get().get(currencies + ".team." + playerinteam));
-                            CurrenciesConfig.get().set(currencies + ".team." + playerinteam, null);
-                            playerinteam = Bukkit.getOfflinePlayer(playerinteam).getUniqueId().toString();
+                        if (!playerinteam.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
+                            if(getServer().getPlayer(playerinteam) != null) {
+                                CurrenciesConfig.get().set(currencies + ".team." + getServer().getPlayer(playerinteam).getUniqueId(), CurrenciesConfig.get().get(currencies + ".team." + playerinteam));
+                                CurrenciesConfig.get().set(currencies + ".team." + playerinteam, null);
+                                playerinteam = getServer().getPlayer(playerinteam).getUniqueId().toString();
+                            }
                         }
                         playerperm.First = "mint";
                         playerperm.Second = CurrenciesConfig.get().getBoolean(currencies + ".team." + playerinteam + ".mint");
@@ -104,10 +106,12 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
         }
         for(String player: PlayersConfig.get().getKeys(false)){
             PlayersConfig.get().set(player + ".name", Bukkit.getOfflinePlayer(UUID.fromString(player)).getName());
-            if(player.equals(PlayersConfig.get().getString(player+ ".name"))) {
-                PlayersConfig.get().set(Bukkit.getOfflinePlayer(UUID.fromString(player)).getUniqueId().toString(), PlayersConfig.get().get(player));
-                PlayersConfig.get().set(player, null);
-                player = Bukkit.getOfflinePlayer(player).getUniqueId().toString();
+            if (!player.matches("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")) {
+                if(getServer().getPlayer(player) != null) {
+                    PlayersConfig.get().set(Bukkit.getOfflinePlayer(UUID.fromString(player)).getUniqueId().toString(), PlayersConfig.get().get(player));
+                    PlayersConfig.get().set(player, null);
+                    player = Bukkit.getPlayer(player).getUniqueId().toString();
+                }
             }
             List<Tuple<String, Double>> pwallet = new ArrayList<>();
             if(PlayersConfig.get().contains(player + ".balance")) {
@@ -174,8 +178,8 @@ public final class AsceciaCurrencies extends JavaPlugin implements TabCompleter 
                     double cValue = CurrenciesConfig.get().getDouble(currencies + ".totalvalue");
                     double cEcoAct = CurrenciesConfig.get().getDouble(currencies + ".economic-activity");
                     CurrenciesConfig.get().set(currencies + ".power", (Double.valueOf(Math.round((cValue / cMarketAmount) * 1000)) / 1000)*cEcoAct);
-                    if (cEcoAct <= 0.1) {
-                        CurrenciesConfig.get().set(currencies + ".economic-activity", 0.101);
+                    if (cEcoAct <= getConfig().getDouble("economic-activity-min")) {
+                        CurrenciesConfig.get().set(currencies + ".economic-activity", getConfig().getDouble("economic-activity-min")+0.001);
                     }
                     CurrenciesConfig.save();
                 }
