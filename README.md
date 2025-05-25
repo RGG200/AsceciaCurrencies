@@ -20,6 +20,6 @@ Ascecia Currencies is a minecraft plugin that allows players to create their own
 
 ## Planned extensions
 
-- Ascecia Auction-House : Not in development yet.
+- Ascecia Sign-Shops : Not in development yet.
 
 ## Other plugins
